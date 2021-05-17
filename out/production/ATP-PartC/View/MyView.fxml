@@ -26,7 +26,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="View.MyViewController" stylesheets="@MainStyle.css">
     <left>
         <VBox prefHeight="200.0" prefWidth="178.0" spacing="5.0" BorderPane.alignment="CENTER">
-            <children>
+            <children >
                 <GridPane>
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
@@ -65,7 +65,13 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Close"/>
+                                <MenuItem mnemonicParsing="false" text="Close" onAction="#CloseB"/>
+                            </items>
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Save Maze" onAction="#SaveB"/>
+                            </items>
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Load Maze" onAction="#LoadB"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
