@@ -5,9 +5,15 @@ import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.search.SearchableMaze;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.File;
@@ -22,22 +28,17 @@ public class MyViewController implements IView{
     public TextField textField_mazeColumns;
     public MazeDisplayer mazeDisplayer;
     public  Maze maze;
+    public Stage stage;
+    public Scene scene;
+    private  Parent root;
+    private Pane panb;
 
-    public void generateMaze(ActionEvent actionEvent) {
-        if(generator == null)
-            generator = new MyMazeGenerator();
-        int rows = Integer.parseInt(textField_mazeRows.getText());
-        int cols = Integer.parseInt(textField_mazeColumns.getText());
-        maze = generator.generate(rows, cols);
-        mazeDisplayer.drawMaze(maze);
-    }
-
-    public void solveMaze(ActionEvent actionEvent) {
+    /*public void solveMaze(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Solving maze...");
         alert.show();
     }
-    public  void CloseB(){
+    public  void Cl oseB(){
         System.out.println("closessssssss ");
         //TODO smart exit from project
         Platform.exit();
@@ -56,7 +57,7 @@ public class MyViewController implements IView{
         }
     }
     public void LoadB(){ //TODO implent this function
-       /* FileChooser fileChooser = new FileChooser();
+       *//* FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.showOpenDialog(mazeDisplayer.getScene().getWindow());
         File file = fileChooser.showOpenDialog(mazeDisplayer.getScene().getWindow());
@@ -71,6 +72,6 @@ public class MyViewController implements IView{
 
 
         }
-*/
-    }
+
+    }*/
 }
