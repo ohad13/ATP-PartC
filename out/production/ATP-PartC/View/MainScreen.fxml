@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<?import View.*?>
+<BorderPane fx:id="MainScreenid" onMouseClicked="#mouseClick" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainScreenController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" text="Load" />
+                  <MenuItem mnemonicParsing="false" text="Save" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem fx:id="AboutB" mnemonicParsing="false" onAction="#AboutF" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <left>
+        <AnchorPane prefHeight="475.0" prefWidth="210.0" BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="textField_mazeRows" layoutX="31.0" layoutY="37.0" prefHeight="25.0" prefWidth="55.0" promptText="row" text="10" />
+                <TextField fx:id="textField_mazeColumns" layoutX="125.0" layoutY="37.0" prefHeight="25.0" prefWidth="53.0" promptText="col" text="10" />
+                <Button fx:id="generateB" layoutX="58.0" layoutY="71.0" mnemonicParsing="false" onAction="#generateMaze" text="generate maze" />
+                <Button layoutX="59.0" layoutY="105.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="solve" />
+            <Button fx:id="BackB" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" onAction="#Back" prefHeight="26.0" prefWidth="71.0" text="Back" />
+            <Text fx:id="timer" layoutX="31.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="133.13671875">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Text>
+            </children>
+        </AnchorPane>
+    </left>
+    <right>
+
+    </right>
+   <right>
+      <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="490.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane fx:id="paneB" layoutX="27.0" layoutY="45.0" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="45.0">
+               <children>
+
+
+               </children>
+                <MazeDisplayer fx:id="mazeDisplayer" height="400.0" onKeyPressed="#movePlayer" width="400.0" />
+            </Pane>
+            <Label layoutX="143.0" layoutY="14.0" prefHeight="34.0" prefWidth="168.0" text="The best maze">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </right>
+</BorderPane>
