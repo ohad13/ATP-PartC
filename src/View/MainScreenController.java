@@ -27,12 +27,12 @@ import javafx.util.Duration;
 import javafx.scene.control.TextField;
 import javafx.util.Pair;
 
-import java.io.File;
+import java.io.*;
 
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -72,13 +72,53 @@ public class MainScreenController implements  IView {
                         timer.setText(time.getCurrentTime());
                     }));
 
+
+
+
     public  void displayUserName(String username){
         userLable.setText(username);
     }
-    public void generateMaze(ActionEvent actionEvent) {
+    private  void readHashmap() throws IOException {
+        // read hashtable from file
         if(topResult== null){
             topResult= new HashMap<>();
+
+            File file = new File(System.getProperty("java.io.tmpdir"), "hashResult");
+            file.createNewFile();
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+                int row,col;
+                String usern;
+                String l;
+                Time timetemp;
+                Pair<Integer, Integer> rowCol ;
+                Pair<String,Time> playerResult ;
+
+                while((l = br.readLine()) != null) {
+                    String[] args = l.split(",", 5);
+                    if (args.length == 5) {
+                        row = Integer.parseInt(args[1]);
+                        col = Integer.parseInt(args[2]);
+                        usern = args[3];
+                        timetemp = new Time(args[4]); // TODO need to be time and not string
+
+                        rowCol = new Pair(row,col);
+                        playerResult = new Pair(usern,timetemp);
+                        topResult.put(rowCol, playerResult);
+                    }
+                }
+
+                br.close();
+            } catch (IOException var24) {
+                var24.printStackTrace();
+            }
         }
+
+    }
+    public void generateMaze(ActionEvent actionEvent) throws IOException {
+
+        readHashmap();
+
         time.setTime(0,0,0);
         timer.setText(time.getCurrentTime());
 
@@ -92,15 +132,52 @@ public class MainScreenController implements  IView {
         maze = generator.generate(rows, cols);
         paneB.setStyle("-fx-border-color: #ff0000; -fx-border-width: 5;");
         mazeDisplayer.drawMaze(maze);
+
+        Pair<Integer, Integer> rowCol = new Pair(maze.getNumOfRow(),maze.getNumOfCol()); // if this maze size alredy exist, show the best result
+        if(topResult.containsKey(rowCol)) {
+            String txt = "The best time for " + maze.getNumOfRow() + "X" + maze.getNumOfCol() + " is: "+ topResult.get(rowCol).getValue().getCurrentTime();
+            topResultLable.setText(txt);
+        }else {
+            topResultLable.setText("");
+        }
     }
 
     public void Back(ActionEvent actionEvent) throws IOException {
+        if(topResult!=null) {
+            writeHash();
+        }
         Parent root = FXMLLoader.load(getClass().getResource("../View/First.fxml"));
         stage  = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+    public void writeHash(){
+        try {
+            File file = new File(System.getProperty("java.io.tmpdir"), "hashResult");
+            file.createNewFile();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            ObjectOutputStream outFile = new ObjectOutputStream(new FileOutputStream(file));
+
+
+            int row,col;
+            String usern,test="";
+            Time t;
+            for (Map.Entry<Pair<Integer, Integer>,  Pair<String,Time>> entry : topResult.entrySet()) {
+                row = entry.getKey().getKey();
+                col = entry.getKey().getValue();
+                usern = entry.getValue().getKey();
+                t = entry.getValue().getValue();
+                test = "," + row + "," +col +  "," + usern + "," + t.getCurrentTime() +"\n";
+                outFile.writeObject(test);
+            }
+            bw.flush();
+            bw.close();
+        } catch (IOException var22) {
+            var22.printStackTrace();
+
+        }
+    } //write hashtable to file
 
 
 
@@ -144,9 +221,9 @@ public class MainScreenController implements  IView {
         if(mazeDisplayer.getRow_player()==maze.getGoalPosition().getRowIndex() && mazeDisplayer.getCol_player()== maze.getGoalPosition().getColumnIndex()){
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.INFORMATION);
-            a.setContentText( userLable.getText() + " are the best!! \n you finsh withn: " + time.getCurrentTime());
+            a.setContentText( userLable.getText() + " you are the best!! \n you finsh withn: " + time.getCurrentTime());
             a.show();
-            timeline.stop();
+            timeline.stop(); //stop the time
 
             Time curTime = new Time(time);
             Pair<Integer, Integer> rowCol = new Pair(maze.getNumOfRow(),maze.getNumOfCol());
@@ -156,33 +233,19 @@ public class MainScreenController implements  IView {
             if(topResult.containsKey(rowCol)){ //if this current size alredy exist 
                 Pair<String,Time> temp = topResult.get(rowCol);
                 Time talbeTime = temp.getValue(); // get the time from the table
-                if(curTime.isgreaterThen(talbeTime)){
+                if(curTime.isgreaterThen(talbeTime)){ // if its the best time update the map
                     topResult.remove(rowCol);
                     topResult.put(rowCol,playerResult);
                 }
             }
-            else {
+            else { // first time for this size
                 topResult.put(rowCol, playerResult);
             }
-            updateTopResult();
         }
         keyEvent.consume();
     }
 
     public void mouseClick(MouseEvent mouseEvent) {
         mazeDisplayer.requestFocus();
-    }
-    public void updateTopResult(){
-        int row,col;
-        String usern,test="";
-        Time t;
-        for (Map.Entry<Pair<Integer, Integer>,  Pair<String,Time>> entry : topResult.entrySet()) {
-            row = entry.getKey().getKey();
-            col = entry.getKey().getValue();
-            usern = entry.getValue().getKey();
-            t = entry.getValue().getValue();
-            test += "row = " + row + " col = " +col +  " username= " + usern + " time= " + t.getCurrentTime() + "\n";
-        }
-        topResultLable.setText(test);
     }
 }

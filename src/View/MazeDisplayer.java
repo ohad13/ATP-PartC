@@ -77,21 +77,11 @@ public class MazeDisplayer extends Canvas {
                 }
             }
 
-
-            /*if(getRow_player()==maze.getGoalPosition().getRowIndex() && getCol_player()== maze.getGoalPosition().getColumnIndex()){
-                Alert a = new Alert(Alert.AlertType.NONE);
-                a.setAlertType(Alert.AlertType.INFORMATION);
-                a.setContentText("your are the best");
-                a.show();
-
-            }*/
             x_player = getRow_player() * cellHeight;
             y_player = getCol_player() * cellWidth;
             graphicsContext.drawImage(playerImage, y_player, x_player, cellWidth, cellHeight);
-
             int a = maze.getGoalPosition().getColumnIndex();
             int b = maze.getGoalPosition().getRowIndex();
-            System.out.println(a + " " + b);
             graphicsContext.drawImage(goalImage, a*cellWidth, b*cellHeight, cellWidth, cellHeight);
         }
     }
