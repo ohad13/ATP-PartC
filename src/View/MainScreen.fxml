@@ -45,11 +45,14 @@
                 <Button fx:id="generateB" layoutX="58.0" layoutY="71.0" mnemonicParsing="false" onAction="#generateMaze" text="generate maze" />
                 <Button layoutX="59.0" layoutY="105.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="solve" />
             <Button fx:id="BackB" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" onAction="#Back" prefHeight="26.0" prefWidth="71.0" text="Back" />
-            <Text fx:id="timer" layoutX="31.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="133.13671875">
+            <Text fx:id="timer" layoutX="38.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" wrappingWidth="133.13671875">
                <font>
                   <Font size="37.0" />
                </font>
             </Text>
+            <Label layoutX="40.0" layoutY="162.0" text="your current time" />
+            <Label fx:id="userLable" layoutX="60.0" layoutY="238.0" text="good luck" />
+            <Label fx:id="topResultLable" layoutX="36.0" layoutY="298.0" text="Label" />
             </children>
         </AnchorPane>
     </left>

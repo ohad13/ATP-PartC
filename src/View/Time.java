@@ -13,6 +13,30 @@ public class Time {
         this.milisecond = milisecond;
     }
 
+    public Time(Time time) {
+        this.minute = time.minute;
+        this.second = time.second;
+        this.milisecond = time.milisecond;
+
+    }
+
+    boolean isgreaterThen(Time b){ // return ture if what i got is bigger
+        int mytime = this.getTime();
+        int btime = b.getTime();
+        if(btime>mytime)
+            return true;
+        return false;
+    }
+    public  int getTime(){
+        int t= this.milisecond + this.second*60 +this.minute*60*60;
+        return t;
+    }
+    public void  setTime(int minute, int second,int milisecond){
+        this.minute = minute;
+        this.second = second;
+        this.milisecond = milisecond;
+    }
+
     public Time(String currentTime) {
         String[] time = currentTime.split(":");
         minute = Integer.parseInt(time[0]);
@@ -27,7 +51,7 @@ public class Time {
 
     public void oneSecondPassed(){
         milisecond++;
-        if(milisecond == 100){
+        if(milisecond == 60){
             second++;
             milisecond = 0;
             if(second == 60){
