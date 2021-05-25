@@ -6,12 +6,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.URL;
 import java.util.HashMap;
@@ -30,6 +32,8 @@ public class FirstController implements Initializable {
 
     public void Startg(javafx.event.ActionEvent actionEvent) throws IOException {
         String userName = userNameTextFiled.getText();
+        if(!isValidName(userName))
+            return;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainScreen.fxml")); // use to pass user name between 2 sence
         root = loader.load();
         MainScreenController mainScreenController = loader.getController();
@@ -91,13 +95,37 @@ public class FirstController implements Initializable {
         }
         topResultTableMainScreen.setText(test);
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         try {
             displayTopResult();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+    /**
+     * private function to check if the user name is valid
+     * @param name - the user name from the GUI.
+     * @return T / F if the name is valid.
+     */
+    private boolean isValidName(String name)
+    {
+        if (name.equals("")) {
+            Alert a = new Alert(Alert.AlertType.NONE);
+            a.setAlertType(Alert.AlertType.WARNING);
+            a.setContentText("The name can't be empty !");
+            a.show();
+            return false;
+        }
+        if(name.contains(",")){
+            Alert a = new Alert(Alert.AlertType.NONE);
+            a.setAlertType(Alert.AlertType.WARNING);
+            a.setContentText("The name can't contains comma (,) !");
+            a.show();
+            return false;
+        }
+        return true;
     }
 }

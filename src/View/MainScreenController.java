@@ -6,6 +6,7 @@ import algorithms.search.SearchableMaze;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -36,9 +40,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import static javafx.scene.media.MediaPlayer.INDEFINITE;
 
 
-public class MainScreenController implements  IView {
+public class MainScreenController implements  IView ,Initializable {
     public MyMazeGenerator generator;
     public TextField textField_mazeRows;
     public TextField textField_mazeColumns;
@@ -50,7 +55,8 @@ public class MainScreenController implements  IView {
     private  Parent root;
     public Pane paneB;
     HashMap<Pair<Integer, Integer>, Pair<String,Time>> topResult;
-
+    private  Media sound;
+    private MediaPlayer mediaPlayer;
     @FXML
     private Parent MainScreenid ;
 
@@ -116,7 +122,7 @@ public class MainScreenController implements  IView {
 
     }
     public void generateMaze(ActionEvent actionEvent) throws IOException {
-
+        playBackgorund();
         readHashmap();
 
         time.setTime(0,0,0);
@@ -140,6 +146,7 @@ public class MainScreenController implements  IView {
         }else {
             topResultLable.setText("");
         }
+        mazeDisplayer.requestFocus();
     }
 
     public void Back(ActionEvent actionEvent) throws IOException {
@@ -178,9 +185,6 @@ public class MainScreenController implements  IView {
 
         }
     } //write hashtable to file
-
-
-
     public void AboutF(ActionEvent actionEvent) throws IOException {
         Stage secondStage = new Stage();
 
@@ -190,10 +194,10 @@ public class MainScreenController implements  IView {
         secondStage.setScene(scene);
         secondStage.show();
     }
-
     public void movePlayer(KeyEvent keyEvent) {
         int player_row_pos = mazeDisplayer.getRow_player();
         int player_col_pos = mazeDisplayer.getCol_player();
+        playerMove();
         switch (keyEvent.getCode()){
             case UP :
                 if(maze.possibleToGo(player_row_pos -1,player_col_pos))
@@ -210,6 +214,7 @@ public class MainScreenController implements  IView {
             case RIGHT:
                 if(maze.possibleToGo(player_row_pos ,player_col_pos+1))
                     player_col_pos+=1;
+
                 break;
             default:
                 mazeDisplayer.setPlayerPos(player_row_pos ,player_col_pos);
@@ -219,6 +224,8 @@ public class MainScreenController implements  IView {
 
         // when maze is solved
         if(mazeDisplayer.getRow_player()==maze.getGoalPosition().getRowIndex() && mazeDisplayer.getCol_player()== maze.getGoalPosition().getColumnIndex()){
+            playWin();
+            mediaPlayer.stop();
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.INFORMATION);
             a.setContentText( userLable.getText() + " you are the best!! \n you finsh withn: " + time.getCurrentTime());
@@ -246,6 +253,33 @@ public class MainScreenController implements  IView {
     }
 
     public void mouseClick(MouseEvent mouseEvent) {
+
         mazeDisplayer.requestFocus();
+    }
+    private  void  playWin(){
+        Media sound=new Media(new File("./src/Resources/Sound/win.mp3").toURI().toString());
+        MediaPlayer mediaPlayer=new MediaPlayer(sound);
+        mediaPlayer.play();
+    }
+    private  void  playerMove(){
+        Media sound=new Media(new File("./src/Resources/Sound/move.wav").toURI().toString());
+        MediaPlayer mediaPlayer=new MediaPlayer(sound);
+        mediaPlayer.play();
+    }
+    private  void  playBackgorund(){
+        sound=new Media(new File("./src/Resources/Sound/background.mp3").toURI().toString());
+        mediaPlayer=new MediaPlayer(sound);
+        mediaPlayer.setVolume(0.5);
+        mediaPlayer.play();
+
+
+
+
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

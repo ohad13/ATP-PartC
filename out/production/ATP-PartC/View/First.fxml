@@ -35,6 +35,7 @@
     </top>
     <left>
         <AnchorPane prefHeight="375.0" prefWidth="350.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
+            
          <children>
             <Label layoutX="91.0" layoutY="64.0" text="Top Result" textFill="WHITE">
                <font>
@@ -47,7 +48,7 @@
     <right>
         <AnchorPane prefHeight="200.0" prefWidth="350.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" promptText="User Name" />
+                <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" promptText="User Name" text="adi" />
                 <Button layoutX="131.0" layoutY="246.0" mnemonicParsing="false" onAction="#Startg" text="Start" />
                 <Label layoutX="81.0" layoutY="62.0" text="Welcome" textFill="#110303" AnchorPane.bottomAnchor="362.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="117.0" AnchorPane.topAnchor="62.0">
                     <font>
