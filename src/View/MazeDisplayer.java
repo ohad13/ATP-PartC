@@ -28,13 +28,18 @@ public class MazeDisplayer extends Canvas {
         draw();
     }
 
-
     public void drawMaze(Maze maze) {
         this.maze = maze;
         row_player = maze.getStartPosition().getRowIndex();
         col_player = maze.getStartPosition().getColumnIndex();
 
         draw();
+    }
+
+    public void cleanCanvas(){
+        GraphicsContext graphicsContext = getGraphicsContext2D();
+
+        graphicsContext.clearRect(0, 0, getWidth(), getHeight());
     }
 
     private void draw() {
@@ -61,7 +66,7 @@ public class MazeDisplayer extends Canvas {
             GraphicsContext graphicsContext = getGraphicsContext2D();
             //clear the canvas:
             graphicsContext.clearRect(0, 0, canvasWidth, canvasHeight);
-            graphicsContext.setFill(Color.RED);
+            graphicsContext.setFill(Color.WHITE);
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
                     if (maze.getMazeArr()[i][j] == 1) {
@@ -74,15 +79,20 @@ public class MazeDisplayer extends Canvas {
                             graphicsContext.drawImage(wallImage, x, y, cellWidth, cellHeight);
                         }
                     }
+                    else {
+                        x = j * cellWidth;
+                        y = i * cellHeight;
+                            graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+                    }
+                    }
                 }
-            }
 
-            x_player = getRow_player() * cellHeight;
-            y_player = getCol_player() * cellWidth;
-            graphicsContext.drawImage(playerImage, y_player, x_player, cellWidth, cellHeight);
-            int a = maze.getGoalPosition().getColumnIndex();
-            int b = maze.getGoalPosition().getRowIndex();
-            graphicsContext.drawImage(goalImage, a*cellWidth, b*cellHeight, cellWidth, cellHeight);
+                x_player = getRow_player() * cellHeight;
+                y_player = getCol_player() * cellWidth;
+                graphicsContext.drawImage(playerImage, y_player, x_player, cellWidth, cellHeight);
+                int a = maze.getGoalPosition().getColumnIndex();
+                int b = maze.getGoalPosition().getRowIndex();
+                graphicsContext.drawImage(goalImage, a * cellWidth, b * cellHeight, cellWidth, cellHeight);
+            }
         }
     }
-}

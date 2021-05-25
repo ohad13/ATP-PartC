@@ -21,7 +21,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="Close" />
                   <MenuItem mnemonicParsing="false" text="Load" />
-                  <MenuItem mnemonicParsing="false" text="Save" />
+                  <MenuItem fx:id="SaveL" mnemonicParsing="false" onAction="#SaveB" text="Save" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
@@ -40,19 +40,14 @@
     <left>
         <AnchorPane prefHeight="475.0" prefWidth="210.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="textField_mazeRows" layoutX="31.0" layoutY="37.0" prefHeight="25.0" prefWidth="55.0" promptText="row" text="10" />
-                <TextField fx:id="textField_mazeColumns" layoutX="125.0" layoutY="37.0" prefHeight="25.0" prefWidth="53.0" promptText="col" text="10" />
+                <TextField fx:id="textField_mazeRows" layoutX="31.0" layoutY="37.0" onAction="#gentext" prefHeight="25.0" prefWidth="55.0" promptText="row" text="10" />
+                <TextField fx:id="textField_mazeColumns" layoutX="125.0" layoutY="37.0" onAction="#gentext" prefHeight="25.0" prefWidth="53.0" promptText="col" text="10" />
                 <Button fx:id="generateB" layoutX="58.0" layoutY="71.0" mnemonicParsing="false" onAction="#generateMaze" text="generate maze" />
                 <Button layoutX="59.0" layoutY="105.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="94.0" text="solve" />
             <Button fx:id="BackB" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" onAction="#Back" prefHeight="26.0" prefWidth="71.0" text="Back" />
-            <Text fx:id="timer" layoutX="38.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" wrappingWidth="133.13671875">
-               <font>
-                  <Font size="37.0" />
-               </font>
-            </Text>
-            <Label layoutX="40.0" layoutY="162.0" text="your current time" />
+            <Label fx:id="bestTimeLbl" layoutX="40.0" layoutY="162.0" />
             <Label fx:id="userLable" layoutX="60.0" layoutY="238.0" text="good luck" />
-            <Label fx:id="topResultLable" layoutX="36.0" layoutY="298.0" text="Label" />
+            <Label fx:id="topResultLable" layoutX="36.0" layoutY="298.0" />
             </children>
         </AnchorPane>
     </left>
@@ -60,7 +55,7 @@
 
     </right>
    <right>
-      <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="490.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="490.0" style="-fx-background-color: #dddddd;" BorderPane.alignment="CENTER">
          <children>
             <Pane fx:id="paneB" layoutX="27.0" layoutY="45.0" maxHeight="Infinity" maxWidth="Infinity" prefHeight="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="63.0" AnchorPane.topAnchor="45.0">
                <children>
@@ -74,6 +69,12 @@
                   <Font size="23.0" />
                </font>
             </Label>
+            <Button fx:id="restB" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#rest" text="Restart" />
+            <Text fx:id="timer" fontSmoothingType="LCD" layoutX="328.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" wrappingWidth="147.13671875">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </right>
