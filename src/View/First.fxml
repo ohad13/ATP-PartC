@@ -36,15 +36,15 @@
     <left>
         <AnchorPane prefHeight="375.0" prefWidth="350.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
 
-               <children>
-            <Label layoutX="91.0" layoutY="64.0" text="Top Result" textFill="WHITE">
-               <font>
-                  <Font name="Narkisim" size="42.0" />
-               </font>
-            </Label>
-            <Label fx:id="topResultTableMainScreen" layoutX="41.0" layoutY="182.0" />
-         </children>
-      </AnchorPane>
+            <children>
+                <Label layoutX="91.0" layoutY="64.0" text="Top Result" textFill="WHITE">
+                    <font>
+                        <Font name="Narkisim" size="42.0" />
+                    </font>
+                </Label>
+                <Label fx:id="topResultTableMainScreen" layoutX="41.0" layoutY="182.0" />
+            </children>
+        </AnchorPane>
     </left>
     <right>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" BorderPane.alignment="CENTER">

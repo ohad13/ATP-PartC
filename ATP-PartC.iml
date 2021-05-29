@@ -27,7 +27,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library>
+      <library name="ATPProjectJAR">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/ATP-Project-PartB.jar!/" />
         </CLASSES>

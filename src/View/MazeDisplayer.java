@@ -14,6 +14,11 @@ public class MazeDisplayer extends Canvas {
     private int row_player;
     private int col_player;
 
+    public MazeDisplayer() {
+        widthProperty().addListener(evt -> draw());
+        heightProperty().addListener(evt -> draw());
+    }
+
     public int getRow_player() {
         return row_player;
     }
@@ -46,6 +51,7 @@ public class MazeDisplayer extends Canvas {
         if (maze != null) {
             double canvasHeight = getHeight();
             double canvasWidth = getWidth();
+
             double x, y, x_player, y_player;
             int rows = maze.getNumOfRow();
             int cols = maze.getNumOfCol();
@@ -55,11 +61,13 @@ public class MazeDisplayer extends Canvas {
 
             Image wallImage = null; //TODO: String protpertis
             Image goalImage = null; //TODO: String protpertis
-            Image playerImage = null;
+            Image playerImageR = null;
+            Image playerImageL = null;
             try {
-                wallImage = new Image(new FileInputStream("./src/Resources/Image/wall.png"));
-                playerImage = new Image(new FileInputStream("./src/Resources/Image/man.png"));
-                goalImage = new Image(new FileInputStream("./src/Resources/Image/goal.png"));
+                wallImage = new Image(new FileInputStream("./src/Resources/Image/coronaWall1.jpg"));
+                playerImageR = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1R.png"));
+                playerImageL = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1L.png"));
+                goalImage = new Image(new FileInputStream("./src/Resources/Image/coronaGoal1.png"));
             } catch (FileNotFoundException e) {
                 System.out.println("no image bitches");
             }
@@ -89,10 +97,24 @@ public class MazeDisplayer extends Canvas {
 
                 x_player = getRow_player() * cellHeight;
                 y_player = getCol_player() * cellWidth;
-                graphicsContext.drawImage(playerImage, y_player, x_player, cellWidth, cellHeight);
+                graphicsContext.drawImage(playerImageR, y_player, x_player, cellWidth, cellHeight);
                 int a = maze.getGoalPosition().getColumnIndex();
                 int b = maze.getGoalPosition().getRowIndex();
                 graphicsContext.drawImage(goalImage, a * cellWidth, b * cellHeight, cellWidth, cellHeight);
             }
         }
+    @Override
+    public boolean isResizable() {
+        return true;
+    }
+
+    @Override
+    public double prefWidth(double height) {
+        return getWidth();
+    }
+
+    @Override
+    public double prefHeight(double width) {
+        return getHeight();
+    }
     }

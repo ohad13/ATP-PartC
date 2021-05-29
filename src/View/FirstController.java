@@ -10,6 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -36,6 +40,13 @@ public class FirstController implements Initializable {
         MainScreenController mainScreenController = loader.getController();
         mainScreenController.displayUserName(userName);
 
+
+      /*
+
+        MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("./src/Resources/Video/Covid.mp4").toExternalForm()));
+        MediaView mediaView = new MediaView(player);
+        stage.add(mediaView);
+*/
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
