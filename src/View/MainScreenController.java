@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
@@ -34,17 +35,17 @@ import java.util.ResourceBundle;
 
 public class MainScreenController implements IView, Initializable {
     public MyMazeGenerator generator;
-    private boolean isSolved;
     public MazeDisplayer mazeDisplayer;
     public Maze maze;
     public Stage stage;
     public Scene scene;
     public Pane paneB;
-
     HashMap<Pair<Integer, Integer>, Pair<String, Time>> topResult;
     Time time = new Time("00:00:0");
     @FXML
     TextField textField_mazeRows;
+    @FXML
+    Button solveBtn;
     @FXML
     TextField textField_mazeColumns;
     @FXML
@@ -58,6 +59,7 @@ public class MainScreenController implements IView, Initializable {
                 time.oneSecondPassed();
                 timer.setText(time.getCurrentTime());
             }));
+    private boolean isSolved;
     private Media backSound;
     private MediaPlayer mediaPlayer;
     @FXML
@@ -104,7 +106,7 @@ public class MainScreenController implements IView, Initializable {
     }
 
     public void generateMaze(ActionEvent actionEvent) {
-
+        solveBtn.setVisible(true);
         isSolved = false;
         try { //check for valid input
             if (generator == null)
@@ -364,18 +366,21 @@ public class MainScreenController implements IView, Initializable {
         Time curTime = new Time(time);
         Pair<Integer, Integer> rowCol = new Pair(maze.getNumOfRow(), maze.getNumOfCol());
         Pair<String, Time> playerResult = new Pair(userLable.getText(), curTime);
-
+        String text;
         if (topResult.containsKey(rowCol)) { //if this current size already exist
             Pair<String, Time> temp = topResult.get(rowCol);
             Time tableTime = temp.getValue(); // get the time from the table
             if (curTime.isGreaterThen(tableTime)) { // if it is the best time - update the map
                 topResult.remove(rowCol);
                 topResult.put(rowCol, playerResult);
-                String text = maze.getNumOfRow() + "X" + maze.getNumOfCol() + " -  Username: " + userLable.getText() + " Time: " + curTime.getCurrentTime();
+                text = "The best time for " + maze.getNumOfRow() + "X" + maze.getNumOfCol() + " is: " + topResult.get(rowCol).getValue().getCurrentTime();
                 topResultLable.setText(text);
             }
         } else { // first time for this size
             topResult.put(rowCol, playerResult);
+            // if first time, write my time as best.
+            text = "The best time for " + maze.getNumOfRow() + "X" + maze.getNumOfCol() + " is: " + topResult.get(rowCol).getValue().getCurrentTime();
+            topResultLable.setText(text);
         }
     }
 
