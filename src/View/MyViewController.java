@@ -14,12 +14,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
-
 
 public class MyViewController implements IView{
     public MyMazeGenerator generator;
@@ -37,40 +34,36 @@ public class MyViewController implements IView{
         alert.setContentText("Solving maze...");
         alert.show();
     }
-    public  void Cl oseB(){
-        System.out.println("closessssssss ");
-        //TODO smart exit from project
+    public void CloseB(){
+        System.out.println("close");
+        //TODO: smart exit from project
         Platform.exit();
     }
     public void SaveB() throws IOException {
         if(maze != null){
-           byte[] bmaze= maze.toByteArray();
+           byte[] bMaze= maze.toByteArray();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Image");
             File file = fileChooser.showSaveDialog(mazeDisplayer.getScene().getWindow());
             if (file != null) {
-                Files.write(file.toPath(), bmaze);
-
+                Files.write(file.toPath(), bMaze);
                 System.out.println("shit");
             }
         }
     }
-    public void LoadB(){ //TODO implent this function
+    public void LoadB(){ //TODO: implement this function
        *//* FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.showOpenDialog(mazeDisplayer.getScene().getWindow());
         File file = fileChooser.showOpenDialog(mazeDisplayer.getScene().getWindow());
-        System.out.println("staart");
+        System.out.println("start");
         if (file != null) {
             try {
                 desktop.open(file);
             } catch (IOException ex) {
 
             }
-            System.out.println("staart");
-
-
+            System.out.println("start");
         }
-
     }*/
 }

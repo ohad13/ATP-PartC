@@ -75,7 +75,7 @@
                         <Font size="23.0" />
                      </font>
                   </Label>
-                  <Button fx:id="restB" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#rest" text="Restart" AnchorPane.topAnchor="14.0" />
+                  <Button fx:id="restB" layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#reset" text="Restart" AnchorPane.topAnchor="14.0" />
                   <Text fx:id="timer" fontSmoothingType="LCD" layoutX="328.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" wrappingWidth="147.13671875" AnchorPane.topAnchor="14.0">
                      <font>
                         <Font size="23.0" />

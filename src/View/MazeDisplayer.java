@@ -60,22 +60,18 @@ public class MazeDisplayer extends Canvas {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
         graphicsContext.drawImage(playerImageR, y_player, x_player, cellWidth, cellHeight);
-
     }
 
     public void drawMaze(Maze maze) {
         this.maze = maze;
         row_player = maze.getStartPosition().getRowIndex();
         col_player = maze.getStartPosition().getColumnIndex();
-
         draw();
     }
 
     public void cleanCanvas() {
         GraphicsContext graphicsContext = getGraphicsContext2D();
-
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
     }
 
@@ -83,11 +79,9 @@ public class MazeDisplayer extends Canvas {
         if (maze != null) {
             double canvasHeight = getHeight();
             double canvasWidth = getWidth();
-
             double x, y, x_player, y_player;
             int rows = maze.getNumOfRow();
             int cols = maze.getNumOfCol();
-
             double cellHeight = canvasHeight / rows;
             double cellWidth = canvasWidth / cols;
 
@@ -101,7 +95,7 @@ public class MazeDisplayer extends Canvas {
                 playerImageL = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1L.png"));
                 goalImage = new Image(new FileInputStream("./src/Resources/Image/coronaGoal1.png"));
             } catch (FileNotFoundException e) {
-                System.out.println("no image bitches");
+                System.out.println("no image..");
             }
             GraphicsContext graphicsContext = getGraphicsContext2D();
             //clear the canvas:
@@ -141,17 +135,12 @@ public class MazeDisplayer extends Canvas {
         Solution solution = searcher.solve(searchableMaze);
         Image maskImage = new Image(new FileInputStream("./src/Resources/Image/mask.png"));
 
-
-
         double canvasHeight = getHeight();
         double canvasWidth = getWidth();
-
         int rows = maze.getNumOfRow();
         int cols = maze.getNumOfCol();
-
         double cellHeight = canvasHeight / rows;
         double cellWidth = canvasWidth / cols;
-
         double x, y;
 
         GraphicsContext graphicsContext = getGraphicsContext2D();
@@ -162,13 +151,9 @@ public class MazeDisplayer extends Canvas {
         for (int i = 0; i < solutionPath.size(); ++i) {
             x = ((MazeState) solutionPath.get(i)).getPos().getColumnIndex() * cellWidth;
             y = ((MazeState) solutionPath.get(i)).getPos().getRowIndex() * cellHeight;
-            //graphicsContext.fillRect(x, y, cellWidth/4, cellHeight/4);
             graphicsContext.drawImage(maskImage, x, y, cellWidth/2, cellHeight/2);
-
-
         }
     }
-
 
     @Override
     public boolean isResizable() {

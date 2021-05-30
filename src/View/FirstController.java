@@ -35,33 +35,28 @@ public class FirstController implements Initializable {
         String userName = userNameTextFiled.getText();
         if (!isValidName(userName))
             return;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainScreen.fxml")); // use to pass user name between 2 sence
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainScreen.fxml")); // use to pass user name between 2 scene
         root = loader.load();
         MainScreenController mainScreenController = loader.getController();
         mainScreenController.displayUserName(userName);
 
-
-      /*
-
-        MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("./src/Resources/Video/Covid.mp4").toExternalForm()));
+        /*MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("./src/Resources/Video/Covid.mp4").toExternalForm()));
         MediaView mediaView = new MediaView(player);
-        stage.add(mediaView);
-*/
+        stage.add(mediaView);*/
+
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-
     }
 
     /**
-     * read the hashmap from file and call udpateTopResult to print it
-     * @throws IOException
+     * read the hash map from file and call update-Top-Result to print it
+     *
+     * @throws IOException - if something about the reading file is wrong
      */
     public void displayTopResult() throws IOException {
-
         topResult = new HashMap<>();
-
         File file = new File(System.getProperty("java.io.tmpdir"), "hashResult");
         file.createNewFile();
         try {
@@ -80,31 +75,26 @@ public class FirstController implements Initializable {
                     col = Integer.parseInt(args[2]);
                     usern = args[3];
                     timetemp = new Time(args[4]);
-
                     rowCol = new Pair(row, col);
                     playerResult = new Pair(usern, timetemp);
                     topResult.put(rowCol, playerResult);
                 }
             }
-
             br.close();
         } catch (IOException var24) {
             var24.printStackTrace();
         }
         updateTopResult();
-
     }
 
     /**
-     * when the hash table is ready its convert to priorty qu and print the top result to the lalbe
+     * when the hash table is ready its convert to priority Q and print the top result to the label.
      */
     public void updateTopResult() {
         PriorityQueue<Pair<Integer, String>> pq = new PriorityQueue<>(2, Comparator.comparing(Pair::getKey));
-
         int row, col;
         String usern, text;
-        StringBuilder topre= new StringBuilder();
-
+        StringBuilder topRes = new StringBuilder();
         Time t;
         //read the hash map line by line to the Q
         for (Map.Entry<Pair<Integer, Integer>, Pair<String, Time>> entry : topResult.entrySet()) {
@@ -117,26 +107,23 @@ public class FirstController implements Initializable {
         }
 
         //chain the result to the string
-        while (pq.size()!=0) {
-            topre.append(pq.poll().getValue());
+        while (pq.size() != 0) {
+            topRes.append(pq.poll().getValue());
         }
-        topResultTableMainScreen.setText(topre.toString());
+        topResultTableMainScreen.setText(topRes.toString());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         try {
             displayTopResult();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * private function to check if the user name is valid
-     *
      * @param name - the user name from the GUI.
      * @return T / F if the name is valid.
      */
@@ -161,5 +148,4 @@ public class FirstController implements Initializable {
     public void enter(ActionEvent keyEvent) throws IOException {
         Startg(keyEvent);
     } //When click enter go to next page
-
 }

@@ -24,6 +24,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
+
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -33,7 +34,7 @@ import java.util.ResourceBundle;
 
 public class MainScreenController implements IView, Initializable {
     public MyMazeGenerator generator;
-    private  boolean isSolved;
+    private boolean isSolved;
     public MazeDisplayer mazeDisplayer;
     public Maze maze;
     public Stage stage;
@@ -57,7 +58,7 @@ public class MainScreenController implements IView, Initializable {
                 time.oneSecondPassed();
                 timer.setText(time.getCurrentTime());
             }));
-    private Media backsound;
+    private Media backSound;
     private MediaPlayer mediaPlayer;
     @FXML
     private Parent MainScreenid;
@@ -102,9 +103,9 @@ public class MainScreenController implements IView, Initializable {
         }
     }
 
-    public void generateMaze(ActionEvent actionEvent) throws IOException {
+    public void generateMaze(ActionEvent actionEvent) {
 
-        isSolved=false;
+        isSolved = false;
         try { //check for valid input
             if (generator == null)
                 generator = new MyMazeGenerator();
@@ -168,7 +169,7 @@ public class MainScreenController implements IView, Initializable {
             ObjectOutputStream outFile = new ObjectOutputStream(new FileOutputStream(file));
 
             int row, col;
-            String usern, test = "";
+            String usern, test;
             Time t;
             for (Map.Entry<Pair<Integer, Integer>, Pair<String, Time>> entry : topResult.entrySet()) {
                 row = entry.getKey().getKey();
@@ -185,8 +186,8 @@ public class MainScreenController implements IView, Initializable {
         }
     }
 
-    public void movePlayer(KeyEvent keyEvent) throws FileNotFoundException {
-        if(isSolved)
+    public void movePlayer(KeyEvent keyEvent) {
+        if (isSolved)
             return;
         int player_row_pos = mazeDisplayer.getRow_player();
         int player_col_pos = mazeDisplayer.getCol_player();
@@ -196,7 +197,7 @@ public class MainScreenController implements IView, Initializable {
                 if (maze.possibleToGo(player_row_pos - 1, player_col_pos)) {
                     player_row_pos -= 1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
 
                 break;
             case DOWN:
@@ -204,7 +205,7 @@ public class MainScreenController implements IView, Initializable {
                 if (maze.possibleToGo(player_row_pos + 1, player_col_pos)) {
                     player_row_pos += 1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
 
                 break;
             case LEFT:
@@ -212,7 +213,7 @@ public class MainScreenController implements IView, Initializable {
                 if (maze.possibleToGo(player_row_pos, player_col_pos - 1)) {
                     player_col_pos -= 1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
 
                 break;
             case RIGHT:
@@ -220,38 +221,38 @@ public class MainScreenController implements IView, Initializable {
                 if (maze.possibleToGo(player_row_pos, player_col_pos + 1)) {
                     player_col_pos += 1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
                 break;
             case NUMPAD7:
-                if (maze.possibleToGo(player_row_pos-1, player_col_pos - 1)) {
+                if (maze.possibleToGo(player_row_pos - 1, player_col_pos - 1)) {
                     player_col_pos += -1;
                     player_row_pos += -1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
                 break;
             case NUMPAD9:
-                if (maze.possibleToGo(player_row_pos-1, player_col_pos + 1)) {
+                if (maze.possibleToGo(player_row_pos - 1, player_col_pos + 1)) {
                     player_col_pos += 1;
                     player_row_pos += -1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
                 break;
             case NUMPAD3:
-                if (maze.possibleToGo(player_row_pos+1, player_col_pos + 1)) {
+                if (maze.possibleToGo(player_row_pos + 1, player_col_pos + 1)) {
                     player_col_pos += 1;
                     player_row_pos += 1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
                 break;
             case NUMPAD1:
-                if (maze.possibleToGo(player_row_pos+1, player_col_pos - 1)) {
+                if (maze.possibleToGo(player_row_pos + 1, player_col_pos - 1)) {
                     player_col_pos += -1;
                     player_row_pos += 1;
                     playerMoveSound();
-                } else playerWorngMoveSound();
+                } else playerWrongMoveSound();
                 break;
             default:
-                playerWorngMoveSound();
+                playerWrongMoveSound();
                 mazeDisplayer.setPlayerPos(player_row_pos, player_col_pos);
         }
 
@@ -268,9 +269,8 @@ public class MainScreenController implements IView, Initializable {
     // menu open about
     public void AboutF(ActionEvent actionEvent) throws IOException {
         Stage secondStage = new Stage();
-
         Parent root1 = FXMLLoader.load(getClass().getResource("../View/About.fxml"));
-        Stage stage = (Stage) MainScreenid.getScene().getWindow();
+        //Stage stage = (Stage) MainScreenid.getScene().getWindow();
         scene = new Scene(root1);
         secondStage.setScene(scene);
         secondStage.show();
@@ -282,7 +282,6 @@ public class MainScreenController implements IView, Initializable {
     }
 
     public void mouseClick(MouseEvent mouseEvent) {
-
         mazeDisplayer.requestFocus();
     }
 
@@ -298,7 +297,7 @@ public class MainScreenController implements IView, Initializable {
         mediaPlayer1.play();
     }
 
-    private void playerWorngMoveSound() {
+    private void playerWrongMoveSound() {
         Media sound = new Media(new File("./src/Resources/Sound/worngMove.mp3").toURI().toString());
         MediaPlayer mediaPlayer1 = new MediaPlayer(sound);
         mediaPlayer1.play();
@@ -310,9 +309,9 @@ public class MainScreenController implements IView, Initializable {
         mediaPlayer1.play();
     }
 
-    private void playBackgorundSound() {
-        backsound = new Media(new File("./src/Resources/Sound/background.mp3").toURI().toString());
-        mediaPlayer = new MediaPlayer(backsound);
+    private void playBackgroundSound() {
+        backSound = new Media(new File("./src/Resources/Sound/background.mp3").toURI().toString());
+        mediaPlayer = new MediaPlayer(backSound);
         mediaPlayer.setVolume(0.25);
         mediaPlayer.play();
     }
@@ -324,39 +323,41 @@ public class MainScreenController implements IView, Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        playBackgorundSound();
-
+        playBackgroundSound();
     }
 
-    public void rest(ActionEvent actionEvent) throws FileNotFoundException {
-        isSolved=false;
+    public void reset(ActionEvent actionEvent) {
+        isSolved = false;
         mazeDisplayer.setPlayerPos(maze.getStartPosition().getRowIndex(), maze.getStartPosition().getColumnIndex());
         time.setTime(0, 0, 0);
         timeline.play();
-        playBackgorundSound();
+        playBackgroundSound();
         mazeDisplayer.drawMaze(maze);
         mazeDisplayer.requestFocus();
     }
+
     public void SaveB() throws IOException {
-        if(maze != null){
-            byte[] bmaze= maze.toByteArray();
+        if (maze != null) {
+            byte[] byteMaze = maze.toByteArray();
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Image");
             File file = fileChooser.showSaveDialog(mazeDisplayer.getScene().getWindow());
             if (file != null) {
-                Files.write(file.toPath(), bmaze);
-
+                Files.write(file.toPath(), byteMaze);
                 System.out.println("shit");
             }
         }
     }
-    private void mazeIsSolved(){
+
+    private void mazeIsSolved() {
         playWinSound();
-        isSolved=true;
+        isSolved = true;
         mediaPlayer.stop(); // stop background music
         Alert a = new Alert(Alert.AlertType.NONE);
+        a.setTitle("Congratulations");
+        a.setHeaderText(userLable.getText() + " you are the best!!");
         a.setAlertType(Alert.AlertType.INFORMATION);
-        a.setContentText(userLable.getText() + " you are the best!! \n you finsh withn: " + time.getCurrentTime());
+        a.setContentText("You finish in: " + time.getCurrentTime());
         a.show();
         timeline.stop(); //stop the time
 
@@ -364,31 +365,26 @@ public class MainScreenController implements IView, Initializable {
         Pair<Integer, Integer> rowCol = new Pair(maze.getNumOfRow(), maze.getNumOfCol());
         Pair<String, Time> playerResult = new Pair(userLable.getText(), curTime);
 
-
-        if (topResult.containsKey(rowCol)) { //if this current size alredy exist
+        if (topResult.containsKey(rowCol)) { //if this current size already exist
             Pair<String, Time> temp = topResult.get(rowCol);
-            Time talbeTime = temp.getValue(); // get the time from the table
-            if (curTime.isgreaterThen(talbeTime)) { // if its the best time update the map
+            Time tableTime = temp.getValue(); // get the time from the table
+            if (curTime.isGreaterThen(tableTime)) { // if it is the best time - update the map
                 topResult.remove(rowCol);
                 topResult.put(rowCol, playerResult);
-                String text = maze.getNumOfRow() + "X" + maze.getNumOfCol() + " -  Username: " + userLable.getText() + " Time: " + curTime.getCurrentTime() ;
-
+                String text = maze.getNumOfRow() + "X" + maze.getNumOfCol() + " -  Username: " + userLable.getText() + " Time: " + curTime.getCurrentTime();
                 topResultLable.setText(text);
             }
         } else { // first time for this size
             topResult.put(rowCol, playerResult);
         }
-
     }
 
     public void soundOnOf(ActionEvent actionEvent) {
-        if(mediaPlayer.getVolume()==0){
+        if (mediaPlayer.getVolume() == 0) {
             mediaPlayer.setVolume(0.25);
             return;
         }
         mediaPlayer.setVolume(0);
-
-
     }
 
     public void solveMaze(ActionEvent actionEvent) {
@@ -398,6 +394,5 @@ public class MainScreenController implements IView, Initializable {
             e.printStackTrace();
         }
         mazeDisplayer.requestFocus();
-
     }
 }

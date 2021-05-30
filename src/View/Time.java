@@ -1,52 +1,48 @@
 package View;
 
-
 public class Time {
-    private int milisecond;
+    private int millisecond;
     private int minute;
     private int second;
 
-    public Time(int minute, int second, int milisecond) {
-
+    // constructor
+    public Time(int minute, int second, int millisecond) {
         this.minute = minute;
         this.second = second;
-        this.milisecond = milisecond;
+        this.millisecond = millisecond;
     }
 
+    // copy constructor
     public Time(Time time) {
         this.minute = time.minute;
         this.second = time.second;
-        this.milisecond = time.milisecond;
-
+        this.millisecond = time.millisecond;
     }
 
+    // constructor by string
     public Time(String currentTime) {
         String[] time = currentTime.split(":");
         minute = Integer.parseInt(time[0]);
         second = Integer.parseInt(time[1]);
-        milisecond = Integer.parseInt(time[2]);
-
+        millisecond = Integer.parseInt(time[2]);
     }
-
-    boolean isgreaterThen(Time b) { // return ture if what i got is bigger
-        int mytime = this.getTime();
-        int btime = b.getTime();
-        if (btime > mytime)
-            return true;
-        return false;
+    // check if the time we got is bigger then the one we received to the function
+    boolean isGreaterThen(Time b) { // return true if what i got is bigger.
+        int myTime = this.getTime();
+        int bTime = b.getTime();
+        return bTime > myTime;
     }
 
     public int getTime() {
-        int t = this.milisecond + this.second * 60 + this.minute * 60 * 60;
-        return t;
+        return this.millisecond + this.second * 60 + this.minute * 60 * 60;
     }
 
-    public void setTime(int minute, int second, int milisecond) {
+    public void setTime(int minute, int second, int millisecond) {
         this.minute = minute;
         this.second = second;
-        this.milisecond = milisecond;
+        this.millisecond = millisecond;
     }
-
+    // return string of the current time.
     public String getCurrentTime() {
         String min, sec;
         if (minute < 10)
@@ -55,15 +51,15 @@ public class Time {
         if (second < 10)
             sec = "0" + second;
         else
-            sec= String.valueOf(second);
-        return min + ":" + sec + ":" + milisecond;
+            sec = String.valueOf(second);
+        return min + ":" + sec + ":" + millisecond;
     }
 
     public void oneSecondPassed() {
-        milisecond++;
-        if (milisecond == 100) {
+        millisecond++;
+        if (millisecond == 100) {
             second++;
-            milisecond = 0;
+            millisecond = 0;
             if (second == 60) {
                 minute++;
                 second = 0;
