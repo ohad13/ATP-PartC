@@ -103,7 +103,6 @@ public class MainScreenController implements IView, Initializable {
     }
 
     public void generateMaze(ActionEvent actionEvent) throws IOException {
-        readHashmap();
 
         isSolved=false;
         try { //check for valid input
@@ -129,7 +128,7 @@ public class MainScreenController implements IView, Initializable {
         }
 
         mazeDisplayer.drawMaze(maze);
-        mazeDisplayer.widthProperty().bind(paneB.widthProperty());
+        mazeDisplayer.widthProperty().bind(paneB.widthProperty()); // for resizeable maze
         mazeDisplayer.heightProperty().bind(paneB.heightProperty());
 
         // if this maze size already exist, show the best result
@@ -186,7 +185,7 @@ public class MainScreenController implements IView, Initializable {
         }
     }
 
-    public void movePlayer(KeyEvent keyEvent) {
+    public void movePlayer(KeyEvent keyEvent) throws FileNotFoundException {
         if(isSolved)
             return;
         int player_row_pos = mazeDisplayer.getRow_player();
@@ -320,16 +319,22 @@ public class MainScreenController implements IView, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            readHashmap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         playBackgorundSound();
 
     }
 
-    public void rest(ActionEvent actionEvent) {
+    public void rest(ActionEvent actionEvent) throws FileNotFoundException {
         isSolved=false;
         mazeDisplayer.setPlayerPos(maze.getStartPosition().getRowIndex(), maze.getStartPosition().getColumnIndex());
         time.setTime(0, 0, 0);
         timeline.play();
         playBackgorundSound();
+        mazeDisplayer.drawMaze(maze);
         mazeDisplayer.requestFocus();
     }
     public void SaveB() throws IOException {
@@ -383,6 +388,16 @@ public class MainScreenController implements IView, Initializable {
         }
         mediaPlayer.setVolume(0);
 
+
+    }
+
+    public void solveMaze(ActionEvent actionEvent) {
+        try {
+            mazeDisplayer.drawSol();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        mazeDisplayer.requestFocus();
 
     }
 }
