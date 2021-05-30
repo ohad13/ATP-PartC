@@ -327,11 +327,11 @@ public class MainScreenController implements IView, Initializable {
     }
 
     public void reset(ActionEvent actionEvent) {
+        playBackgroundSound();
         isSolved = false;
         mazeDisplayer.setPlayerPos(maze.getStartPosition().getRowIndex(), maze.getStartPosition().getColumnIndex());
         time.setTime(0, 0, 0);
         timeline.play();
-        playBackgroundSound();
         mazeDisplayer.drawMaze(maze);
         mazeDisplayer.requestFocus();
     }
@@ -380,6 +380,7 @@ public class MainScreenController implements IView, Initializable {
     }
 
     public void soundOnOf(ActionEvent actionEvent) {
+        mazeDisplayer.requestFocus();//return focus to the maze.
         if (mediaPlayer.getVolume() == 0) {
             mediaPlayer.setVolume(0.25);
             return;

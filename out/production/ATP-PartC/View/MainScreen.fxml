@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -8,6 +7,8 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
@@ -50,7 +51,7 @@
                       <TextField fx:id="textField_mazeRows" layoutX="31.0" layoutY="37.0" onAction="#gentext" prefHeight="25.0" prefWidth="55.0" promptText="row" text="10" AnchorPane.leftAnchor="31.0" AnchorPane.topAnchor="37.0" />
                       <TextField fx:id="textField_mazeColumns" layoutX="98.0" layoutY="37.0" onAction="#gentext" prefHeight="25.0" prefWidth="53.0" promptText="col" text="10" AnchorPane.leftAnchor="98.0" AnchorPane.topAnchor="37.0" />
                       <Button fx:id="generateB" layoutX="28.0" layoutY="80.0" mnemonicParsing="false" onAction="#generateMaze" prefHeight="26.0" prefWidth="125.0" text="Generate" />
-                      <Button layoutX="28.0" layoutY="121.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="126.0" text="Solve" onAction="#solveMaze" />
+                      <Button layoutX="28.0" layoutY="121.0" mnemonicParsing="false" onAction="#solveMaze" prefHeight="26.0" prefWidth="126.0" text="Solve" />
                   <Button fx:id="BackB" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" onAction="#Back" prefHeight="26.0" prefWidth="71.0" text="Back" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="14.0" />
                   <Label fx:id="userLable" layoutX="15.0" layoutY="237.0" text="UserName">
                      <font>
@@ -81,16 +82,19 @@
                         <Font size="23.0" />
                      </font>
                   </Text>
-                  <Button fx:id="sound" layoutX="503.0" layoutY="9.0" mnemonicParsing="false" onAction="#soundOnOf" opacity="0.0" textOverrun="CLIP">
+                  <Button fx:id="sound" layoutX="504.0" layoutY="393.0" mnemonicParsing="false" onAction="#soundOnOf" opacity="0.0" prefHeight="44.0" prefWidth="39.0" text="delete" textOverrun="CLIP">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Button>
-                  <FontAwesomeIconView glyphName="MUSIC" layoutX="508.0" layoutY="36.0" size="17">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </FontAwesomeIconView>
+                  <Button layoutX="491.0" layoutY="19.0" mnemonicParsing="false" onAction="#soundOnOf" prefHeight="25.0" prefWidth="32.0">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Resources/Image/music.png" />
+                           </image>
+                        </ImageView>
+                     </graphic></Button>
                </children>
             </AnchorPane>
          </items>
