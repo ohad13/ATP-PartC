@@ -47,6 +47,8 @@ public class MainScreenController implements IView, Initializable {
     @FXML
     Button solveBtn;
     @FXML
+    Button restB;
+    @FXML
     TextField textField_mazeColumns;
     @FXML
     Label userLable;
@@ -107,6 +109,7 @@ public class MainScreenController implements IView, Initializable {
 
     public void generateMaze(ActionEvent actionEvent) {
         solveBtn.setVisible(true);
+        restB.setVisible(true);
         isSolved = false;
         try { //check for valid input
             if (generator == null)
