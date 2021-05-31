@@ -85,8 +85,8 @@ public class MazeDisplayer extends Canvas {
             double cellHeight = canvasHeight / rows;
             double cellWidth = canvasWidth / cols;
 
-            Image wallImage = null; //TODO: String protpertis
-            Image goalImage = null; //TODO: String protpertis
+            Image wallImage = null; //TODO: String property
+            Image goalImage = null;
             Image playerImageR = null;
             Image playerImageL = null;
             try {
