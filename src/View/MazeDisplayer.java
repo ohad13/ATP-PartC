@@ -35,12 +35,13 @@ public class MazeDisplayer extends Canvas {
         row_player = row;
         col_player = col;
         drawPlayer(x,y);
-
     }
+
     private void drawPlayer(double oldrow , double oldcol ){
         double x_player,y_player,x,y;
         double canvasHeight = getHeight();
         double canvasWidth = getWidth();
+
         double cellHeight = canvasHeight / maze.getNumOfRow();
         double cellWidth = canvasWidth / maze.getNumOfCol();
 
@@ -129,10 +130,10 @@ public class MazeDisplayer extends Canvas {
         }
     }
 
-    public void drawSol() throws FileNotFoundException {
-        SearchableMaze searchableMaze = new SearchableMaze(maze);
+    public void drawSol(ArrayList<AState> solution) throws FileNotFoundException {
+        /*SearchableMaze searchableMaze = new SearchableMaze(maze);
         ISearchingAlgorithm searcher = new BreadthFirstSearch();
-        Solution solution = searcher.solve(searchableMaze);
+        Solution solution = searcher.solve(searchableMaze);*/
         Image maskImage = new Image(new FileInputStream("./src/Resources/Image/mask.png"));
 
         double canvasHeight = getHeight();
@@ -146,7 +147,8 @@ public class MazeDisplayer extends Canvas {
         GraphicsContext graphicsContext = getGraphicsContext2D();
         //clear the canvas:
         graphicsContext.setFill(Color.BLUE);
-        ArrayList<AState> solutionPath = solution.getSolutionPath();
+
+        ArrayList<AState> solutionPath = solution;
 
         for (int i = 0; i < solutionPath.size(); ++i) {
             x = ((MazeState) solutionPath.get(i)).getPos().getColumnIndex() * cellWidth;
@@ -169,4 +171,6 @@ public class MazeDisplayer extends Canvas {
     public double prefHeight(double width) {
         return getHeight();
     }
+
+
 }

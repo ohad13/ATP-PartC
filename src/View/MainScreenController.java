@@ -1,7 +1,10 @@
 package View;
 
+import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
+import algorithms.search.AState;
+import algorithms.search.Solution;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -29,17 +32,19 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class MainScreenController implements IView, Initializable {
+public class MainScreenController implements IView, Initializable, Observer {
     public MyMazeGenerator generator;
     public MazeDisplayer mazeDisplayer;
     public Maze maze;
     public Stage stage;
     public Scene scene;
+
+    @FXML
     public Pane paneB;
+    public int rowPlayer;
+    public int colPlayer;
     HashMap<Pair<Integer, Integer>, Pair<String, Time>> topResult;
     Time time = new Time("00:00:0");
     @FXML
@@ -61,11 +66,17 @@ public class MainScreenController implements IView, Initializable {
                 time.oneSecondPassed();
                 timer.setText(time.getCurrentTime());
             }));
+    private MyViewModel myViewModel;
     private boolean isSolved;
     private Media backSound;
     private MediaPlayer mediaPlayer;
+    private Solution solution;
     @FXML
     private Parent MainScreenid;
+
+    public void setMyViewModel(MyViewModel myViewModel1) {
+        this.myViewModel = myViewModel1;
+    }
 
     public void displayUserName(String username) {
         userLable.setText(username);
@@ -112,23 +123,17 @@ public class MainScreenController implements IView, Initializable {
         restB.setVisible(true);
         isSolved = false;
         try { //check for valid input
-            if (generator == null)
-                generator = new MyMazeGenerator();
-
             int rows = Integer.parseInt(textField_mazeRows.getText());
             int cols = Integer.parseInt(textField_mazeColumns.getText());
-            maze = generator.generate(rows, cols);
-
+            myViewModel.generateMaze(rows, cols);
         } catch (Exception e) {
             errorSound();
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.WARNING);
             a.setContentText("Wrong Parameters, Please insert 2 numbers bigger then 2");
-
             //clean the canvas
             mazeDisplayer.cleanCanvas();
             paneB.setStyle("-fx-border-color: #eeeeee; -fx-border-width: 0;");
-
             a.show();
             return;
         }
@@ -192,7 +197,7 @@ public class MainScreenController implements IView, Initializable {
     }
 
     public void movePlayer(KeyEvent keyEvent) {
-        if (isSolved)
+        /*if (isSolved)
             return;
         int player_row_pos = mazeDisplayer.getRow_player();
         int player_col_pos = mazeDisplayer.getCol_player();
@@ -268,6 +273,11 @@ public class MainScreenController implements IView, Initializable {
         if (mazeDisplayer.getRow_player() == maze.getGoalPosition().getRowIndex() && mazeDisplayer.getCol_player() == maze.getGoalPosition().getColumnIndex()) {
             mazeIsSolved();
         }
+        keyEvent.consume();*/
+        if (isSolved)
+            return;
+        this.myViewModel.movePlayer(keyEvent.getCode());
+        mazeDisplayer.setPlayerPos(rowPlayer, colPlayer);
         keyEvent.consume();
     }
 
@@ -281,7 +291,7 @@ public class MainScreenController implements IView, Initializable {
         secondStage.show();
     }
 
-    //When click enter go to next page
+    //When click enter generate new maze.
     public void gentext(ActionEvent keyEvent) throws IOException {
         generateMaze(keyEvent);
     }
@@ -323,18 +333,19 @@ public class MainScreenController implements IView, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        playBackgroundSound();
         try {
             readHashmap();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        playBackgroundSound();
     }
 
     public void reset(ActionEvent actionEvent) {
-        playBackgroundSound();
+        //playBackgroundSound();
         isSolved = false;
-        mazeDisplayer.setPlayerPos(maze.getStartPosition().getRowIndex(), maze.getStartPosition().getColumnIndex());
+        this.myViewModel.reset();
+        mazeDisplayer.setPlayerPos(rowPlayer, colPlayer);
         time.setTime(0, 0, 0);
         timeline.play();
         mazeDisplayer.drawMaze(maze);
@@ -365,7 +376,6 @@ public class MainScreenController implements IView, Initializable {
         a.setContentText("You finish in: " + time.getCurrentTime());
         a.show();
         timeline.stop(); //stop the time
-
         Time curTime = new Time(time);
         Pair<Integer, Integer> rowCol = new Pair(maze.getNumOfRow(), maze.getNumOfCol());
         Pair<String, Time> playerResult = new Pair(userLable.getText(), curTime);
@@ -398,10 +408,34 @@ public class MainScreenController implements IView, Initializable {
 
     public void solveMaze(ActionEvent actionEvent) {
         try {
-            mazeDisplayer.drawSol();
+            myViewModel.solveMaze();
+            mazeDisplayer.drawSol(solution.getSolutionPath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         mazeDisplayer.requestFocus();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if ("generate".equals(arg)) {
+            isSolved = false;
+            maze = myViewModel.getMaze();
+        }
+        if ("move".equals(arg)) {
+            //player pos.
+            rowPlayer = this.myViewModel.getRow();
+            colPlayer = this.myViewModel.getCol();
+        }
+        if ("solve".equals(arg)) {
+            mazeIsSolved();
+        }
+        if ("reset".equals(arg)) {
+            rowPlayer = this.myViewModel.getRow();
+            colPlayer = this.myViewModel.getCol();
+        }
+        if ("getSolve".equals(arg)) {
+            this.solution = myViewModel.getSol();
+        }
     }
 }

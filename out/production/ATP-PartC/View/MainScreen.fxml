@@ -67,7 +67,6 @@
                   <Pane fx:id="paneB" layoutX="27.0" layoutY="45.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="430.0" prefWidth="519.0" style="-fx-background-color: #ffaabb;" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="45.0">
                      <children>
 
-
                </children>
                       <MazeDisplayer fx:id="mazeDisplayer" height="400.0" onKeyPressed="#movePlayer" width="400.0" />
                   </Pane>
@@ -91,7 +90,7 @@
                      <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../Resources/Image/volume.png" />
+                              <Image url="@../resources/Image/volume.png" />
                            </image>
                         </ImageView>
                      </graphic></Button>

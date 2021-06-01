@@ -1,5 +1,8 @@
 package View;
 
+import Model.IModel;
+import Model.MyModel;
+import ViewModel.MyViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,10 +38,17 @@ public class FirstController implements Initializable {
         String userName = userNameTextFiled.getText();
         if (!isValidName(userName))
             return;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../View/MainScreen.fxml")); // use to pass user name between 2 scene
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("./MainScreen.fxml")); // use to pass user name between 2 scene
         root = loader.load();
+
         MainScreenController mainScreenController = loader.getController();
         mainScreenController.displayUserName(userName);
+
+        MyModel model = new MyModel();
+        model.startServers();
+        MyViewModel myviewModel = new MyViewModel(model);
+        mainScreenController.setMyViewModel(myviewModel);
+        myviewModel.addObserver(mainScreenController);
 
         /*MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("./src/Resources/Video/Covid.mp4").toExternalForm()));
         MediaView mediaView = new MediaView(player);
