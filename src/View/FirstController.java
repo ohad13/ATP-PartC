@@ -33,18 +33,19 @@ public class FirstController implements Initializable {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private MyModel model;
 
     public void Startg(javafx.event.ActionEvent actionEvent) throws IOException {
         String userName = userNameTextFiled.getText();
         if (!isValidName(userName))
             return;
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("./MainScreen.fxml")); // use to pass user name between 2 scene
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("./MainScreen.fxml")); // use to pass user name between 2 scene
         root = loader.load();
 
         MainScreenController mainScreenController = loader.getController();
         mainScreenController.displayUserName(userName);
 
-        MyModel model = new MyModel();
+        model = new MyModel();
         model.startServers();
         MyViewModel myviewModel = new MyViewModel(model);
         mainScreenController.setMyViewModel(myviewModel);
@@ -134,6 +135,7 @@ public class FirstController implements Initializable {
 
     /**
      * private function to check if the user name is valid
+     *
      * @param name - the user name from the GUI.
      * @return T / F if the name is valid.
      */

@@ -7,29 +7,24 @@ import Server.Server;
 import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
-import algorithms.mazeGenerators.Position;
-import algorithms.search.BreadthFirstSearch;
-import algorithms.search.ISearchingAlgorithm;
-import algorithms.search.SearchableMaze;
 import algorithms.search.Solution;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Observable;
 import java.util.Observer;
 
 public class MyModel extends Observable implements IModel {
-    public MyMazeGenerator generator;
+    //public MyMazeGenerator generator;
     public Solution solution;
     private Maze maze;
     private int rowPlayer;
     private int colPlayer;
     private Server mazeGeneratorServer;
     private Server mazeSolverServer;
+    //private static int i = 0;
 
     public MyModel() {
         mazeSolverServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -44,7 +39,7 @@ public class MyModel extends Observable implements IModel {
         mazeSolverServer.start();
     }
 
-    public void stopServers() {
+    public void stopServers() throws InterruptedException {
         mazeGeneratorServer.stop();
         mazeSolverServer.stop();
     }
@@ -166,6 +161,7 @@ public class MyModel extends Observable implements IModel {
             e.printStackTrace();
         }
     }
+
     private void solveMazeThroughSolverServer() {
         try {
             /* Code from part-B test: "RunCommunicateWithServers" */
@@ -179,7 +175,7 @@ public class MyModel extends Observable implements IModel {
                         toServer.writeObject(maze);
                         toServer.flush();
                         /*update solution so that maze Displayer can use getter to take it*/
-                        solution = (Solution)fromServer.readObject();
+                        solution = (Solution) fromServer.readObject();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -191,8 +187,8 @@ public class MyModel extends Observable implements IModel {
             e.printStackTrace();
         }
     }
-    public void generateMaze(int row, int col) {
 
+    public void generateMaze(int row, int col) {
         try {
             generateMazeThroughGeneratorServer(row, col);
             rowPlayer = maze.getStartPosition().getRowIndex();
@@ -215,8 +211,13 @@ public class MyModel extends Observable implements IModel {
         notifyObservers("reset");
     }
 
-    public void solveMaze() {
+    @Override
+    public void saveSettings() {
+        mazeGeneratorServer.setServerStrategy(new ServerStrategyGenerateMaze());
+        mazeSolverServer.setServerStrategy(new ServerStrategySolveSearchProblem());
+    }
 
+    public void solveMaze() {
         solveMazeThroughSolverServer();
         /*SearchableMaze searchableMaze = new SearchableMaze(maze);
         ISearchingAlgorithm searcher = new BreadthFirstSearch();

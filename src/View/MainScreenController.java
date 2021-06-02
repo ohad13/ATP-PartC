@@ -1,5 +1,6 @@
 package View;
 
+import Server.Configurations;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
@@ -14,10 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -34,6 +32,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
 
+
 public class MainScreenController implements IView, Initializable, Observer {
     public MyMazeGenerator generator;
     public MazeDisplayer mazeDisplayer;
@@ -42,7 +41,7 @@ public class MainScreenController implements IView, Initializable, Observer {
     public Scene scene;
 
     @FXML
-    public Pane paneB;
+    Pane paneB;
     public int rowPlayer;
     public int colPlayer;
     HashMap<Pair<Integer, Integer>, Pair<String, Time>> topResult;
@@ -73,6 +72,11 @@ public class MainScreenController implements IView, Initializable, Observer {
     private Solution solution;
     @FXML
     private Parent MainScreenid;
+    @FXML
+    ChoiceBox algorithmChoiceBox;
+    @FXML
+    ChoiceBox searchingAlgorithmChoiceBox;
+    @FXML
 
     public void setMyViewModel(MyViewModel myViewModel1) {
         this.myViewModel = myViewModel1;
@@ -164,6 +168,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             writeHashToFile();
         }
         Parent root = FXMLLoader.load(getClass().getResource("../View/First.fxml"));
+        //Runtime.getRuntime().exec("taskkill /F /IM <processname>.exe");
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -336,9 +341,16 @@ public class MainScreenController implements IView, Initializable, Observer {
         playBackgroundSound();
         try {
             readHashmap();
+            Configurations.getInstance();
+            Configurations.setP("generateMaze", "MyMazeGenerator");
+            Configurations.setP("problemSolver", "DepthFirstSearch");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        algorithmChoiceBox.getItems().addAll("EmptyMazeGenerator", "SimpleMazeGenerator", "MyMazeGenerator");
+        searchingAlgorithmChoiceBox.getItems().addAll("BreadthFirstSearch", "DepthFirstSearch", "BestFirstSearch");
+        algorithmChoiceBox.setValue("MyMazeGenerator");
+        searchingAlgorithmChoiceBox.setValue("BFS");
     }
 
     public void reset(ActionEvent actionEvent) {
@@ -437,5 +449,19 @@ public class MainScreenController implements IView, Initializable, Observer {
         if ("getSolve".equals(arg)) {
             this.solution = myViewModel.getSol();
         }
+    }
+
+    public void saveSettings() throws IOException {
+        myViewModel.saveSettings();
+
+    }
+    public MyViewModel getViewModel(){
+        return this.myViewModel;
+    }
+
+    public void UpdateClicked(ActionEvent actionEvent) {
+        Configurations.setP("generateMaze", algorithmChoiceBox.getValue().toString());
+        Configurations.setP("problemSolver", searchingAlgorithmChoiceBox.getValue().toString());
+        myViewModel.saveSettings();
     }
 }

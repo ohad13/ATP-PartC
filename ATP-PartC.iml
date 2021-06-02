@@ -9,19 +9,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="ATPProjectJAR">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/ATP-Project-PartB.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../fontaw jar/fontawesomefx-commons-9.1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../fontaw jar/fontaw jar/fontawesomefx-commons-9.1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -30,7 +20,29 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../fontaw jar/fontawesomefx-fontawesome-4.7.0-9.1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../fontaw jar/fontaw jar/fontawesomefx-fontawesome-4.7.0-9.1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$PATH_TO_FX$" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$PATH_TO_FX$" />
+        </SOURCES>
+        <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
+        <jarDirectory url="file://$PATH_TO_FX$" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../ATP-Project-PartA/out/artifacts/ATP_Project_PartB_jar/ATP-Project-PartB.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

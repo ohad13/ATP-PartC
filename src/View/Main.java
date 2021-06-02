@@ -27,12 +27,7 @@ public class Main extends Application {
 
        /* FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("./MainScreen.fxml"));
         //fxmlLoader.setLocation(getClass().getResource("./MainScreen.fxml"));
-        fxmlLoader.load();
-*/
-
-
-
-
+        fxmlLoader.load();*/
 
 /*      Image applicationIcon = new Image(getClass().getResourceAsStream("../Resources/Image/wall.png"));
         primaryStage.getIcons().add(applicationIcon);//todo*/

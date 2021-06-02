@@ -13,6 +13,11 @@ import java.util.Observer;
 public class MyViewModel extends Observable implements Observer {
     private IModel model;
     private Maze maze;
+
+    public IModel getModel() {
+        return model;
+    }
+
     private int row;
     private int col;
     private Solution solution;
@@ -21,6 +26,14 @@ public class MyViewModel extends Observable implements Observer {
         this.model = model;
         this.model.assignObserver(this);
 
+    }
+
+    public MyViewModel(MyViewModel myViewModel2) {
+        this.maze =myViewModel2.maze;
+        this.col=myViewModel2.col;
+        this.row= myViewModel2.row;
+        this.model = myViewModel2.model;
+        this.solution = myViewModel2.solution;
     }
 
     public Maze getMaze() {
@@ -86,5 +99,9 @@ public class MyViewModel extends Observable implements Observer {
                 notifyObservers("getSolve");
             }
         }
+    }
+
+    public void saveSettings() {
+        model.saveSettings();
     }
 }

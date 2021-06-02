@@ -27,4 +27,7 @@ public interface IModel {
     public Solution getSolve();
 
     void solveMaze();
+
+    void saveSettings();
+
 }
