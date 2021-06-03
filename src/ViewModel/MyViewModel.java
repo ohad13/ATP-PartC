@@ -2,22 +2,15 @@ package ViewModel;
 
 import Model.IModel;
 import algorithms.mazeGenerators.Maze;
-import algorithms.search.AState;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
-
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 public class MyViewModel extends Observable implements Observer {
     private IModel model;
     private Maze maze;
-
-    public IModel getModel() {
-        return model;
-    }
-
+    private int isValid;
     private int row;
     private int col;
     private Solution solution;
@@ -25,15 +18,6 @@ public class MyViewModel extends Observable implements Observer {
     public MyViewModel(IModel model) {
         this.model = model;
         this.model.assignObserver(this);
-
-    }
-
-    public MyViewModel(MyViewModel myViewModel2) {
-        this.maze =myViewModel2.maze;
-        this.col=myViewModel2.col;
-        this.row= myViewModel2.row;
-        this.model = myViewModel2.model;
-        this.solution = myViewModel2.solution;
     }
 
     public Maze getMaze() {
@@ -65,8 +49,11 @@ public class MyViewModel extends Observable implements Observer {
     }
 
     public Solution getSol(){
-
         return solution;
+    }
+
+    public int getIsValid() {
+        return isValid;
     }
 
     @Override
@@ -75,6 +62,7 @@ public class MyViewModel extends Observable implements Observer {
             if ("move".equals(arg)) {
                 row = model.getRowPlayer();
                 col = model.getColPlayer();
+                isValid = model.getIsValid();
                 setChanged();
                 notifyObservers("move");
             }
@@ -103,5 +91,9 @@ public class MyViewModel extends Observable implements Observer {
 
     public void saveSettings() {
         model.saveSettings();
+    }
+
+    public void exit() throws InterruptedException {
+        model.exit();
     }
 }

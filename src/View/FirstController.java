@@ -1,8 +1,8 @@
 package View;
 
-import Model.IModel;
 import Model.MyModel;
 import ViewModel.MyViewModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -30,19 +26,21 @@ public class FirstController implements Initializable {
     @FXML
     Label topResultTableMainScreen;
     HashMap<Pair<Integer, Integer>, Pair<String, Time>> topResult;
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-    private MyModel model;
+
+    private MainScreenController mainScreenController;
 
     public void Startg(javafx.event.ActionEvent actionEvent) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root;
+        MyModel model;
         String userName = userNameTextFiled.getText();
         if (!isValidName(userName))
             return;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("./MainScreen.fxml")); // use to pass user name between 2 scene
         root = loader.load();
 
-        MainScreenController mainScreenController = loader.getController();
+        mainScreenController = loader.getController();
         mainScreenController.displayUserName(userName);
 
         model = new MyModel();
@@ -55,9 +53,18 @@ public class FirstController implements Initializable {
         MediaView mediaView = new MediaView(player);
         stage.add(mediaView);*/
 
+
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                exit();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        });
         stage.show();
     }
 
@@ -160,4 +167,10 @@ public class FirstController implements Initializable {
     public void enter(ActionEvent keyEvent) throws IOException {
         Startg(keyEvent);
     } //When click enter go to next page
+
+    private void exit() throws InterruptedException {
+        System.out.println("Close all !!!!");
+        Platform.exit();
+        mainScreenController.exit();
+    }
 }

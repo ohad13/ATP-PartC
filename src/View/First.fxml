@@ -14,50 +14,41 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.FirstController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
-                </Menu>
-            </menus>
+            <Menu mnemonicParsing="false" text="File">
+                <MenuItem mnemonicParsing="false" text="Close"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+                <MenuItem mnemonicParsing="false" text="Delete"/>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+                <MenuItem mnemonicParsing="false" text="About"/>
+            </Menu>
         </MenuBar>
     </top>
     <left>
-        <AnchorPane prefHeight="375.0" prefWidth="350.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
-
-            <children>
-                <Label layoutX="91.0" layoutY="64.0" text="Top Result" textFill="WHITE">
-                    <font>
-                        <Font name="Narkisim" size="42.0" />
-                    </font>
-                </Label>
-                <Label fx:id="topResultTableMainScreen" layoutX="41.0" layoutY="182.0" />
-            </children>
+        <AnchorPane prefHeight="375.0" prefWidth="350.0" style="-fx-background-color: #0598ff;"
+                    BorderPane.alignment="CENTER">
+            <Label layoutX="91.0" layoutY="64.0" text="Top Result" textFill="WHITE">
+                <font>
+                    <Font name="Narkisim" size="42.0"/>
+                </font>
+            </Label>
+            <Label fx:id="topResultTableMainScreen" layoutX="41.0" layoutY="182.0"/>
         </AnchorPane>
     </left>
     <right>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" BorderPane.alignment="CENTER">
-            <children>
-                <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" onAction="#enter" promptText="User Name" text="adi" />
-                <Button layoutX="131.0" layoutY="246.0" mnemonicParsing="false" onAction="#Startg" text="Start" />
-                <Label layoutX="81.0" layoutY="62.0" text="Welcome" textFill="#110303" AnchorPane.bottomAnchor="362.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="117.0" AnchorPane.topAnchor="62.0">
-                    <font>
-                        <Font name="Narkisim" size="42.0" />
-                    </font>
-                </Label>
-                <FontAwesomeIconView fill="#0598ff" glyphName="USER" layoutX="58.0" layoutY="230.0" size="20" />
-            </children>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0"
+                    BorderPane.alignment="CENTER">
+            <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" onAction="#enter" promptText="User Name"
+                       text="adi"/>
+            <Button layoutX="131.0" layoutY="246.0" mnemonicParsing="false" onAction="#Startg" text="Start"/>
+            <Label layoutX="81.0" layoutY="62.0" text="Welcome" textFill="#110303" AnchorPane.bottomAnchor="362.0"
+                   AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="117.0" AnchorPane.topAnchor="62.0">
+                <font>
+                    <Font name="Narkisim" size="42.0"/>
+                </font>
+            </Label>
+            <FontAwesomeIconView fill="#0598ff" glyphName="USER" layoutX="58.0" layoutY="230.0" size="20"/>
         </AnchorPane>
     </right>
 </BorderPane>

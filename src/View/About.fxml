@@ -5,22 +5,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.AboutController">
-   <children>
-      <AnchorPane prefHeight="400.0" prefWidth="400.0">
-         <children>
-            <Label layoutX="137.0" layoutY="50.0" text="About">
-               <font>
-                  <Font name="Californian FB" size="49.0" />
-               </font>
-            </Label>
-            <Label layoutX="39.0" layoutY="180.0" prefHeight="17.0" prefWidth="323.0" text="adi and ohad looking for jobs , follow as on linkdin">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <FontAwesomeIconView glyphName="BOOK" layoutX="97.0" layoutY="90.0" size="30" />
-         </children>
-      </AnchorPane>
-   </children>
+<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="View.AboutController">
+   <AnchorPane prefHeight="400.0" prefWidth="400.0">
+      <Label layoutX="137.0" layoutY="50.0" text="About">
+         <font>
+            <Font name="Californian FB" size="49.0"/>
+         </font>
+      </Label>
+      <Label layoutX="39.0" layoutY="180.0" prefHeight="17.0" prefWidth="323.0"
+             text="Adi and Ohad looking for jobs, follow as on Linkdin..">
+         <font>
+            <Font size="14.0"/>
+         </font>
+      </Label>
+      <FontAwesomeIconView glyphName="BOOK" layoutX="97.0" layoutY="90.0" size="30"/>
+   </AnchorPane>
 </AnchorPane>

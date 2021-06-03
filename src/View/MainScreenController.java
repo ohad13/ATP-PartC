@@ -4,7 +4,6 @@ import Server.Configurations;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.mazeGenerators.MyMazeGenerator;
-import algorithms.search.AState;
 import algorithms.search.Solution;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -18,23 +17,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
-
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.*;
 
-
 public class MainScreenController implements IView, Initializable, Observer {
-    public MyMazeGenerator generator;
     public MazeDisplayer mazeDisplayer;
     public Maze maze;
     public Stage stage;
@@ -67,16 +65,13 @@ public class MainScreenController implements IView, Initializable, Observer {
             }));
     private MyViewModel myViewModel;
     private boolean isSolved;
-    private Media backSound;
+
     private MediaPlayer mediaPlayer;
     private Solution solution;
-    @FXML
-    private Parent MainScreenid;
     @FXML
     ChoiceBox algorithmChoiceBox;
     @FXML
     ChoiceBox searchingAlgorithmChoiceBox;
-    @FXML
 
     public void setMyViewModel(MyViewModel myViewModel1) {
         this.myViewModel = myViewModel1;
@@ -306,19 +301,19 @@ public class MainScreenController implements IView, Initializable, Observer {
     }
 
     private void playWinSound() {
-        Media sound = new Media(new File("./src/Resources/Sound/win.mp3").toURI().toString());
+        Media sound = new Media(new File("./src/resources/Sound/win.mp3").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
     }
 
     private void playerMoveSound() {
-        Media sound = new Media(new File("./src/Resources/Sound/move.wav").toURI().toString());
+        Media sound = new Media(new File("./src/resources/Sound/move.wav").toURI().toString());
         MediaPlayer mediaPlayer1 = new MediaPlayer(sound);
         mediaPlayer1.play();
     }
 
     private void playerWrongMoveSound() {
-        Media sound = new Media(new File("./src/Resources/Sound/worngMove.mp3").toURI().toString());
+        Media sound = new Media(new File("./src/Resources/Sound/wrongMove.mp3").toURI().toString());
         MediaPlayer mediaPlayer1 = new MediaPlayer(sound);
         mediaPlayer1.play();
     }
@@ -330,6 +325,7 @@ public class MainScreenController implements IView, Initializable, Observer {
     }
 
     private void playBackgroundSound() {
+        Media backSound;
         backSound = new Media(new File("./src/Resources/Sound/background.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(backSound);
         mediaPlayer.setVolume(0.25);
@@ -438,6 +434,10 @@ public class MainScreenController implements IView, Initializable, Observer {
             //player pos.
             rowPlayer = this.myViewModel.getRow();
             colPlayer = this.myViewModel.getCol();
+            if (myViewModel.getIsValid() == 1)
+                playerWrongMoveSound();
+            else
+                playerMoveSound();
         }
         if ("solve".equals(arg)) {
             mazeIsSolved();
@@ -451,17 +451,30 @@ public class MainScreenController implements IView, Initializable, Observer {
         }
     }
 
-    public void saveSettings() throws IOException {
-        myViewModel.saveSettings();
-
-    }
-    public MyViewModel getViewModel(){
-        return this.myViewModel;
-    }
-
     public void UpdateClicked(ActionEvent actionEvent) {
         Configurations.setP("generateMaze", algorithmChoiceBox.getValue().toString());
         Configurations.setP("problemSolver", searchingAlgorithmChoiceBox.getValue().toString());
         myViewModel.saveSettings();
+        mazeDisplayer.requestFocus();
+    }
+
+    public void setOnScroll(ScrollEvent scroll) {
+        if (scroll.isControlDown()) {
+            double zoom_fac = 1.05;
+            if (scroll.getDeltaY() < 0) {
+                zoom_fac = 2.0 - zoom_fac;
+            }
+            Scale newScale = new Scale();
+            newScale.setPivotX(scroll.getX());
+            newScale.setPivotY(scroll.getY());
+            newScale.setX(mazeDisplayer.getScaleX() * zoom_fac);
+            newScale.setY(mazeDisplayer.getScaleY() * zoom_fac);
+            mazeDisplayer.getTransforms().add(newScale);
+            scroll.consume();
+        }
+    }
+
+    public void exit() throws InterruptedException {
+        myViewModel.exit();
     }
 }

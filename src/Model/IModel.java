@@ -1,33 +1,33 @@
 package Model;
 
 import algorithms.mazeGenerators.Maze;
-import algorithms.search.AState;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
-
-import java.util.ArrayList;
 import java.util.Observer;
 
 public interface IModel {
 
-    public void generateMaze(int row, int col);
+     void generateMaze(int row, int col);
 
-    public Maze getMaze();
+     Maze getMaze();
 
-    public void movePlayer(KeyCode whereToMove);
+     void movePlayer(KeyCode whereToMove);
 
-    public int getColPlayer();
+     int getColPlayer();
 
-    public int getRowPlayer();
+     int getRowPlayer();
 
-    public void assignObserver(Observer o);
+     void assignObserver(Observer o);
 
-    public void reset();
+     void reset();
 
-    public Solution getSolve();
+     Solution getSolve();
 
     void solveMaze();
 
     void saveSettings();
 
+    int getIsValid();
+
+    void exit() throws InterruptedException;
 }

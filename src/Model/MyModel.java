@@ -17,14 +17,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MyModel extends Observable implements IModel {
-    //public MyMazeGenerator generator;
     public Solution solution;
     private Maze maze;
     private int rowPlayer;
     private int colPlayer;
     private Server mazeGeneratorServer;
     private Server mazeSolverServer;
-    //private static int i = 0;
+    private int isValid = 0;
 
     public MyModel() {
         mazeSolverServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -66,8 +65,12 @@ public class MyModel extends Observable implements IModel {
     }
 
     public void movePlayer(KeyCode whereToMove) {
+        int x, y;
         int player_row_pos = rowPlayer;
         int player_col_pos = colPlayer;
+        isValid = 0;
+        x = rowPlayer;//tmp
+        y = colPlayer;//tmp
         switch (whereToMove) {
             case UP:
             case NUMPAD8:
@@ -90,28 +93,34 @@ public class MyModel extends Observable implements IModel {
                     player_col_pos += 1;
                 break;
             case NUMPAD7:
-                if (maze.possibleToGo(player_row_pos - 1, player_col_pos - 1))
+                if (maze.possibleToGo(player_row_pos - 1, player_col_pos - 1)) {
                     player_col_pos += -1;
-                player_row_pos += -1;
+                    player_row_pos += -1;
+                }
                 break;
             case NUMPAD9:
-                if (maze.possibleToGo(player_row_pos - 1, player_col_pos + 1))
+                if (maze.possibleToGo(player_row_pos - 1, player_col_pos + 1)) {
                     player_col_pos += 1;
-                player_row_pos += -1;
+                    player_row_pos += -1;
+                }
                 break;
             case NUMPAD3:
-                if (maze.possibleToGo(player_row_pos + 1, player_col_pos + 1))
+                if (maze.possibleToGo(player_row_pos + 1, player_col_pos + 1)) {
                     player_col_pos += 1;
-                player_row_pos += 1;
+                    player_row_pos += 1;
+                }
                 break;
             case NUMPAD1:
-                if (maze.possibleToGo(player_row_pos + 1, player_col_pos - 1))
+                if (maze.possibleToGo(player_row_pos + 1, player_col_pos - 1)) {
                     player_col_pos += -1;
-                player_row_pos += 1;
+                    player_row_pos += 1;
+                }
                 break;
             default:
+                isValid = 1;
         }
-        //mazeDisplayer.setPlayerPos(player_row_pos, player_col_pos);
+        if (x == player_row_pos && y == player_col_pos)
+            isValid = 1;
         rowPlayer = player_row_pos;
         colPlayer = player_col_pos;
         setChanged();
@@ -119,7 +128,6 @@ public class MyModel extends Observable implements IModel {
 
         // when maze is solved
         if (player_row_pos == maze.getGoalPosition().getRowIndex() && player_col_pos == maze.getGoalPosition().getColumnIndex()) {
-            //mazeIsSolved();//todo
             setChanged();
             notifyObservers("solve");
         }
@@ -160,6 +168,10 @@ public class MyModel extends Observable implements IModel {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getIsValid() {
+        return isValid;
     }
 
     private void solveMazeThroughSolverServer() {
@@ -219,95 +231,16 @@ public class MyModel extends Observable implements IModel {
 
     public void solveMaze() {
         solveMazeThroughSolverServer();
-        /*SearchableMaze searchableMaze = new SearchableMaze(maze);
-        ISearchingAlgorithm searcher = new BreadthFirstSearch();
-        solution = searcher.solve(searchableMaze);*/
         setChanged();
         notifyObservers("getSolve");
+    }
+
+    @Override
+    public void exit() throws InterruptedException {
+        stopServers();
     }
 
     public Solution getSolve() {
         return solution;
     }
-    //        if (isSolved)
-//            return;
-//        int player_row_pos = mazeDisplayer.getRow_player();
-//        int player_col_pos = mazeDisplayer.getCol_player();
-//        switch (whereToMove) {
-//            case UP:
-//            case NUMPAD8:
-//                if (maze.possibleToGo(player_row_pos - 1, player_col_pos)) {
-//                    player_row_pos -= 1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//
-//                break;
-//            case DOWN:
-//            case NUMPAD2:
-//                if (maze.possibleToGo(player_row_pos + 1, player_col_pos)) {
-//                    player_row_pos += 1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//
-//                break;
-//            case LEFT:
-//            case NUMPAD4:
-//                if (maze.possibleToGo(player_row_pos, player_col_pos - 1)) {
-//                    player_col_pos -= 1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//
-//                break;
-//            case RIGHT:
-//            case NUMPAD6:
-//                if (maze.possibleToGo(player_row_pos, player_col_pos + 1)) {
-//                    player_col_pos += 1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//                break;
-//            case NUMPAD7:
-//                if (maze.possibleToGo(player_row_pos - 1, player_col_pos - 1)) {
-//                    player_col_pos += -1;
-//                    player_row_pos += -1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//                break;
-//            case NUMPAD9:
-//                if (maze.possibleToGo(player_row_pos - 1, player_col_pos + 1)) {
-//                    player_col_pos += 1;
-//                    player_row_pos += -1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//                break;
-//            case NUMPAD3:
-//                if (maze.possibleToGo(player_row_pos + 1, player_col_pos + 1)) {
-//                    player_col_pos += 1;
-//                    player_row_pos += 1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//                break;
-//            case NUMPAD1:
-//                if (maze.possibleToGo(player_row_pos + 1, player_col_pos - 1)) {
-//                    player_col_pos += -1;
-//                    player_row_pos += 1;
-//                    playerMoveSound();
-//                } else playerWrongMoveSound();
-//                break;
-//            default:
-//                playerWrongMoveSound();
-//                mazeDisplayer.setPlayerPos(player_row_pos, player_col_pos);
-//        }
-//
-//        mazeDisplayer.setPlayerPos(player_row_pos, player_col_pos);
-//
-//        // when maze is solved
-//
-//        if (mazeDisplayer.getRow_player() == maze.getGoalPosition().getRowIndex() && mazeDisplayer.getCol_player() == maze.getGoalPosition().getColumnIndex()) {
-//            mazeIsSolved();
-//        }
-//        keyEvent.consume();
-//        setChanged();
-//        notifyObservers("move");
-//
-//    }
 }
