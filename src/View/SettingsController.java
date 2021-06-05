@@ -31,7 +31,7 @@ public class SettingsController implements Initializable {
         algorithmChoiceBox.getItems().addAll("EmptyMazeGenerator", "SimpleMazeGenerator", "MyMazeGenerator");
         searchingAlgorithmChoiceBox.getItems().addAll("BreadthFirstSearch", "DepthFirstSearch", "BestFirstSearch");
         algorithmChoiceBox.setValue("MyMazeGenerator");
-        searchingAlgorithmChoiceBox.setValue("BFS");
+        searchingAlgorithmChoiceBox.setValue("BreadthFirstSearch");
 
         try {
             Properties properties = new Properties();

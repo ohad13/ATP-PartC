@@ -37,7 +37,7 @@ public class MazeDisplayer extends Canvas {
         drawPlayer(x,y);
     }
 
-    private void drawPlayer(double oldrow , double oldcol ){
+    public void drawPlayer(double oldrow , double oldcol ){
         double x_player,y_player,x,y;
         double canvasHeight = getHeight();
         double canvasWidth = getWidth();
@@ -51,6 +51,34 @@ public class MazeDisplayer extends Canvas {
         y = oldrow * cellHeight;
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.fillRect(x, y, cellWidth, cellHeight);
+
+        //draw the new player step
+        Image playerImageR = null;
+        x_player = getRow_player() * cellHeight;
+        y_player = getCol_player() * cellWidth;
+        try {
+            playerImageR = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1R.png"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        graphicsContext.drawImage(playerImageR, y_player, x_player, cellWidth, cellHeight);
+    }
+
+    public void drawPlayer()
+    {
+        double x_player,y_player;//,x,y;
+        double canvasHeight = getHeight();
+        double canvasWidth = getWidth();
+
+        double cellHeight = canvasHeight / maze.getNumOfRow();
+        double cellWidth = canvasWidth / maze.getNumOfCol();
+
+        // clean the player last step
+        GraphicsContext graphicsContext = getGraphicsContext2D();
+/*        x = oldcol * cellWidth;
+        y = oldrow * cellHeight;
+        graphicsContext.setFill(Color.WHITE);
+        graphicsContext.fillRect(x, y, cellWidth, cellHeight);*/
 
         //draw the new player step
         Image playerImageR = null;
@@ -86,7 +114,7 @@ public class MazeDisplayer extends Canvas {
             double cellHeight = canvasHeight / rows;
             double cellWidth = canvasWidth / cols;
 
-            Image wallImage = null; //TODO: String property
+            Image wallImage = null;
             Image goalImage = null;
             Image playerImageR = null;
             Image playerImageL = null;

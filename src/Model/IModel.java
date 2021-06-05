@@ -3,6 +3,8 @@ package Model;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
+
+import java.io.File;
 import java.util.Observer;
 
 public interface IModel {
@@ -30,4 +32,8 @@ public interface IModel {
     int getIsValid();
 
     void exit() throws InterruptedException;
+
+    void load();
+
+    void setLoadFile(File loadFile);
 }

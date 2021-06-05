@@ -8,11 +8,17 @@ import Server.ServerStrategyGenerateMaze;
 import Server.ServerStrategySolveSearchProblem;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
 
 import java.io.*;
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -24,6 +30,7 @@ public class MyModel extends Observable implements IModel {
     private Server mazeGeneratorServer;
     private Server mazeSolverServer;
     private int isValid = 0;
+    public File loadFile;
 
     public MyModel() {
         mazeSolverServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -236,8 +243,43 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
+    public void load() {
+        byte[] bArr = new byte[0];
+        try {
+            bArr = Files.readAllBytes(loadFile.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byte[] shorty = new byte[32 + (bArr.length - 32) / 4];
+        int j = 32;// he previous before the pos was 24 instead the 32
+
+        System.arraycopy(bArr, 8, shorty, 0, 24);
+        int k;
+        for (int i = 0; i < (bArr.length - shorty.length + 1); i += 4) {
+            k = i + 35;
+            byte b = bArr[k];
+            shorty[j] = b;
+            j++;
+        }
+        this.maze = new Maze(shorty);
+        byte[] first = Arrays.copyOfRange(bArr, 0, 8);
+        IntBuffer intBuf = ByteBuffer.wrap(first).order(ByteOrder.BIG_ENDIAN).asIntBuffer();
+        int[] array = new int[intBuf.remaining()];
+        intBuf.get(array);
+        rowPlayer = array[0];
+        colPlayer = array[1];
+        setChanged();
+        notifyObservers("load");
+    }
+
+    public void setLoadFile(File loadFile) {
+        this.loadFile = loadFile;
+    }
+
+    @Override
     public void exit() throws InterruptedException {
         stopServers();
+        Platform.exit();
     }
 
     public Solution getSolve() {

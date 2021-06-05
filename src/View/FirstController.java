@@ -49,11 +49,6 @@ public class FirstController implements Initializable {
         mainScreenController.setMyViewModel(myviewModel);
         myviewModel.addObserver(mainScreenController);
 
-        /*MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("./src/Resources/Video/Covid.mp4").toExternalForm()));
-        MediaView mediaView = new MediaView(player);
-        stage.add(mediaView);*/
-
-
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -169,7 +164,6 @@ public class FirstController implements Initializable {
     } //When click enter go to next page
 
     private void exit() throws InterruptedException {
-        System.out.println("Close all !!!!");
         Platform.exit();
         mainScreenController.exit();
     }

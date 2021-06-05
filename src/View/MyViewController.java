@@ -36,7 +36,6 @@ public class MyViewController implements IView{
     }
     public void CloseB(){
         System.out.println("close");
-        //TODO: smart exit from project
         Platform.exit();
     }
     public void SaveB() throws IOException {
@@ -51,7 +50,7 @@ public class MyViewController implements IView{
             }
         }
     }
-    public void LoadB(){ //TODO: implement this function
+    public void LoadB(){
        *//* FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         fileChooser.showOpenDialog(mazeDisplayer.getScene().getWindow());

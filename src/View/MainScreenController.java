@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -27,8 +28,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
+
 import java.io.*;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -37,6 +41,8 @@ public class MainScreenController implements IView, Initializable, Observer {
     public Maze maze;
     public Stage stage;
     public Scene scene;
+    public File loadFile;
+    public MenuItem SaveL;
 
     @FXML
     Pane paneB;
@@ -87,7 +93,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             topResult = new HashMap<>();
 
             File file = new File(System.getProperty("java.io.tmpdir"), "hashResult"); //C:\Users\adidi\AppData\Local\Temp
-            file.createNewFile();
+            boolean b = file.createNewFile();
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
                 int row, col;
@@ -121,6 +127,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         solveBtn.setVisible(true);
         restB.setVisible(true);
         isSolved = false;
+        SaveL.setVisible(true);
         try { //check for valid input
             int rows = Integer.parseInt(textField_mazeRows.getText());
             int cols = Integer.parseInt(textField_mazeColumns.getText());
@@ -174,7 +181,7 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void writeHashToFile() {
         try {
             File file = new File(System.getProperty("java.io.tmpdir"), "hashResult");
-            file.createNewFile();
+            boolean b = file.createNewFile();
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             ObjectOutputStream outFile = new ObjectOutputStream(new FileOutputStream(file));
 
@@ -197,83 +204,6 @@ public class MainScreenController implements IView, Initializable, Observer {
     }
 
     public void movePlayer(KeyEvent keyEvent) {
-        /*if (isSolved)
-            return;
-        int player_row_pos = mazeDisplayer.getRow_player();
-        int player_col_pos = mazeDisplayer.getCol_player();
-        switch (keyEvent.getCode()) {
-            case UP:
-            case NUMPAD8:
-                if (maze.possibleToGo(player_row_pos - 1, player_col_pos)) {
-                    player_row_pos -= 1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-
-                break;
-            case DOWN:
-            case NUMPAD2:
-                if (maze.possibleToGo(player_row_pos + 1, player_col_pos)) {
-                    player_row_pos += 1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-
-                break;
-            case LEFT:
-            case NUMPAD4:
-                if (maze.possibleToGo(player_row_pos, player_col_pos - 1)) {
-                    player_col_pos -= 1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-
-                break;
-            case RIGHT:
-            case NUMPAD6:
-                if (maze.possibleToGo(player_row_pos, player_col_pos + 1)) {
-                    player_col_pos += 1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-                break;
-            case NUMPAD7:
-                if (maze.possibleToGo(player_row_pos - 1, player_col_pos - 1)) {
-                    player_col_pos += -1;
-                    player_row_pos += -1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-                break;
-            case NUMPAD9:
-                if (maze.possibleToGo(player_row_pos - 1, player_col_pos + 1)) {
-                    player_col_pos += 1;
-                    player_row_pos += -1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-                break;
-            case NUMPAD3:
-                if (maze.possibleToGo(player_row_pos + 1, player_col_pos + 1)) {
-                    player_col_pos += 1;
-                    player_row_pos += 1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-                break;
-            case NUMPAD1:
-                if (maze.possibleToGo(player_row_pos + 1, player_col_pos - 1)) {
-                    player_col_pos += -1;
-                    player_row_pos += 1;
-                    playerMoveSound();
-                } else playerWrongMoveSound();
-                break;
-            default:
-                playerWrongMoveSound();
-                mazeDisplayer.setPlayerPos(player_row_pos, player_col_pos);
-        }
-
-        mazeDisplayer.setPlayerPos(player_row_pos, player_col_pos);
-
-        // when maze is solved
-
-        if (mazeDisplayer.getRow_player() == maze.getGoalPosition().getRowIndex() && mazeDisplayer.getCol_player() == maze.getGoalPosition().getColumnIndex()) {
-            mazeIsSolved();
-        }
-        keyEvent.consume();*/
         if (isSolved)
             return;
         this.myViewModel.movePlayer(keyEvent.getCode());
@@ -283,16 +213,19 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     // menu open about
     public void AboutF(ActionEvent actionEvent) throws IOException {
+        System.out.println("About-----------------------------------");
         Stage secondStage = new Stage();
+        secondStage.setTitle("About");
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        secondStage.getIcons().add(applicationIcon);
         Parent root1 = FXMLLoader.load(getClass().getResource("../View/About.fxml"));
-        //Stage stage = (Stage) MainScreenid.getScene().getWindow();
         scene = new Scene(root1);
         secondStage.setScene(scene);
         secondStage.show();
     }
 
     //When click enter generate new maze.
-    public void gentext(ActionEvent keyEvent) throws IOException {
+    public void generateOnEnter(ActionEvent keyEvent) {
         generateMaze(keyEvent);
     }
 
@@ -346,7 +279,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         algorithmChoiceBox.getItems().addAll("EmptyMazeGenerator", "SimpleMazeGenerator", "MyMazeGenerator");
         searchingAlgorithmChoiceBox.getItems().addAll("BreadthFirstSearch", "DepthFirstSearch", "BestFirstSearch");
         algorithmChoiceBox.setValue("MyMazeGenerator");
-        searchingAlgorithmChoiceBox.setValue("BFS");
+        searchingAlgorithmChoiceBox.setValue("BreadthFirstSearch");
     }
 
     public void reset(ActionEvent actionEvent) {
@@ -361,16 +294,57 @@ public class MainScreenController implements IView, Initializable, Observer {
     }
 
     public void SaveB() throws IOException {
+        System.out.println("Save");
         if (maze != null) {
+            int[] tmp = {this.rowPlayer, this.colPlayer};
+            ByteBuffer byteBuffer = ByteBuffer.allocate(tmp.length * 4);
+            IntBuffer intBuffer = byteBuffer.asIntBuffer();
+            intBuffer.put(tmp);
+            byte[] array = byteBuffer.array();
+
             byte[] byteMaze = maze.toByteArray();
+            byte[] all = new byte[array.length + byteMaze.length];
+            System.arraycopy(array, 0, all, 0, array.length);
+            System.arraycopy(byteMaze, 0, all, array.length, byteMaze.length);
+            // now the all[] holds the regular toBytearr and the player position.
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save Image");
             File file = fileChooser.showSaveDialog(mazeDisplayer.getScene().getWindow());
             if (file != null) {
-                Files.write(file.toPath(), byteMaze);
-                System.out.println("shit");
+                Files.write(file.toPath(), all);
+                System.out.println("Saved!");
             }
         }
+    }
+
+    public void Load(ActionEvent actionEvent) throws IOException {
+        //load an existing maze.
+        // TODO - think what to do with the time.
+
+        //TODO: the maze is display wrong! check it out..
+        System.out.println("Load----------------");
+        FileChooser fileChooser = new FileChooser();
+        loadFile = fileChooser.showOpenDialog(stage);
+        myViewModel.setLoadFile(loadFile);
+        myViewModel.load();
+        mazeDisplayer.drawMaze(maze);
+        mazeDisplayer.setPlayerPos(myViewModel.getRowPlayer(), myViewModel.getColPlayer());
+        mazeDisplayer.drawPlayer();
+        mazeDisplayer.widthProperty().bind(paneB.widthProperty()); // for resizeable maze
+        mazeDisplayer.heightProperty().bind(paneB.heightProperty());
+
+        // if this maze size already exist, show the best result
+        Pair<Integer, Integer> rowCol = new Pair(maze.getNumOfRow(), maze.getNumOfCol());
+        if (topResult.containsKey(rowCol)) {
+            String txt = "The best time for " + maze.getNumOfRow() + "X" + maze.getNumOfCol() + " is: " + topResult.get(rowCol).getValue().getCurrentTime();
+            topResultLable.setText(txt);
+        } else {
+            topResultLable.setText("");
+        }
+        mazeDisplayer.requestFocus();
+        // update the labels of the size.
+        textField_mazeRows.setText(String.valueOf(maze.getNumOfRow()));
+        textField_mazeColumns.setText(String.valueOf(maze.getNumOfCol()));
     }
 
     private void mazeIsSolved() {
@@ -449,6 +423,12 @@ public class MainScreenController implements IView, Initializable, Observer {
         if ("getSolve".equals(arg)) {
             this.solution = myViewModel.getSol();
         }
+        if ("load".equals(arg)) {
+            isSolved = false;
+            rowPlayer = this.myViewModel.getRowPlayer();
+            colPlayer = this.myViewModel.getColPlayer();
+            maze = myViewModel.getMaze();
+        }
     }
 
     public void UpdateClicked(ActionEvent actionEvent) {
@@ -476,5 +456,31 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     public void exit() throws InterruptedException {
         myViewModel.exit();
+    }
+
+    public void Help(ActionEvent actionEvent) throws IOException {
+        // open the Help window.
+        System.out.println("Help-------------------------------");
+        Stage secondStage = new Stage();
+        secondStage.setTitle("Help");
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        secondStage.getIcons().add(applicationIcon);
+        Parent root1 = FXMLLoader.load(getClass().getResource("../View/Help.fxml"));
+        scene = new Scene(root1);
+        secondStage.setScene(scene);
+        secondStage.show();
+    }
+
+    public void Properties(ActionEvent actionEvent) throws IOException {
+        //open window with the game properties.
+        System.out.println("Prop----------------");
+        Stage secondStage = new Stage();
+        secondStage.setTitle("Properties");
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        secondStage.getIcons().add(applicationIcon);
+        Parent root1 = FXMLLoader.load(getClass().getResource("../View/Properties.fxml"));
+        scene = new Scene(root1);
+        secondStage.setScene(scene);
+        secondStage.show();
     }
 }

@@ -4,6 +4,8 @@ import Model.IModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import javafx.scene.input.KeyCode;
+
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -13,7 +15,19 @@ public class MyViewModel extends Observable implements Observer {
     private int isValid;
     private int row;
     private int col;
+    private int rowPlayer;
+    private int colPlayer;
     private Solution solution;
+
+    public int getRowPlayer() {
+        return rowPlayer;
+    }
+
+    public int getColPlayer() {
+        return colPlayer;
+    }
+
+    public File loadFile;
 
     public MyViewModel(IModel model) {
         this.model = model;
@@ -44,11 +58,11 @@ public class MyViewModel extends Observable implements Observer {
         return col;
     }
 
-    public void reset(){
+    public void reset() {
         model.reset();
     }
 
-    public Solution getSol(){
+    public Solution getSol() {
         return solution;
     }
 
@@ -59,32 +73,39 @@ public class MyViewModel extends Observable implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o == model) {
-            if ("move".equals(arg)) {
+            if (arg.equals("move")) {
                 row = model.getRowPlayer();
                 col = model.getColPlayer();
                 isValid = model.getIsValid();
                 setChanged();
                 notifyObservers("move");
             }
-            if ("generate".equals(arg)) {
+            if (arg.equals("generate")) {
                 maze = model.getMaze();
                 setChanged();
                 notifyObservers("generate");
             }
-            if ("solve".equals(arg)) {
+            if (arg.equals("solve")) {
                 setChanged();
                 notifyObservers("solve");
             }
-            if ("reset".equals(arg)) {
+            if (arg.equals("reset")) {
                 row = model.getRowPlayer();
                 col = model.getColPlayer();
                 setChanged();
                 notifyObservers("reset");
             }
-            if ("getSolve".equals(arg)) {
+            if (arg.equals("getSolve")) {
                 this.solution = model.getSolve();
                 setChanged();
                 notifyObservers("getSolve");
+            }
+            if (arg.equals("load")) {
+                rowPlayer = model.getRowPlayer();
+                colPlayer = model.getColPlayer();
+                maze = model.getMaze();
+                setChanged();
+                notifyObservers("load");
             }
         }
     }
@@ -95,5 +116,14 @@ public class MyViewModel extends Observable implements Observer {
 
     public void exit() throws InterruptedException {
         model.exit();
+    }
+
+    public void load() {
+        model.setLoadFile(loadFile);
+        model.load();
+    }
+
+    public void setLoadFile(File loadFile) {
+        this.loadFile = loadFile;
     }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.PropertiesController">
+   <children>
+      <Label layoutX="230.0" layoutY="49.0" text="Properties">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="generatorLbl" layoutX="81.0" layoutY="148.0" text="Generator" />
+      <Label fx:id="searcherLbl" layoutX="261.0" layoutY="148.0" text="Searcher" />
+   </children>
+</AnchorPane>
