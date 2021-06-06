@@ -64,8 +64,7 @@ public class MazeDisplayer extends Canvas {
         graphicsContext.drawImage(playerImageR, y_player, x_player, cellWidth, cellHeight);
     }
 
-    public void drawPlayer()
-    {
+    public void drawPlayer(){
         double x_player,y_player;//,x,y;
         double canvasHeight = getHeight();
         double canvasWidth = getWidth();

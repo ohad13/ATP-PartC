@@ -308,7 +308,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             System.arraycopy(byteMaze, 0, all, array.length, byteMaze.length);
             // now the all[] holds the regular toBytearr and the player position.
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save Image");
+            fileChooser.setTitle("Save maze");
             File file = fileChooser.showSaveDialog(mazeDisplayer.getScene().getWindow());
             if (file != null) {
                 Files.write(file.toPath(), all);
@@ -324,9 +324,11 @@ public class MainScreenController implements IView, Initializable, Observer {
         //TODO: the maze is display wrong! check it out..
         System.out.println("Load----------------");
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Load maze");
         loadFile = fileChooser.showOpenDialog(stage);
         myViewModel.setLoadFile(loadFile);
         myViewModel.load();
+        //
         mazeDisplayer.drawMaze(maze);
         mazeDisplayer.setPlayerPos(myViewModel.getRowPlayer(), myViewModel.getColPlayer());
         mazeDisplayer.drawPlayer();
@@ -353,6 +355,8 @@ public class MainScreenController implements IView, Initializable, Observer {
         mediaPlayer.stop(); // stop background music
         Alert a = new Alert(Alert.AlertType.NONE);
         a.setTitle("Congratulations");
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        ((Stage)a.getDialogPane().getScene().getWindow()).getIcons().add(applicationIcon);
         a.setHeaderText(userLable.getText() + " you are the best!!");
         a.setAlertType(Alert.AlertType.INFORMATION);
         a.setContentText("You finish in: " + time.getCurrentTime());
