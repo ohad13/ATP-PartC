@@ -250,12 +250,12 @@ public class MyModel extends Observable implements IModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int l = 24 + (bArr.length - 32)/4;
+        int l = 24 + (bArr.length - 32) / 4;
         byte[] shorty = new byte[l];
         int j = 24;// he previous before the pos was 24 instead the 32
         System.arraycopy(bArr, 8, shorty, 0, l);// MetaData copy
-        for (int i = 0; i < (bArr.length - shorty.length + 1); i += 4) {
-            byte b = bArr[35+i];
+        for (int i = 0; i < (bArr.length-32); i += 4) {//here the bug! todo
+            byte b = bArr[35 + i];
             shorty[j] = b;
             j++;
         }

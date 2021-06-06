@@ -306,7 +306,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             byte[] all = new byte[array.length + byteMaze.length];
             System.arraycopy(array, 0, all, 0, array.length);
             System.arraycopy(byteMaze, 0, all, array.length, byteMaze.length);
-            // now the all[] holds the regular toBytearr and the player position.
+            // now the all[] holds the regular toByteArr and the player position.
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save maze");
             File file = fileChooser.showSaveDialog(mazeDisplayer.getScene().getWindow());
@@ -319,21 +319,21 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     public void Load(ActionEvent actionEvent) throws IOException {
         //load an existing maze.
-        // TODO - think what to do with the time.
-
-        //TODO: the maze is display wrong! check it out..
         System.out.println("Load----------------");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load maze");
         loadFile = fileChooser.showOpenDialog(stage);
         myViewModel.setLoadFile(loadFile);
         myViewModel.load();
-        //
         mazeDisplayer.drawMaze(maze);
         mazeDisplayer.setPlayerPos(myViewModel.getRowPlayer(), myViewModel.getColPlayer());
         mazeDisplayer.drawPlayer();
         mazeDisplayer.widthProperty().bind(paneB.widthProperty()); // for resizeable maze
         mazeDisplayer.heightProperty().bind(paneB.heightProperty());
+
+        // reset the time after loading
+        time.setTime(0, 0, 0);
+        timeline.play();
 
         // if this maze size already exist, show the best result
         Pair<Integer, Integer> rowCol = new Pair(maze.getNumOfRow(), maze.getNumOfCol());
