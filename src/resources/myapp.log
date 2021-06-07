@@ -1,0 +1,8 @@
+2021-06-07 17:57:13 INFO  MyModel:51 - Start generator server
+2021-06-07 17:57:13 INFO  MyModel:53 - Start searcher server
+2021-06-07 17:57:14 INFO  MyModel:235 - Client ask for maze 10X10
+2021-06-07 17:57:15 INFO  MyModel:220 - Client ask to solve maze 10X10
+2021-06-07 17:57:16 INFO  MyModel:250 - Client ask to restart the current maze
+2021-06-07 17:57:17 INFO  MyModel:305 - Client closed all..
+2021-06-07 17:57:17 INFO  MyModel:58 - Stop generator server
+2021-06-07 17:57:17 INFO  MyModel:60 - Stop searcher server

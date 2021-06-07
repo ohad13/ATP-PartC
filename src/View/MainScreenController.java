@@ -26,6 +26,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -437,7 +438,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         //System.out.println("ohad------------------- " + gen + " " + ser);//new
         Configurations.setP("generateMaze", gen);
         Configurations.setP("problemSolver", ser);
-        myViewModel.saveSettings(gen,ser);
+        myViewModel.saveSettings(gen, ser);
         mazeDisplayer.requestFocus();
     }
 
@@ -478,18 +479,18 @@ public class MainScreenController implements IView, Initializable, Observer {
         //open window with the game properties.
         //System.out.println("Prop----------------");
         Stage secondStage = new Stage();
-
         secondStage.setTitle("Properties");
         Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
         secondStage.getIcons().add(applicationIcon);
         Parent root1 = FXMLLoader.load(getClass().getResource("../View/Properties.fxml"));
         scene = new Scene(root1);
+
         secondStage.setScene(scene);
         secondStage.show();
-
         secondStage.setOnCloseRequest(e -> {
             UpdateClicked();
         });
+        ;
     }
 
 

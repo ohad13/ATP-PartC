@@ -279,7 +279,7 @@ public class MyModel extends Observable implements IModel {
         byte[] shorty = new byte[l];
         int j = 24;// he previous before the pos was 24 instead the 32
         System.arraycopy(bArr, 8, shorty, 0, l);// MetaData copy
-        for (int i = 0; i < (bArr.length - 32); i += 4) {//here the bug! todo
+        for (int i = 0; i < (bArr.length - 32); i += 4) {
             byte b = bArr[35 + i];
             shorty[j] = b;
             j++;
