@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,40 +17,47 @@
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="File">
-                <MenuItem mnemonicParsing="false" text="Close"/>
+                <MenuItem mnemonicParsing="false" text="Close" />
             </Menu>
             <Menu mnemonicParsing="false" text="Edit">
-                <MenuItem mnemonicParsing="false" text="Delete"/>
+                <MenuItem mnemonicParsing="false" text="Delete" />
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
-                <MenuItem mnemonicParsing="false" text="About"/>
+                <MenuItem mnemonicParsing="false" text="About" />
             </Menu>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
         </MenuBar>
     </top>
     <left>
-        <AnchorPane prefHeight="375.0" prefWidth="350.0" style="-fx-background-color: #0598ff;"
-                    BorderPane.alignment="CENTER">
-            <Label layoutX="91.0" layoutY="64.0" text="Top Result" textFill="WHITE">
+        <AnchorPane prefHeight="375.0" prefWidth="350.0" style="-fx-background-color: #0598ff;" BorderPane.alignment="CENTER">
+            <Label layoutX="87.0" layoutY="34.0" text="Top Result" textFill="WHITE" AnchorPane.topAnchor="35.0">
                 <font>
-                    <Font name="Narkisim" size="42.0"/>
+                    <Font name="Narkisim" size="42.0" />
                 </font>
             </Label>
-            <Label fx:id="topResultTableMainScreen" layoutX="41.0" layoutY="182.0"/>
+         <ScrollPane layoutX="30.0" layoutY="115.0" prefHeight="322.0" prefWidth="298.0" style="-fx-background: #ffffff;" vbarPolicy="NEVER">
+            <content>
+                  <Label fx:id="topResultTableMainScreen" prefHeight="408.0" prefWidth="289.0">
+                  <font>
+                     <Font size="15.0" />
+                  </font>
+               </Label>
+            </content>
+         </ScrollPane>
         </AnchorPane>
     </left>
     <right>
-        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="350.0"
-                    BorderPane.alignment="CENTER">
-            <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" onAction="#enter" promptText="User Name"
-                       text="adi"/>
-            <Button layoutX="131.0" layoutY="246.0" mnemonicParsing="false" onAction="#Startg" text="Start"/>
-            <Label layoutX="81.0" layoutY="62.0" text="Welcome" textFill="#110303" AnchorPane.bottomAnchor="362.0"
-                   AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="117.0" AnchorPane.topAnchor="62.0">
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="470.0" prefWidth="350.0" BorderPane.alignment="CENTER">
+            <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" onAction="#enter" promptText="User Name" text="adi" />
+            <Button layoutX="131.0" layoutY="246.0" mnemonicParsing="false" onAction="#Startg" text="Start" />
+            <Label layoutX="81.0" layoutY="62.0" text="Welcome" textFill="#110303" AnchorPane.bottomAnchor="362.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="117.0" AnchorPane.topAnchor="35.0">
                 <font>
-                    <Font name="Narkisim" size="42.0"/>
+                    <Font name="Narkisim" size="42.0" />
                 </font>
             </Label>
-            <FontAwesomeIconView fill="#0598ff" glyphName="USER" layoutX="58.0" layoutY="230.0" size="20"/>
+            <FontAwesomeIconView fill="#0598ff" glyphName="USER" layoutX="58.0" layoutY="230.0" size="20" />
         </AnchorPane>
     </right>
 </BorderPane>

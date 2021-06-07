@@ -27,7 +27,7 @@ public interface IModel {
 
     void solveMaze();
 
-    void saveSettings();
+    void saveSettings(String gen,String ser);
 
     int getIsValid();
 

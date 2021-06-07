@@ -39,7 +39,6 @@ public class FirstController implements Initializable {
             return;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("./MainScreen.fxml")); // use to pass user name between 2 scene
         root = loader.load();
-
         mainScreenController = loader.getController();
         mainScreenController.displayUserName(userName);
 
@@ -50,6 +49,7 @@ public class FirstController implements Initializable {
         myviewModel.addObserver(mainScreenController);
 
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+
         scene = new Scene(root);
         stage.setScene(scene);
 

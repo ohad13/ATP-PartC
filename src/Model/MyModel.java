@@ -22,6 +22,10 @@ import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.apache.log4j.*;
+
+import javax.security.auth.login.Configuration;
+
 public class MyModel extends Observable implements IModel {
     public Solution solution;
     private Maze maze;
@@ -31,6 +35,8 @@ public class MyModel extends Observable implements IModel {
     private Server mazeSolverServer;
     private int isValid = 0;
     public File loadFile;
+    //private Logger LOG = Logger.getLogger("src/log4j.properties");
+    Logger logger = Logger.getLogger(MyModel.class.getName());
 
     public MyModel() {
         mazeSolverServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -42,14 +48,16 @@ public class MyModel extends Observable implements IModel {
 
     public void startServers() {
         mazeGeneratorServer.start();
-        //LOG.info("start generator server");
+        logger.info("Start generator server");
         mazeSolverServer.start();
-        //LOG.info("start searcher server");
+        logger.info("Start searcher server");
     }
 
     public void stopServers() throws InterruptedException {
         mazeGeneratorServer.stop();
+        logger.info("Stop generator server");
         mazeSolverServer.stop();
+        logger.info("Stop searcher server");
     }
 
     @Override
@@ -139,6 +147,7 @@ public class MyModel extends Observable implements IModel {
         if (player_row_pos == maze.getGoalPosition().getRowIndex() && player_col_pos == maze.getGoalPosition().getColumnIndex()) {
             setChanged();
             notifyObservers("solve");
+            logger.info("Client solve the maze !");
         }
     }
 
@@ -168,14 +177,16 @@ public class MyModel extends Observable implements IModel {
                         /* update maze data member */
                         setMaze(newMaze);
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.info(e);
+                        //e.printStackTrace();
                     }
                 }
             });
             /* invoking the anonymous "clientStrategy" implemented above */
             client.communicateWithServer();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.info(e);
+            //e.printStackTrace();
         }
     }
 
@@ -198,14 +209,19 @@ public class MyModel extends Observable implements IModel {
                         /*update solution so that maze Displayer can use getter to take it*/
                         solution = (Solution) fromServer.readObject();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.info(e);
+//                        e.printStackTrace();
                     }
                 }
             });
+            int x = maze.getNumOfRow();
+            int y = maze.getNumOfCol();
             /* invoking the anonymous "clientStrategy" implemented above */
+            logger.info("Client ask to solve maze " + x + "X" + y);
             client.communicateWithServer();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.info(e);
+//            e.printStackTrace();
         }
     }
 
@@ -216,6 +232,7 @@ public class MyModel extends Observable implements IModel {
             colPlayer = maze.getStartPosition().getColumnIndex();
             setChanged();
             notifyObservers("generate");
+            logger.info("Client ask for maze " + maze.getNumOfRow() + "X" + maze.getNumOfCol());
         } catch (Exception e) {
             //errorSound();
             Alert a = new Alert(Alert.AlertType.NONE);
@@ -230,12 +247,17 @@ public class MyModel extends Observable implements IModel {
         colPlayer = maze.getStartPosition().getColumnIndex();
         setChanged();
         notifyObservers("reset");
+        logger.info("Client ask to restart the current maze");
     }
 
     @Override
-    public void saveSettings() {
+    public void saveSettings(String gen, String ser) {
         mazeGeneratorServer.setServerStrategy(new ServerStrategyGenerateMaze());
         mazeSolverServer.setServerStrategy(new ServerStrategySolveSearchProblem());
+        logger.info("Client changed the properties.");
+        logger.info("The new properties is:");
+        logger.info("Maze Generator: " + gen);
+        logger.info("Maze Searcher: " + ser);
     }
 
     public void solveMaze() {
@@ -250,13 +272,14 @@ public class MyModel extends Observable implements IModel {
         try {
             bArr = Files.readAllBytes(loadFile.toPath());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info(e);
+            //e.printStackTrace();
         }
         int l = 24 + (bArr.length - 32) / 4;
         byte[] shorty = new byte[l];
         int j = 24;// he previous before the pos was 24 instead the 32
         System.arraycopy(bArr, 8, shorty, 0, l);// MetaData copy
-        for (int i = 0; i < (bArr.length-32); i += 4) {//here the bug! todo
+        for (int i = 0; i < (bArr.length - 32); i += 4) {//here the bug! todo
             byte b = bArr[35 + i];
             shorty[j] = b;
             j++;
@@ -270,6 +293,7 @@ public class MyModel extends Observable implements IModel {
         colPlayer = array[1];
         setChanged();
         notifyObservers("load");
+        logger.info("Client ask to load a maze");
     }
 
     public void setLoadFile(File loadFile) {
@@ -278,6 +302,7 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void exit() throws InterruptedException {
+        logger.info("Client closed all..");
         stopServers();
         Platform.exit();
     }

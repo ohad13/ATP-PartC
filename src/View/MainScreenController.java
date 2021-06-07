@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -75,8 +76,6 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     private MediaPlayer mediaPlayer;
     private Solution solution;
-    private String genProp;
-    private String serProp;
 
 
     public void setMyViewModel(MyViewModel myViewModel1) {
@@ -213,10 +212,10 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     // menu open about
     public void AboutF(ActionEvent actionEvent) throws IOException {
-        System.out.println("About-----------------------------------");
+        //System.out.println("About-----------------------------------");
         Stage secondStage = new Stage();
         secondStage.setTitle("About");
-        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
         secondStage.getIcons().add(applicationIcon);
         Parent root1 = FXMLLoader.load(getClass().getResource("../View/About.fxml"));
         scene = new Scene(root1);
@@ -316,7 +315,7 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     public void Load(ActionEvent actionEvent) throws IOException {
         //load an existing maze.
-        System.out.println("Load----------------");
+        //System.out.println("Load----------------");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load maze");
         loadFile = fileChooser.showOpenDialog(stage);
@@ -352,7 +351,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         mediaPlayer.stop(); // stop background music
         Alert a = new Alert(Alert.AlertType.NONE);
         a.setTitle("Congratulations");
-        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
         ((Stage) a.getDialogPane().getScene().getWindow()).getIcons().add(applicationIcon);
         a.setHeaderText(userLable.getText() + " you are the best!!");
         a.setAlertType(Alert.AlertType.INFORMATION);
@@ -435,10 +434,10 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void UpdateClicked() {
         String gen = PropertiesController.getGenerator();//new
         String ser = PropertiesController.getSearcher();//new
-        System.out.println("ohad------------------- " + gen + " " + ser);//new
+        //System.out.println("ohad------------------- " + gen + " " + ser);//new
         Configurations.setP("generateMaze", gen);
         Configurations.setP("problemSolver", ser);
-        myViewModel.saveSettings();
+        myViewModel.saveSettings(gen,ser);
         mazeDisplayer.requestFocus();
     }
 
@@ -464,10 +463,10 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     public void Help(ActionEvent actionEvent) throws IOException {
         // open the Help window.
-        System.out.println("Help-------------------------------");
+        //System.out.println("Help-------------------------------");
         Stage secondStage = new Stage();
         secondStage.setTitle("Help");
-        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
         secondStage.getIcons().add(applicationIcon);
         Parent root1 = FXMLLoader.load(getClass().getResource("../View/Help.fxml"));
         scene = new Scene(root1);
@@ -477,11 +476,11 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     public void Properties(ActionEvent actionEvent) throws IOException {
         //open window with the game properties.
-        System.out.println("Prop----------------");
+        //System.out.println("Prop----------------");
         Stage secondStage = new Stage();
 
         secondStage.setTitle("Properties");
-        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
+        Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
         secondStage.getIcons().add(applicationIcon);
         Parent root1 = FXMLLoader.load(getClass().getResource("../View/Properties.fxml"));
         scene = new Scene(root1);
@@ -492,4 +491,35 @@ public class MainScreenController implements IView, Initializable, Observer {
             UpdateClicked();
         });
     }
+
+
+    /**
+     * handler for onMouseDragged(dragginf the player) inside the Maze
+     */
+    /*public void mouseDragged(MouseEvent mouseEvent) {
+        if (myViewModel.getMaze() != null) {
+            int maximumSize = Math.max(myViewModel.getMaze().getNumOfRow(), myViewModel.getMaze().getNumOfCol());
+
+            double mousePosX = helperMouseDragged(maximumSize, mazeDisplayer.getHeight(), myViewModel.getMaze().getNumOfRow(), mouseEvent.getX(), mazeDisplayer.getWidth() / maximumSize);
+            double mousePosY = helperMouseDragged(maximumSize, mazeDisplayer.getWidth(), myViewModel.getMaze().getNumOfCol(), mouseEvent.getY(), mazeDisplayer.getHeight() / maximumSize);
+
+            if (mousePosX == myViewModel.getColPlayer() && mousePosY < myViewModel.getRowPlayer())
+                myViewModel.movePlayer(KeyCode.NUMPAD8);
+            else if (mousePosY == myViewModel.getPlayerPosRow() && mousePosX > myViewModel.getPlayerPosCol())
+                myViewModel.movePlayer(KeyCode.NUMPAD6);
+            else if (mousePosY == myViewModel.getPlayerPosRow() && mousePosX < myViewModel.getPlayerPosCol())
+                myViewModel.movePlayer(KeyCode.NUMPAD4);
+            else if (mousePosX == myViewModel.getPlayerPosCol() && mousePosY > viewModel.getPlayerPosRow())
+                myViewModel.movePlayer(KeyCode.NUMPAD2);
+
+        }
+    }
+
+    private double helperMouseDragged(int maxsize, double canvasSize, int mazeSize, double mouseEvent, double temp) {
+        double cellSize = canvasSize / maxsize;
+        double start = (canvasSize / 2 - (cellSize * mazeSize / 2)) / cellSize;
+        double mouse = (int) ((mouseEvent) / (temp) - start);
+        return mouse;
+    }
+*/
 }

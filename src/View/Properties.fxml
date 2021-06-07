@@ -19,6 +19,6 @@
       <ChoiceBox fx:id="searchingAlgorithmChoiceBox" layoutX="293.0" layoutY="163.0" prefWidth="150.0" />
       <Label layoutX="80.0" layoutY="131.0" text="Choose Maze Type" />
       <Label layoutX="277.0" layoutY="140.0" text="Choose Maze Searching Algorithm" />
-      <Button fx:id="updateBtn" layoutX="205.0" layoutY="210.0" mnemonicParsing="false" onAction="#updateProp" text="Save and Exit" />
+      <Button fx:id="updateBtn" layoutX="227.0" layoutY="208.0" mnemonicParsing="false" onAction="#updateProp" text="Save" />
    </children>
 </AnchorPane>

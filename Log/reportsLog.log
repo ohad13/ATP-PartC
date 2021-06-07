@@ -1,0 +1,14 @@
+2021-06-07 16:22:59,006 [            MyModel.java:JavaFX Application Thread:51] - Start generator server
+2021-06-07 16:22:59,009 [            MyModel.java:JavaFX Application Thread:53] - Start searcher server
+2021-06-07 16:23:00,078 [            MyModel.java:JavaFX Application Thread:235] - Client ask for maze 10X10
+2021-06-07 16:23:00,628 [            MyModel.java:JavaFX Application Thread:220] - Client ask to solve maze 10X10
+2021-06-07 16:23:01,183 [            MyModel.java:JavaFX Application Thread:250] - Client ask to restart the current maze
+2021-06-07 16:23:05,998 [            MyModel.java:JavaFX Application Thread:150] - Client solve the maze !
+2021-06-07 16:23:08,000 [            MyModel.java:JavaFX Application Thread:250] - Client ask to restart the current maze
+2021-06-07 16:23:12,562 [            MyModel.java:JavaFX Application Thread:257] - Client changed the properties.
+2021-06-07 16:23:12,562 [            MyModel.java:JavaFX Application Thread:258] - The new properties is:
+2021-06-07 16:23:12,562 [            MyModel.java:JavaFX Application Thread:259] - Maze Generator: SimpleMazeGenerator
+2021-06-07 16:23:12,562 [            MyModel.java:JavaFX Application Thread:260] - Maze Searcher: DepthFirstSearch
+2021-06-07 16:24:00,827 [            MyModel.java:JavaFX Application Thread:305] - Client closed all..
+2021-06-07 16:24:00,827 [            MyModel.java:JavaFX Application Thread:58] - Stop generator server
+2021-06-07 16:24:00,828 [            MyModel.java:JavaFX Application Thread:60] - Stop searcher server

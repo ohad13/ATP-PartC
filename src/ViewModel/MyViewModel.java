@@ -110,8 +110,8 @@ public class MyViewModel extends Observable implements Observer {
         }
     }
 
-    public void saveSettings() {
-        model.saveSettings();
+    public void saveSettings(String gen,String ser) {
+        model.saveSettings(gen,ser);
     }
 
     public void exit() throws InterruptedException {

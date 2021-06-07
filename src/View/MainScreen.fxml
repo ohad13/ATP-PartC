@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -52,16 +51,15 @@
                 <Button fx:id="generateB" layoutX="28.0" layoutY="80.0" mnemonicParsing="false" onAction="#generateMaze" prefHeight="26.0" prefWidth="125.0" text="Generate" />
                 <Button fx:id="solveBtn" layoutX="28.0" layoutY="121.0" mnemonicParsing="false" onAction="#solveMaze" prefHeight="26.0" prefWidth="126.0" text="Solve" visible="false" />
                 <Button fx:id="BackB" layoutX="14.0" layoutY="433.0" mnemonicParsing="false" onAction="#Back" prefHeight="26.0" prefWidth="71.0" text="Back" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="14.0" />
-                <Label fx:id="userLable" layoutX="10.0" layoutY="345.0" text="UserName">
+                <Label fx:id="userLable" layoutX="52.0" layoutY="167.0" text="UserName">
                     <font>
                         <Font size="21.0" />
                     </font>
                 </Label>
 
-                <Label fx:id="topResultLable" layoutX="3.0" layoutY="377.0" prefHeight="18.0" prefWidth="203.0" />
+                <Label fx:id="topResultLable" layoutX="3.0" layoutY="211.0" prefHeight="18.0" prefWidth="203.0" />
                 <Label layoutX="36.0" layoutY="20.0" text="Row" />
                 <Label layoutX="101.0" layoutY="20.0" text="Column" />
-                <Button fx:id="updateSettingsBtn" layoutX="143.0" layoutY="320.0" mnemonicParsing="false" onAction="#UpdateClicked" text="Update" />
             </AnchorPane>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="492.0" prefWidth="519.0" style="-fx-background-color: #dddddd;">
                 <Pane fx:id="paneB" layoutX="27.0" layoutY="45.0" onMouseClicked="#mouseClick" onScroll="#setOnScroll" prefHeight="430.0" prefWidth="519.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="45.0">

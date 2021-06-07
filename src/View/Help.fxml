@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.HelpController">
    <children>
@@ -12,5 +13,10 @@
             <Font size="30.0" />
          </font>
       </Label>
+      <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="200.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/Image/information.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
