@@ -43,6 +43,7 @@ public class MainScreenController implements IView, Initializable, Observer {
     public Scene scene;
     public File loadFile;
     public MenuItem SaveL;
+    // private PropertiesController propC;//new
 
     @FXML
     Pane paneB;
@@ -74,10 +75,9 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     private MediaPlayer mediaPlayer;
     private Solution solution;
-    @FXML
-    ChoiceBox algorithmChoiceBox;
-    @FXML
-    ChoiceBox searchingAlgorithmChoiceBox;
+    private String genProp;
+    private String serProp;
+
 
     public void setMyViewModel(MyViewModel myViewModel1) {
         this.myViewModel = myViewModel1;
@@ -276,10 +276,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        algorithmChoiceBox.getItems().addAll("EmptyMazeGenerator", "SimpleMazeGenerator", "MyMazeGenerator");
-        searchingAlgorithmChoiceBox.getItems().addAll("BreadthFirstSearch", "DepthFirstSearch", "BestFirstSearch");
-        algorithmChoiceBox.setValue("MyMazeGenerator");
-        searchingAlgorithmChoiceBox.setValue("BreadthFirstSearch");
+
     }
 
     public void reset(ActionEvent actionEvent) {
@@ -356,7 +353,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         Alert a = new Alert(Alert.AlertType.NONE);
         a.setTitle("Congratulations");
         Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
-        ((Stage)a.getDialogPane().getScene().getWindow()).getIcons().add(applicationIcon);
+        ((Stage) a.getDialogPane().getScene().getWindow()).getIcons().add(applicationIcon);
         a.setHeaderText(userLable.getText() + " you are the best!!");
         a.setAlertType(Alert.AlertType.INFORMATION);
         a.setContentText("You finish in: " + time.getCurrentTime());
@@ -435,9 +432,12 @@ public class MainScreenController implements IView, Initializable, Observer {
         }
     }
 
-    public void UpdateClicked(ActionEvent actionEvent) {
-        Configurations.setP("generateMaze", algorithmChoiceBox.getValue().toString());
-        Configurations.setP("problemSolver", searchingAlgorithmChoiceBox.getValue().toString());
+    public void UpdateClicked() {
+        String gen = PropertiesController.getGenerator();//new
+        String ser = PropertiesController.getSearcher();//new
+        System.out.println("ohad------------------- " + gen + " " + ser);//new
+        Configurations.setP("generateMaze", gen);
+        Configurations.setP("problemSolver", ser);
         myViewModel.saveSettings();
         mazeDisplayer.requestFocus();
     }
@@ -479,6 +479,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         //open window with the game properties.
         System.out.println("Prop----------------");
         Stage secondStage = new Stage();
+
         secondStage.setTitle("Properties");
         Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/wall.png"));
         secondStage.getIcons().add(applicationIcon);
@@ -486,5 +487,9 @@ public class MainScreenController implements IView, Initializable, Observer {
         scene = new Scene(root1);
         secondStage.setScene(scene);
         secondStage.show();
+
+        secondStage.setOnCloseRequest(e -> {
+            UpdateClicked();
+        });
     }
 }

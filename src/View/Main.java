@@ -18,6 +18,8 @@ public class Main extends Application {
         primaryStage.getIcons().add(applicationIcon);
         primaryStage.show();
     }
+    // https://github.com/ohad13/ATP-PartC.git
+    // --module-path C:\Users\mille\IdeaProjects\javafx-sdk-16\lib --add-modules javafx.controls,javafx.fxml,javafx.media
 
     public static void main(String[] args) {
         launch(args);

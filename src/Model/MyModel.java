@@ -42,7 +42,9 @@ public class MyModel extends Observable implements IModel {
 
     public void startServers() {
         mazeGeneratorServer.start();
+        //LOG.info("start generator server");
         mazeSolverServer.start();
+        //LOG.info("start searcher server");
     }
 
     public void stopServers() throws InterruptedException {
