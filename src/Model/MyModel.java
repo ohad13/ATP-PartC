@@ -11,9 +11,11 @@ import algorithms.search.Solution;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
+import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -22,21 +24,17 @@ import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.apache.log4j.*;
-
-import javax.security.auth.login.Configuration;
-
 public class MyModel extends Observable implements IModel {
     public Solution solution;
+    public File loadFile;
+    //private Logger LOG = Logger.getLogger("src/log4j.properties");
+    Logger logger = Logger.getLogger(MyModel.class.getName());
     private Maze maze;
     private int rowPlayer;
     private int colPlayer;
     private Server mazeGeneratorServer;
     private Server mazeSolverServer;
     private int isValid = 0;
-    public File loadFile;
-    //private Logger LOG = Logger.getLogger("src/log4j.properties");
-    Logger logger = Logger.getLogger(MyModel.class.getName());
 
     public MyModel() {
         mazeSolverServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -93,51 +91,61 @@ public class MyModel extends Observable implements IModel {
             case NUMPAD8:
                 if (maze.possibleToGo(player_row_pos - 1, player_col_pos))
                     player_row_pos -= 1;
+                else isValid = 1;
                 break;
             case DOWN:
             case NUMPAD2:
                 if (maze.possibleToGo(player_row_pos + 1, player_col_pos))
                     player_row_pos += 1;
+                else isValid = 1;
                 break;
             case LEFT:
             case NUMPAD4:
                 if (maze.possibleToGo(player_row_pos, player_col_pos - 1))
                     player_col_pos -= 1;
+                else isValid = 1;
                 break;
             case RIGHT:
             case NUMPAD6:
                 if (maze.possibleToGo(player_row_pos, player_col_pos + 1))
                     player_col_pos += 1;
+                else isValid = 1;
                 break;
             case NUMPAD7:
                 if (maze.possibleToGo(player_row_pos - 1, player_col_pos - 1)) {
                     player_col_pos += -1;
                     player_row_pos += -1;
-                }
+                } else isValid = 1;
+
                 break;
             case NUMPAD9:
                 if (maze.possibleToGo(player_row_pos - 1, player_col_pos + 1)) {
                     player_col_pos += 1;
                     player_row_pos += -1;
-                }
+                } else isValid = 1;
+
                 break;
+
             case NUMPAD3:
                 if (maze.possibleToGo(player_row_pos + 1, player_col_pos + 1)) {
                     player_col_pos += 1;
                     player_row_pos += 1;
-                }
+                } else isValid = 1;
+
                 break;
             case NUMPAD1:
                 if (maze.possibleToGo(player_row_pos + 1, player_col_pos - 1)) {
                     player_col_pos += -1;
                     player_row_pos += 1;
-                }
+                } else isValid = 1;
                 break;
             default:
-                isValid = 1;
+                isValid = 2;
+                break;
+
         }
-        if (x == player_row_pos && y == player_col_pos)
-            isValid = 1;
+        /*if (x == player_row_pos && y == player_col_pos)
+            isValid = 1;*/
         rowPlayer = player_row_pos;
         colPlayer = player_col_pos;
         setChanged();
@@ -251,13 +259,16 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void saveSettings(String gen, String ser) {
+    public void saveSettings(String gen, String ser, int nThreads) {
         mazeGeneratorServer.setServerStrategy(new ServerStrategyGenerateMaze());
         mazeSolverServer.setServerStrategy(new ServerStrategySolveSearchProblem());
+        mazeGeneratorServer.setExecutor(nThreads);
+        mazeSolverServer.setExecutor(nThreads);
         logger.info("Client changed the properties.");
         logger.info("The new properties is:");
         logger.info("Maze Generator: " + gen);
         logger.info("Maze Searcher: " + ser);
+        logger.info("Num of Threads: " + nThreads);
     }
 
     public void solveMaze() {

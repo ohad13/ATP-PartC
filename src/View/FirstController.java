@@ -29,6 +29,7 @@ public class FirstController implements Initializable {
 
     private MainScreenController mainScreenController;
 
+    //function that switch to main windows
     public void Startg(javafx.event.ActionEvent actionEvent) throws IOException {
         Stage stage;
         Scene scene;
@@ -52,6 +53,7 @@ public class FirstController implements Initializable {
 
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(true);
 
         stage.setOnCloseRequest(e -> {
             try {

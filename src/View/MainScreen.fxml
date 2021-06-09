@@ -5,13 +5,13 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -61,10 +61,7 @@
                 <Label layoutX="36.0" layoutY="20.0" text="Row" />
                 <Label layoutX="101.0" layoutY="20.0" text="Column" />
             </AnchorPane>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="492.0" prefWidth="519.0" style="-fx-background-color: #dddddd;">
-                <Pane fx:id="paneB" layoutX="27.0" layoutY="45.0" onMouseClicked="#mouseClick" onScroll="#setOnScroll" prefHeight="430.0" prefWidth="519.0" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="45.0">
-                    <MazeDisplayer fx:id="mazeDisplayer" height="400.0" onKeyPressed="#movePlayer" width="400.0" />
-                </Pane>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="492.0" prefWidth="519.0" style="-fx-background-color: #ffffff;">
                 <Label layoutX="143.0" layoutY="14.0" prefHeight="34.0" prefWidth="168.0" text="The best maze" AnchorPane.leftAnchor="143.0" AnchorPane.topAnchor="14.0">
                     <font>
                         <Font size="23.0" />
@@ -88,6 +85,13 @@
                         </ImageView>
                     </graphic>
                 </Button>
+            <ScrollPane fx:id="scrollPaneContainer" fitToHeight="true" fitToWidth="true" layoutX="23.0" layoutY="55.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="422.0" prefWidth="484.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="71.39999999999998" AnchorPane.topAnchor="55.0">
+               <content>
+                      <AnchorPane fx:id="paneB" focusTraversable="true" onMouseClicked="#mouseClick" onMouseMoved="#mouseMove" onMouseReleased="#mouseDragged" onScroll="#setOnScroll" prefHeight="${scrollPaneContainer.height}" prefWidth="${scrollPaneContainer.width}" style="-fx-background-color: #123456;">
+                          <MazeDisplayer fx:id="mazeDisplayer"  height="${paneB.height}" onKeyPressed="#movePlayer" width="${paneB.width}" />
+                      </AnchorPane>
+               </content>
+            </ScrollPane>
             </AnchorPane>
         </SplitPane>
     </center>

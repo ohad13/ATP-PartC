@@ -3,7 +3,6 @@ package View;
 import Server.Configurations;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
-import algorithms.mazeGenerators.MyMazeGenerator;
 import algorithms.search.Solution;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -11,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,13 +20,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -45,12 +44,12 @@ public class MainScreenController implements IView, Initializable, Observer {
     public Scene scene;
     public File loadFile;
     public MenuItem SaveL;
-    // private PropertiesController propC;//new
-
-    @FXML
-    Pane paneB;
     public int rowPlayer;
     public int colPlayer;
+    @FXML
+    AnchorPane paneB;
+    @FXML
+    ScrollPane scrollPaneContainer;
     HashMap<Pair<Integer, Integer>, Pair<String, Time>> topResult;
     Time time = new Time("00:00:0");
     @FXML
@@ -67,14 +66,16 @@ public class MainScreenController implements IView, Initializable, Observer {
     Label topResultLable;
     @FXML
     Text timer;
+    @FXML
+    TextField textField_Nthreads;
     Timeline timeline = new Timeline(
             new KeyFrame(Duration.seconds(0.01), e -> {
                 time.oneSecondPassed();
                 timer.setText(time.getCurrentTime());
             }));
+    private double mouseX, mouseY;
     private MyViewModel myViewModel;
     private boolean isSolved;
-
     private MediaPlayer mediaPlayer;
     private Solution solution;
 
@@ -203,6 +204,11 @@ public class MainScreenController implements IView, Initializable, Observer {
         }
     }
 
+    /**
+     * move the player.
+     *
+     * @param keyEvent
+     */
     public void movePlayer(KeyEvent keyEvent) {
         if (isSolved)
             return;
@@ -211,9 +217,11 @@ public class MainScreenController implements IView, Initializable, Observer {
         keyEvent.consume();
     }
 
-    // menu open about
+    /**
+     * menu open about window.
+     */
+
     public void AboutF(ActionEvent actionEvent) throws IOException {
-        //System.out.println("About-----------------------------------");
         Stage secondStage = new Stage();
         secondStage.setTitle("About");
         Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
@@ -233,6 +241,9 @@ public class MainScreenController implements IView, Initializable, Observer {
         mazeDisplayer.requestFocus();
     }
 
+    /**
+     * play win music - when the player hit the end point
+     */
     private void playWinSound() {
         Media sound = new Media(new File("./src/resources/Sound/win.mp3").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
@@ -245,18 +256,27 @@ public class MainScreenController implements IView, Initializable, Observer {
         mediaPlayer1.play();
     }
 
+    /**
+     * play wrong move music - when hit the wall..
+     */
     private void playerWrongMoveSound() {
         Media sound = new Media(new File("./src/Resources/Sound/wrongMove.mp3").toURI().toString());
         MediaPlayer mediaPlayer1 = new MediaPlayer(sound);
         mediaPlayer1.play();
     }
 
+    /**
+     * play error music.
+     */
     private void errorSound() {
         Media sound = new Media(new File("./src/Resources/Sound/error.MP3").toURI().toString());
         MediaPlayer mediaPlayer1 = new MediaPlayer(sound);
         mediaPlayer1.play();
     }
 
+    /**
+     * play background music
+     */
     private void playBackgroundSound() {
         Media backSound;
         backSound = new Media(new File("./src/Resources/Sound/background.mp3").toURI().toString());
@@ -267,18 +287,32 @@ public class MainScreenController implements IView, Initializable, Observer {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        scrollPaneContainer.setContent(paneB);
+        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        mazeDisplayer.widthProperty().bind(this.scrollPaneContainer.widthProperty());
+        mazeDisplayer.heightProperty().bind(this.scrollPaneContainer.heightProperty());
+
         playBackgroundSound();
         try {
             readHashmap();
+            // set default settings to the config.
             Configurations.getInstance();
             Configurations.setP("generateMaze", "MyMazeGenerator");
             Configurations.setP("problemSolver", "DepthFirstSearch");
+            Configurations.setP("threadPoolSize", "4");//new
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
+    /**
+     * reset the game, make the player at the start point again, reset also the time.
+     *
+     * @param actionEvent
+     */
     public void reset(ActionEvent actionEvent) {
         //playBackgroundSound();
         isSolved = false;
@@ -290,6 +324,11 @@ public class MainScreenController implements IView, Initializable, Observer {
         mazeDisplayer.requestFocus();
     }
 
+    /**
+     * saved the current maze to a file.
+     *
+     * @throws IOException
+     */
     public void SaveB() throws IOException {
         System.out.println("Save");
         if (maze != null) {
@@ -314,9 +353,12 @@ public class MainScreenController implements IView, Initializable, Observer {
         }
     }
 
-    public void Load(ActionEvent actionEvent) throws IOException {
-        //load an existing maze.
-        //System.out.println("Load----------------");
+    /**
+     * load an existing maze and draw it.
+     *
+     * @param actionEvent
+     */
+    public void Load(ActionEvent actionEvent) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load maze");
         loadFile = fileChooser.showOpenDialog(stage);
@@ -325,6 +367,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         mazeDisplayer.drawMaze(maze);
         mazeDisplayer.setPlayerPos(myViewModel.getRowPlayer(), myViewModel.getColPlayer());
         mazeDisplayer.drawPlayer();
+
         mazeDisplayer.widthProperty().bind(paneB.widthProperty()); // for resizeable maze
         mazeDisplayer.heightProperty().bind(paneB.heightProperty());
 
@@ -346,6 +389,10 @@ public class MainScreenController implements IView, Initializable, Observer {
         textField_mazeColumns.setText(String.valueOf(maze.getNumOfCol()));
     }
 
+    /**
+     * if the view is notify that the maze is solved, open an alert and make win sound.
+     * also check if this is the best time and if so update the label and the hash.
+     */
     private void mazeIsSolved() {
         playWinSound();
         isSolved = true;
@@ -380,6 +427,11 @@ public class MainScreenController implements IView, Initializable, Observer {
         }
     }
 
+    /**
+     * turn on/off the sound of the game.
+     *
+     * @param actionEvent
+     */
     public void soundOnOf(ActionEvent actionEvent) {
         mazeDisplayer.requestFocus();//return focus to the maze.
         if (mediaPlayer.getVolume() == 0) {
@@ -389,6 +441,11 @@ public class MainScreenController implements IView, Initializable, Observer {
         mediaPlayer.setVolume(0);
     }
 
+    /**
+     * when the client ask to solve his maze, ask for the solution and draw it.
+     *
+     * @param actionEvent
+     */
     public void solveMaze(ActionEvent actionEvent) {
         try {
             myViewModel.solveMaze();
@@ -411,8 +468,9 @@ public class MainScreenController implements IView, Initializable, Observer {
             colPlayer = this.myViewModel.getCol();
             if (myViewModel.getIsValid() == 1)
                 playerWrongMoveSound();
-            else
+            else if (myViewModel.getIsValid() == 0)
                 playerMoveSound();
+
         }
         if ("solve".equals(arg)) {
             mazeIsSolved();
@@ -432,16 +490,25 @@ public class MainScreenController implements IView, Initializable, Observer {
         }
     }
 
+    /**
+     * update the properties when the prop window closed
+     */
     public void UpdateClicked() {
-        String gen = PropertiesController.getGenerator();//new
-        String ser = PropertiesController.getSearcher();//new
-        //System.out.println("ohad------------------- " + gen + " " + ser);//new
+        String gen = PropertiesController.getGenerator();
+        String ser = PropertiesController.getSearcher();
+        int nThreads = PropertiesController.getNThreads();
         Configurations.setP("generateMaze", gen);
         Configurations.setP("problemSolver", ser);
-        myViewModel.saveSettings(gen, ser);
+        Configurations.setP("threadPoolSize", String.valueOf(nThreads));
+        myViewModel.saveSettings(gen, ser,nThreads);
         mazeDisplayer.requestFocus();
     }
 
+    /**
+     * if the client scroll the mouse roll, than zoom in/out.
+     *
+     * @param scroll
+     */
     public void setOnScroll(ScrollEvent scroll) {
         if (scroll.isControlDown()) {
             double zoom_fac = 1.05;
@@ -453,18 +520,37 @@ public class MainScreenController implements IView, Initializable, Observer {
             newScale.setPivotY(scroll.getY());
             newScale.setX(mazeDisplayer.getScaleX() * zoom_fac);
             newScale.setY(mazeDisplayer.getScaleY() * zoom_fac);
+            System.out.println(scroll.getX());
+
+            Group contentGroup = new Group();
+            Group zoomGroup = new Group();// #ffffff
+            contentGroup.getChildren().add(zoomGroup);
+            zoomGroup.getChildren().add(paneB);
+            scrollPaneContainer.setContent(contentGroup);
+            Scale scaleTransform = new Scale(zoom_fac, zoom_fac, 0, 0);
+            zoomGroup.getTransforms().add(scaleTransform);
+
             mazeDisplayer.getTransforms().add(newScale);
             scroll.consume();
         }
     }
 
+    /**
+     * called whan closed the main window and close all, includes he servers.
+     *
+     * @throws InterruptedException
+     */
     public void exit() throws InterruptedException {
         myViewModel.exit();
     }
 
+    /**
+     * open the Help window.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void Help(ActionEvent actionEvent) throws IOException {
-        // open the Help window.
-        //System.out.println("Help-------------------------------");
         Stage secondStage = new Stage();
         secondStage.setTitle("Help");
         Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
@@ -475,9 +561,13 @@ public class MainScreenController implements IView, Initializable, Observer {
         secondStage.show();
     }
 
+    /**
+     * open the properties window.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void Properties(ActionEvent actionEvent) throws IOException {
-        //open window with the game properties.
-        //System.out.println("Prop----------------");
         Stage secondStage = new Stage();
         secondStage.setTitle("Properties");
         Image applicationIcon = new Image(getClass().getResourceAsStream("../resources/Image/maze.png"));
@@ -490,37 +580,62 @@ public class MainScreenController implements IView, Initializable, Observer {
         secondStage.setOnCloseRequest(e -> {
             UpdateClicked();
         });
-        ;
     }
 
-
     /**
-     * handler for onMouseDragged(dragginf the player) inside the Maze
+     * if the mouse get dragged so calculate to which direction and how much and move the player if possible.
+     *
+     * @param mouseEvent
      */
-    /*public void mouseDragged(MouseEvent mouseEvent) {
-        if (myViewModel.getMaze() != null) {
-            int maximumSize = Math.max(myViewModel.getMaze().getNumOfRow(), myViewModel.getMaze().getNumOfCol());
+    public void mouseDragged(MouseEvent mouseEvent) {
+        if (myViewModel.getMaze() == null || isSolved)
+            return;
+        //Cell Size
+        double cellHeight = mazeDisplayer.getHeight() / myViewModel.getMaze().getNumOfRow();
+        double cellWidth = mazeDisplayer.getWidth() / myViewModel.getMaze().getNumOfCol();
 
-            double mousePosX = helperMouseDragged(maximumSize, mazeDisplayer.getHeight(), myViewModel.getMaze().getNumOfRow(), mouseEvent.getX(), mazeDisplayer.getWidth() / maximumSize);
-            double mousePosY = helperMouseDragged(maximumSize, mazeDisplayer.getWidth(), myViewModel.getMaze().getNumOfCol(), mouseEvent.getY(), mazeDisplayer.getHeight() / maximumSize);
+        double addPlayerRow_s = mouseEvent.getX() - mouseX;
+        double addPlayerCol_s = mouseEvent.getY() - mouseY;
 
-            if (mousePosX == myViewModel.getColPlayer() && mousePosY < myViewModel.getRowPlayer())
-                myViewModel.movePlayer(KeyCode.NUMPAD8);
-            else if (mousePosY == myViewModel.getPlayerPosRow() && mousePosX > myViewModel.getPlayerPosCol())
-                myViewModel.movePlayer(KeyCode.NUMPAD6);
-            else if (mousePosY == myViewModel.getPlayerPosRow() && mousePosX < myViewModel.getPlayerPosCol())
-                myViewModel.movePlayer(KeyCode.NUMPAD4);
-            else if (mousePosX == myViewModel.getPlayerPosCol() && mousePosY > viewModel.getPlayerPosRow())
-                myViewModel.movePlayer(KeyCode.NUMPAD2);
+        if (Math.abs(addPlayerRow_s) < cellHeight && Math.abs(addPlayerCol_s) < cellWidth) {
+            return;
+        }
 
+        int countRows = (int) (addPlayerRow_s / cellHeight);
+        int countCols = (int) (addPlayerCol_s / cellWidth);
+        while (countCols != 0 || countRows != 0) {
+            if (countCols < 0) {
+                myViewModel.movePlayer(KeyCode.UP);
+                countCols++;
+
+            }
+
+            if (countCols > 0) {
+                myViewModel.movePlayer(KeyCode.DOWN);
+                countCols--;
+            }
+
+
+            if (countRows < 0) {
+                myViewModel.movePlayer(KeyCode.LEFT);
+                countRows++;
+            }
+
+            if (countRows > 0) {
+                myViewModel.movePlayer(KeyCode.RIGHT);
+                countRows--;
+            }
+            mazeDisplayer.setPlayerPos(rowPlayer, colPlayer);
         }
     }
 
-    private double helperMouseDragged(int maxsize, double canvasSize, int mazeSize, double mouseEvent, double temp) {
-        double cellSize = canvasSize / maxsize;
-        double start = (canvasSize / 2 - (cellSize * mazeSize / 2)) / cellSize;
-        double mouse = (int) ((mouseEvent) / (temp) - start);
-        return mouse;
+    /**
+     * keep the View updated for the x,y of the mouse in the screen.
+     *
+     * @param mouseEvent
+     */
+    public void mouseMove(MouseEvent mouseEvent) {
+        mouseX = mouseEvent.getX();
+        mouseY = mouseEvent.getY();
     }
-*/
 }
