@@ -118,7 +118,7 @@ public class MazeDisplayer extends Canvas {
             Image playerImageR = null;
             Image playerImageL = null;
             try {
-                wallImage = new Image(new FileInputStream("./src/Resources/Image/coronaWall1.png"));//todo
+                wallImage = new Image(new FileInputStream("./src/Resources/Image/coronaWall2.png"));//todo
                 playerImageR = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1R.png"));
                 playerImageL = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1L.png"));
                 goalImage = new Image(new FileInputStream("./src/Resources/Image/coronaGoal1.png"));

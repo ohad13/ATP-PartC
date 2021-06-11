@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import View.*?>
-<BorderPane fx:id="MainScreenid" onMouseClicked="#mouseClick" prefHeight="519.0" prefWidth="796.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainScreenController">
+<BorderPane fx:id="MainScreenid" onMouseClicked="#mouseClick" prefHeight="553.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainScreenController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <Menu mnemonicParsing="false" text="File">
@@ -61,7 +61,7 @@
                 <Label layoutX="36.0" layoutY="20.0" text="Row" />
                 <Label layoutX="101.0" layoutY="20.0" text="Column" />
             </AnchorPane>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="492.0" prefWidth="519.0" style="-fx-background-color: #ffffff;">
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="593.0" prefWidth="579.0" style="-fx-background-color: #ffffff;">
                 <Label layoutX="143.0" layoutY="14.0" prefHeight="34.0" prefWidth="168.0" text="The best maze" AnchorPane.leftAnchor="143.0" AnchorPane.topAnchor="14.0">
                     <font>
                         <Font size="23.0" />
@@ -73,25 +73,29 @@
                         <Font size="23.0" />
                     </font>
                 </Text>
-                <Button fx:id="sound" layoutX="504.0" layoutY="393.0" mnemonicParsing="false" onAction="#soundOnOf" opacity="0.0" prefHeight="44.0" prefWidth="39.0" text="delete" textOverrun="CLIP">
-                    <font>
-                        <Font size="20.0" />
-                    </font>
-                </Button>
-                <Button layoutX="512.0" layoutY="9.0" mnemonicParsing="false" onAction="#soundOnOf" prefHeight="25.0" prefWidth="32.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="9.0">
+                <Button fx:id="soundOn" layoutX="512.0" layoutY="9.0" mnemonicParsing="false" onAction="#soundOnOf" prefHeight="32.0" prefWidth="41.0" style="-fx-background-color: transparent;" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="9.0">
                     <graphic>
                         <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                             <Image url="@../resources/Image/volume.png" />
                         </ImageView>
                     </graphic>
                 </Button>
-            <ScrollPane fx:id="scrollPaneContainer" fitToHeight="true" fitToWidth="true" layoutX="23.0" layoutY="55.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="422.0" prefWidth="484.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="71.39999999999998" AnchorPane.topAnchor="55.0">
+            <ScrollPane fx:id="scrollPaneContainer" fitToHeight="true" fitToWidth="true" layoutX="23.0" layoutY="55.0" prefHeight="450.0" prefWidth="527.0" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="55.0">
                <content>
-                      <AnchorPane fx:id="paneB" focusTraversable="true" onMouseClicked="#mouseClick" onMouseMoved="#mouseMove" onMouseReleased="#mouseDragged" onScroll="#setOnScroll" prefHeight="${scrollPaneContainer.height}" prefWidth="${scrollPaneContainer.width}" style="-fx-background-color: #123456;">
-                          <MazeDisplayer fx:id="mazeDisplayer"  height="${paneB.height}" onKeyPressed="#movePlayer" width="${paneB.width}" />
+                      <AnchorPane fx:id="paneB" focusTraversable="true" onMouseClicked="#mouseClick" onMouseMoved="#mouseMove" onMouseReleased="#mouseDragged" onScroll="#setOnScroll" prefHeight="448.0" prefWidth="453.0" style="-fx-background-color: #fffa3f;">
+                          <MazeDisplayer fx:id="mazeDisplayer" height="${paneB.height}" onKeyPressed="#movePlayer" width="${paneB.width}" />
                       </AnchorPane>
                </content>
             </ScrollPane>
+            <Button fx:id="soundOff" layoutX="512.0" layoutY="9.0" mnemonicParsing="false" onAction="#soundOnOf" prefHeight="32.0" prefWidth="41.0" style="-fx-background-color: transparent;" visible="false" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="9.0">
+               <graphic>
+                  <ImageView fitHeight="37.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/Image/mute.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             </AnchorPane>
         </SplitPane>
     </center>

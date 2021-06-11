@@ -21,6 +21,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
@@ -46,6 +47,11 @@ public class MainScreenController implements IView, Initializable, Observer {
     public MenuItem SaveL;
     public int rowPlayer;
     public int colPlayer;
+    public BorderPane MainScreenid;
+    @FXML
+    Button soundOn;
+    @FXML
+    Button soundOff;
     @FXML
     AnchorPane paneB;
     @FXML
@@ -175,6 +181,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
+        mediaPlayer.setVolume(0);
         stage.show();
     }
 
@@ -285,28 +292,6 @@ public class MainScreenController implements IView, Initializable, Observer {
         mediaPlayer.play();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        scrollPaneContainer.setContent(paneB);
-        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-        mazeDisplayer.widthProperty().bind(this.scrollPaneContainer.widthProperty());
-        mazeDisplayer.heightProperty().bind(this.scrollPaneContainer.heightProperty());
-
-        playBackgroundSound();
-        try {
-            readHashmap();
-            // set default settings to the config.
-            Configurations.getInstance();
-            Configurations.setP("generateMaze", "MyMazeGenerator");
-            Configurations.setP("problemSolver", "DepthFirstSearch");
-            Configurations.setP("threadPoolSize", "4");//new
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     /**
      * reset the game, make the player at the start point again, reset also the time.
@@ -436,9 +421,13 @@ public class MainScreenController implements IView, Initializable, Observer {
         mazeDisplayer.requestFocus();//return focus to the maze.
         if (mediaPlayer.getVolume() == 0) {
             mediaPlayer.setVolume(0.25);
+            soundOn.setVisible(true);
+            soundOff.setVisible(false);
             return;
         }
         mediaPlayer.setVolume(0);
+        soundOn.setVisible(false);
+        soundOff.setVisible(true);
     }
 
     /**
@@ -500,7 +489,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         Configurations.setP("generateMaze", gen);
         Configurations.setP("problemSolver", ser);
         Configurations.setP("threadPoolSize", String.valueOf(nThreads));
-        myViewModel.saveSettings(gen, ser,nThreads);
+        myViewModel.saveSettings(gen, ser, nThreads);
         mazeDisplayer.requestFocus();
     }
 
@@ -510,20 +499,32 @@ public class MainScreenController implements IView, Initializable, Observer {
      * @param scroll
      */
     public void setOnScroll(ScrollEvent scroll) {
+        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         if (scroll.isControlDown()) {
             double zoom_fac = 1.05;
             if (scroll.getDeltaY() < 0) {
                 zoom_fac = 2.0 - zoom_fac;
             }
+            //System.out.println(scrollPaneContainer.computeAreaInScreen());
+            //System.out.println(mazeDisplayer.computeAreaInScreen());
+            if (mazeDisplayer.computeAreaInScreen() - 200 <= scrollPaneContainer.computeAreaInScreen() && zoom_fac == 0.95)
+                return;
+
             Scale newScale = new Scale();
-            newScale.setPivotX(scroll.getX());
-            newScale.setPivotY(scroll.getY());
+            /*newScale.setPivotX(scrollPaneContainer.getHvalue() / 2);
+            newScale.setPivotY(scrollPaneContainer.getVvalue() / 2);*/
+
+            /*newScale.setPivotX(mazeDisplayer.getWidth()/2);
+            newScale.setPivotY(mazeDisplayer.getHeight()/2);*/
+            //newScale.setPivotX(mazeDisplayer.getScaleX());
+           // newScale.setPivotY(mazeDisplayer.getScaleY());
+
             newScale.setX(mazeDisplayer.getScaleX() * zoom_fac);
             newScale.setY(mazeDisplayer.getScaleY() * zoom_fac);
-            System.out.println(scroll.getX());
 
             Group contentGroup = new Group();
-            Group zoomGroup = new Group();// #ffffff
+            Group zoomGroup = new Group();
             contentGroup.getChildren().add(zoomGroup);
             zoomGroup.getChildren().add(paneB);
             scrollPaneContainer.setContent(contentGroup);
@@ -531,6 +532,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             zoomGroup.getTransforms().add(scaleTransform);
 
             mazeDisplayer.getTransforms().add(newScale);
+            //System.out.println(mazeDisplayer.computeAreaInScreen() + "\n **************");
             scroll.consume();
         }
     }
@@ -637,5 +639,31 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void mouseMove(MouseEvent mouseEvent) {
         mouseX = mouseEvent.getX();
         mouseY = mouseEvent.getY();
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        scrollPaneContainer.setContent(paneB);
+        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        mazeDisplayer.widthProperty().bind(this.scrollPaneContainer.widthProperty());
+        mazeDisplayer.heightProperty().bind(this.scrollPaneContainer.heightProperty());
+
+//        MainScreenid.getScene()
+
+        playBackgroundSound();
+        try {
+            readHashmap();
+            // set default settings to the config.
+            Configurations.getInstance();
+            Configurations.setP("generateMaze", "MyMazeGenerator");
+            Configurations.setP("problemSolver", "DepthFirstSearch");
+            Configurations.setP("threadPoolSize", "4");//new
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
