@@ -56,6 +56,7 @@ public class MyModel extends Observable implements IModel {
         mazeSolverServer.start();
         logger.info("Start searcher server");
     }
+
     /**
      * make the servers stop and not to receive calls.
      */
@@ -126,6 +127,7 @@ public class MyModel extends Observable implements IModel {
     /**
      * if it is possible, move the player to his new pos according to the direction we gets.
      * if the player hit the final and goal position than notify it.
+     *
      * @param whereToMove - the direction the client wants to move his player.
      */
     public void movePlayer(KeyCode whereToMove) {
@@ -201,6 +203,7 @@ public class MyModel extends Observable implements IModel {
 
     /**
      * func that gets row+col and connect with the server to get a new maze.
+     *
      * @param numOfRows - row
      * @param numOfCols - col
      */
@@ -242,6 +245,7 @@ public class MyModel extends Observable implements IModel {
             //e.printStackTrace();
         }
     }
+
     /**
      * func that connect with the server to get a solution to the maze.
      */
@@ -278,11 +282,13 @@ public class MyModel extends Observable implements IModel {
 
     /**
      * call the function that talks to the server and gets a new maze.
+     *
      * @param row - row
      * @param col - col
      */
     public void generateMaze(int row, int col) {
         try {
+            isSolved = false;
             generateMazeThroughGeneratorServer(row, col);
             rowPlayer = maze.getStartPosition().getRowIndex();
             colPlayer = maze.getStartPosition().getColumnIndex();

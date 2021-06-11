@@ -147,6 +147,7 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void generateMaze(ActionEvent actionEvent) {
         isSolved = false;
         try { //check for valid input
+            mediaPlayer.play(); // play background music
             int rows = Integer.parseInt(textField_mazeRows.getText());
             int cols = Integer.parseInt(textField_mazeColumns.getText());
             if (rows < 2 || cols < 2)
