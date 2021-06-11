@@ -27,7 +27,6 @@ import java.util.Observer;
 public class MyModel extends Observable implements IModel {
     public Solution solution;
     public File loadFile;
-    //private Logger LOG = Logger.getLogger("src/log4j.properties");
     Logger logger = Logger.getLogger(MyModel.class.getName());
     private Maze maze;
     private int rowPlayer;
@@ -35,6 +34,7 @@ public class MyModel extends Observable implements IModel {
     private Server mazeGeneratorServer;
     private Server mazeSolverServer;
     private int isValid = 0;
+    private boolean isSolved = false;
 
     public MyModel() {
         mazeSolverServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
@@ -80,12 +80,9 @@ public class MyModel extends Observable implements IModel {
     }
 
     public void movePlayer(KeyCode whereToMove) {
-        int x, y;
         int player_row_pos = rowPlayer;
         int player_col_pos = colPlayer;
         isValid = 0;
-        x = rowPlayer;//tmp
-        y = colPlayer;//tmp
         switch (whereToMove) {
             case UP:
             case NUMPAD8:
@@ -116,22 +113,18 @@ public class MyModel extends Observable implements IModel {
                     player_col_pos += -1;
                     player_row_pos += -1;
                 } else isValid = 1;
-
                 break;
             case NUMPAD9:
                 if (maze.possibleToGo(player_row_pos - 1, player_col_pos + 1)) {
                     player_col_pos += 1;
                     player_row_pos += -1;
                 } else isValid = 1;
-
                 break;
-
             case NUMPAD3:
                 if (maze.possibleToGo(player_row_pos + 1, player_col_pos + 1)) {
                     player_col_pos += 1;
                     player_row_pos += 1;
                 } else isValid = 1;
-
                 break;
             case NUMPAD1:
                 if (maze.possibleToGo(player_row_pos + 1, player_col_pos - 1)) {
@@ -142,17 +135,15 @@ public class MyModel extends Observable implements IModel {
             default:
                 isValid = 2;
                 break;
-
         }
-        /*if (x == player_row_pos && y == player_col_pos)
-            isValid = 1;*/
         rowPlayer = player_row_pos;
         colPlayer = player_col_pos;
         setChanged();
         notifyObservers("move");
 
         // when maze is solved
-        if (player_row_pos == maze.getGoalPosition().getRowIndex() && player_col_pos == maze.getGoalPosition().getColumnIndex()) {
+        if (player_row_pos == maze.getGoalPosition().getRowIndex() && player_col_pos == maze.getGoalPosition().getColumnIndex() && !isSolved) {
+            isSolved = true;//if drag-make no more than 1 alert.
             setChanged();
             notifyObservers("solve");
             logger.info("Client solve the maze !");
@@ -253,6 +244,7 @@ public class MyModel extends Observable implements IModel {
     public void reset() {
         rowPlayer = maze.getStartPosition().getRowIndex();
         colPlayer = maze.getStartPosition().getColumnIndex();
+        isSolved = false;
         setChanged();
         notifyObservers("reset");
         logger.info("Client ask to restart the current maze");

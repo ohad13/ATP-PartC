@@ -63,14 +63,16 @@ public class PropertiesController implements Initializable {
     }
 
     public void updateProp(ActionEvent actionEvent) {
-        try{
+        try {
             NThreads = Integer.parseInt(textField_Nthreads.getText());
             generator = algorithmChoiceBox.getValue().toString();
             searcher = searchingAlgorithmChoiceBox.getValue().toString();
-        } catch (NumberFormatException e) {
+            if (NThreads == 0)
+                throw new Exception("");
+        } catch (Exception e) {
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.WARNING);
-            a.setContentText("Wrong Parameters, Please insert number only at the Thread number..");
+            a.setContentText("Wrong Parameters! \n Please insert number bigger then 0");
             a.show();
         }
     }

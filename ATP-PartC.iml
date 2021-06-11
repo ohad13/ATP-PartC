@@ -8,15 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/ATP-Project-PartB.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="ATP-Project-PartB" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -29,7 +21,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../fontaw jar/fontawesomefx-commons-9.1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/fontawesomefx-fontawesome-4.7.0-9.1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -38,7 +30,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../fontaw jar/fontawesomefx-fontawesome-4.7.0-9.1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/fontawesomefx-commons-9.1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -47,14 +39,14 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../javafx-sdk-16/lib" />
+          <root url="file://$PATH_TO_FX$" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="file://$MODULE_DIR$/../javafx-sdk-16/lib" />
+          <root url="file://$PATH_TO_FX$" />
         </SOURCES>
-        <jarDirectory url="file://$MODULE_DIR$/../javafx-sdk-16/lib" recursive="false" />
-        <jarDirectory url="file://$MODULE_DIR$/../javafx-sdk-16/lib" recursive="false" type="SOURCES" />
+        <jarDirectory url="file://$PATH_TO_FX$" recursive="false" />
+        <jarDirectory url="file://$PATH_TO_FX$" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
   </component>
