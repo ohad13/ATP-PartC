@@ -1,12 +1,5 @@
-2021-06-10 13:03:38 INFO  MyModel:49 - Start generator server
-2021-06-10 13:03:38 INFO  MyModel:51 - Start searcher server
-2021-06-10 13:03:39 INFO  MyModel:243 - Client ask for maze 10X10
-2021-06-10 13:03:44 INFO  MyModel:49 - Start generator server
-2021-06-10 13:03:44 INFO  MyModel:51 - Start searcher server
-2021-06-10 13:03:49 INFO  MyModel:243 - Client ask for maze 10X10
-2021-06-10 13:03:51 INFO  MyModel:49 - Start generator server
-2021-06-10 13:03:51 INFO  MyModel:51 - Start searcher server
-2021-06-10 13:03:55 INFO  MyModel:243 - Client ask for maze 10X10
-2021-06-10 13:03:56 INFO  MyModel:316 - Client closed all..
-2021-06-10 13:03:56 INFO  MyModel:56 - Stop generator server
-2021-06-10 13:03:56 INFO  MyModel:58 - Stop searcher server
+2021-06-11 19:11:09 INFO  MyModel:49 - Start generator server
+2021-06-11 19:11:09 INFO  MyModel:51 - Start searcher server
+2021-06-11 19:11:13 INFO  MyModel:308 - Client closed all..
+2021-06-11 19:11:13 INFO  MyModel:56 - Stop generator server
+2021-06-11 19:11:13 INFO  MyModel:58 - Stop searcher server

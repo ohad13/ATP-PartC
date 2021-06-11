@@ -28,20 +28,9 @@ public class PropertiesController implements Initializable {
     @FXML
     TextField textField_Nthreads;
 
-    public static String getGenerator() {
-        return generator;
-    }
-
-    public static String getSearcher() {
-        return searcher;
-    }
-
-    public static int getNThreads() {
-        return NThreads;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // when this scene gets up, check if there is properties in the Configuration of the server and if not, set default.
         algorithmChoiceBox.getItems().addAll("EmptyMazeGenerator", "SimpleMazeGenerator", "MyMazeGenerator");
         searchingAlgorithmChoiceBox.getItems().addAll("BreadthFirstSearch", "DepthFirstSearch", "BestFirstSearch");
 
@@ -62,6 +51,9 @@ public class PropertiesController implements Initializable {
         NThreads = Integer.parseInt(Configurations.getInstance().getP("threadPoolSize"));
     }
 
+    /**
+     * this func called when the client want to save his new properties.
+     */
     public void updateProp(ActionEvent actionEvent) {
         try {
             NThreads = Integer.parseInt(textField_Nthreads.getText());
@@ -75,5 +67,18 @@ public class PropertiesController implements Initializable {
             a.setContentText("Wrong Parameters! \n Please insert number bigger then 0");
             a.show();
         }
+    }
+
+    // -------------- getters ------------------------
+    public static String getGenerator() {
+        return generator;
+    }
+
+    public static String getSearcher() {
+        return searcher;
+    }
+
+    public static int getNThreads() {
+        return NThreads;
     }
 }

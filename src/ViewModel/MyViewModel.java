@@ -12,66 +12,76 @@ import java.util.Observer;
 public class MyViewModel extends Observable implements Observer {
     private IModel model;
     private Maze maze;
+    private Solution solution;
     private int isValid;
     private int row;
     private int col;
     private int rowPlayer;
     private int colPlayer;
-    private Solution solution;
-
-    public int getRowPlayer() {
-        return rowPlayer;
-    }
-
-    public int getColPlayer() {
-        return colPlayer;
-    }
-
     public File loadFile;
 
+    /**
+     * constructor
+     * @param model - model that will be our observable.
+     */
     public MyViewModel(IModel model) {
         this.model = model;
         this.model.assignObserver(this);
     }
 
-    public Maze getMaze() {
-        return this.maze;
-    }
-
+    /**
+     * tell the model to generate new maze with this row/col
+     * @param row - row
+     * @param col - column
+     */
     public void generateMaze(int row, int col) {
         model.generateMaze(row, col);
     }
 
+    /**
+     * tell the model to solve the maze.
+     */
     public void solveMaze() {
         model.solveMaze();
     }
 
+    /**
+     * tell the model to move the player.
+     * @param move - the direction to move to.
+     */
     public void movePlayer(KeyCode move) {
         this.model.movePlayer(move);
     }
 
-    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
-    }
-
+    /**
+     * tell the model to reset the game.
+     */
     public void reset() {
         model.reset();
     }
 
-    public Solution getSol() {
-        return solution;
+    /**
+     * tell the model to save the new properties settings.
+     * @param gen - maze generator
+     * @param ser - maze searcher
+     * @param nThreads - number of threads to use in the servers.
+     */
+    public void saveSettings(String gen, String ser, int nThreads) {
+        model.saveSettings(gen,ser,nThreads);
     }
 
-    public int getIsValid() {
-        return isValid;
+    public void exit() throws InterruptedException {
+        model.exit();
+    }
+
+    public void load() {
+        model.setLoadFile(loadFile);
+        model.load();
     }
 
     @Override
     public void update(Observable o, Object arg) {
+        // after being notify, act as needed:
         if (o == model) {
             if (arg.equals("move")) {
                 row = model.getRowPlayer();
@@ -110,17 +120,33 @@ public class MyViewModel extends Observable implements Observer {
         }
     }
 
-    public void saveSettings(String gen, String ser, int nThreads) {
-        model.saveSettings(gen,ser,nThreads);
+    // -------------- getters and setters -----------------------
+    public Maze getMaze() {
+        return this.maze;
     }
 
-    public void exit() throws InterruptedException {
-        model.exit();
+    public Solution getSol() {
+        return solution;
     }
 
-    public void load() {
-        model.setLoadFile(loadFile);
-        model.load();
+    public int getRowPlayer() {
+        return rowPlayer;
+    }
+
+    public int getColPlayer() {
+        return colPlayer;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public int getIsValid() {
+        return isValid;
     }
 
     public void setLoadFile(File loadFile) {

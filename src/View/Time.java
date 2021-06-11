@@ -26,6 +26,7 @@ public class Time {
         second = Integer.parseInt(time[1]);
         millisecond = Integer.parseInt(time[2]);
     }
+
     // check if the time we got is bigger then the one we received to the function
     boolean isGreaterThen(Time b) { // return true if what i got is bigger.
         int myTime = this.getTime();
@@ -33,15 +34,18 @@ public class Time {
         return bTime > myTime;
     }
 
+    // return the current time.
     public int getTime() {
         return this.millisecond + this.second * 60 + this.minute * 60 * 60;
     }
 
+    // set a new time.
     public void setTime(int minute, int second, int millisecond) {
         this.minute = minute;
         this.second = second;
         this.millisecond = millisecond;
     }
+
     // return string of the current time.
     public String getCurrentTime() {
         String min, sec;

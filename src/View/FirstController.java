@@ -21,15 +21,16 @@ import java.net.URL;
 import java.util.*;
 
 public class FirstController implements Initializable {
+    private MainScreenController mainScreenController;
+    HashMap<Pair<Integer, Integer>, Pair<String, Time>> topResult;
     @FXML
     TextField userNameTextFiled;
     @FXML
     Label topResultTableMainScreen;
-    HashMap<Pair<Integer, Integer>, Pair<String, Time>> topResult;
 
-    private MainScreenController mainScreenController;
-
-    //function that switch to main windows
+    /**
+     * function that switch to main window.
+     */
     public void Startg(javafx.event.ActionEvent actionEvent) throws IOException {
         Stage stage;
         Scene scene;
@@ -42,20 +43,15 @@ public class FirstController implements Initializable {
         root = loader.load();
         mainScreenController = loader.getController();
         mainScreenController.displayUserName(userName);
-
         model = new MyModel();
         model.startServers();
         MyViewModel myviewModel = new MyViewModel(model);
         mainScreenController.setMyViewModel(myviewModel);
         myviewModel.addObserver(mainScreenController);
-
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-
         scene = new Scene(root);
-
         stage.setScene(scene);
         stage.setResizable(true);
-
         stage.setOnCloseRequest(e -> {
             try {
                 exit();
@@ -162,10 +158,18 @@ public class FirstController implements Initializable {
         return true;
     }
 
+    /**
+     * When click enter go to next page
+     *
+     * @param keyEvent - press on the 'enter' key.
+     */
     public void enter(ActionEvent keyEvent) throws IOException {
         Startg(keyEvent);
-    } //When click enter go to next page
+    }
 
+    /**
+     * when called, exit from all windows and call to stop the servers.
+     */
     private void exit() throws InterruptedException {
         Platform.exit();
         mainScreenController.exit();

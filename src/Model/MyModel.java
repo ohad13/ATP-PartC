@@ -25,17 +25,20 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MyModel extends Observable implements IModel {
+    Logger logger = Logger.getLogger(MyModel.class.getName());
     public Solution solution;
     public File loadFile;
-    Logger logger = Logger.getLogger(MyModel.class.getName());
     private Maze maze;
-    private int rowPlayer;
-    private int colPlayer;
     private Server mazeGeneratorServer;
     private Server mazeSolverServer;
+    private int rowPlayer;
+    private int colPlayer;
     private int isValid = 0;
     private boolean isSolved = false;
 
+    /**
+     * constructor, init the servers.
+     */
     public MyModel() {
         mazeSolverServer = new Server(5401, 1000, new ServerStrategySolveSearchProblem());
         mazeGeneratorServer = new Server(5400, 1000, new ServerStrategyGenerateMaze());
@@ -44,13 +47,18 @@ public class MyModel extends Observable implements IModel {
         colPlayer = 0;
     }
 
+    /**
+     * make the servers run and ready to receive calls.
+     */
     public void startServers() {
         mazeGeneratorServer.start();
         logger.info("Start generator server");
         mazeSolverServer.start();
         logger.info("Start searcher server");
     }
-
+    /**
+     * make the servers stop and not to receive calls.
+     */
     public void stopServers() throws InterruptedException {
         mazeGeneratorServer.stop();
         logger.info("Stop generator server");
@@ -63,22 +71,63 @@ public class MyModel extends Observable implements IModel {
         this.addObserver(o);
     }
 
-    public int getRowPlayer() {
-        return rowPlayer;
+    @Override
+    public void saveSettings(String gen, String ser, int nThreads) {
+        // gets the new settings and save them to the Config.
+        mazeGeneratorServer.setServerStrategy(new ServerStrategyGenerateMaze());
+        mazeSolverServer.setServerStrategy(new ServerStrategySolveSearchProblem());
+        mazeGeneratorServer.setExecutor(nThreads);
+        mazeSolverServer.setExecutor(nThreads);
+        logger.info("Client changed the properties.");
+        logger.info("The new properties is:");
+        logger.info("Maze Generator: " + gen);
+        logger.info("Maze Searcher: " + ser);
+        logger.info("Num of Threads: " + nThreads);
     }
 
-    public int getColPlayer() {
-        return colPlayer;
+    @Override
+    public void exit() throws InterruptedException {
+        // make all windows close. call to stops the servers.
+        logger.info("Client closed all..");
+        stopServers();
+        Platform.exit();
     }
 
-    public Maze getMaze() {
-        return maze;
+    @Override
+    public void load() {
+        // when a client ask to load an old maze, read it from the file and roll the word to make it display.
+        byte[] bArr = new byte[0];
+        try {
+            bArr = Files.readAllBytes(loadFile.toPath());
+        } catch (IOException e) {
+            logger.info(e);
+        }
+        int l = 24 + (bArr.length - 32) / 4;
+        byte[] shorty = new byte[l];
+        int j = 24;// he previous before the pos was 24 instead the 32
+        System.arraycopy(bArr, 8, shorty, 0, l);// MetaData copy
+        for (int i = 0; i < (bArr.length - 32); i += 4) {
+            byte b = bArr[35 + i];
+            shorty[j] = b;
+            j++;
+        }
+        this.maze = new Maze(shorty);
+        byte[] first = Arrays.copyOfRange(bArr, 0, 8);
+        IntBuffer intBuf = ByteBuffer.wrap(first).order(ByteOrder.BIG_ENDIAN).asIntBuffer();
+        int[] array = new int[intBuf.remaining()];
+        intBuf.get(array);
+        rowPlayer = array[0];
+        colPlayer = array[1];
+        setChanged();
+        notifyObservers("load");
+        logger.info("Client ask to load a maze");
     }
 
-    private void setMaze(Maze mazeObj) {
-        this.maze = mazeObj;
-    }
-
+    /**
+     * if it is possible, move the player to his new pos according to the direction we gets.
+     * if the player hit the final and goal position than notify it.
+     * @param whereToMove - the direction the client wants to move his player.
+     */
     public void movePlayer(KeyCode whereToMove) {
         int player_row_pos = rowPlayer;
         int player_col_pos = colPlayer;
@@ -150,6 +199,11 @@ public class MyModel extends Observable implements IModel {
         }
     }
 
+    /**
+     * func that gets row+col and connect with the server to get a new maze.
+     * @param numOfRows - row
+     * @param numOfCols - col
+     */
     private void generateMazeThroughGeneratorServer(int numOfRows, int numOfCols) {
         try {
             /* Code from part-B test: "RunCommunicateWithServers" */
@@ -188,11 +242,9 @@ public class MyModel extends Observable implements IModel {
             //e.printStackTrace();
         }
     }
-
-    public int getIsValid() {
-        return isValid;
-    }
-
+    /**
+     * func that connect with the server to get a solution to the maze.
+     */
     private void solveMazeThroughSolverServer() {
         try {
             /* Code from part-B test: "RunCommunicateWithServers" */
@@ -224,6 +276,11 @@ public class MyModel extends Observable implements IModel {
         }
     }
 
+    /**
+     * call the function that talks to the server and gets a new maze.
+     * @param row - row
+     * @param col - col
+     */
     public void generateMaze(int row, int col) {
         try {
             generateMazeThroughGeneratorServer(row, col);
@@ -241,6 +298,9 @@ public class MyModel extends Observable implements IModel {
         }
     }
 
+    /**
+     * if the client ask to reset his game, set the player pos to the start position.
+     */
     public void reset() {
         rowPlayer = maze.getStartPosition().getRowIndex();
         colPlayer = maze.getStartPosition().getColumnIndex();
@@ -250,67 +310,41 @@ public class MyModel extends Observable implements IModel {
         logger.info("Client ask to restart the current maze");
     }
 
-    @Override
-    public void saveSettings(String gen, String ser, int nThreads) {
-        mazeGeneratorServer.setServerStrategy(new ServerStrategyGenerateMaze());
-        mazeSolverServer.setServerStrategy(new ServerStrategySolveSearchProblem());
-        mazeGeneratorServer.setExecutor(nThreads);
-        mazeSolverServer.setExecutor(nThreads);
-        logger.info("Client changed the properties.");
-        logger.info("The new properties is:");
-        logger.info("Maze Generator: " + gen);
-        logger.info("Maze Searcher: " + ser);
-        logger.info("Num of Threads: " + nThreads);
-    }
-
+    /**
+     * if the client ask to solve his maze.
+     */
     public void solveMaze() {
         solveMazeThroughSolverServer();
         setChanged();
         notifyObservers("getSolve");
     }
 
-    @Override
-    public void load() {
-        byte[] bArr = new byte[0];
-        try {
-            bArr = Files.readAllBytes(loadFile.toPath());
-        } catch (IOException e) {
-            logger.info(e);
-            //e.printStackTrace();
-        }
-        int l = 24 + (bArr.length - 32) / 4;
-        byte[] shorty = new byte[l];
-        int j = 24;// he previous before the pos was 24 instead the 32
-        System.arraycopy(bArr, 8, shorty, 0, l);// MetaData copy
-        for (int i = 0; i < (bArr.length - 32); i += 4) {
-            byte b = bArr[35 + i];
-            shorty[j] = b;
-            j++;
-        }
-        this.maze = new Maze(shorty);
-        byte[] first = Arrays.copyOfRange(bArr, 0, 8);
-        IntBuffer intBuf = ByteBuffer.wrap(first).order(ByteOrder.BIG_ENDIAN).asIntBuffer();
-        int[] array = new int[intBuf.remaining()];
-        intBuf.get(array);
-        rowPlayer = array[0];
-        colPlayer = array[1];
-        setChanged();
-        notifyObservers("load");
-        logger.info("Client ask to load a maze");
-    }
-
+    //--------------- getters and setters ------------------------------
     public void setLoadFile(File loadFile) {
         this.loadFile = loadFile;
     }
 
-    @Override
-    public void exit() throws InterruptedException {
-        logger.info("Client closed all..");
-        stopServers();
-        Platform.exit();
+    public int getIsValid() {
+        return isValid;
     }
 
     public Solution getSolve() {
         return solution;
+    }
+
+    public int getRowPlayer() {
+        return rowPlayer;
+    }
+
+    public int getColPlayer() {
+        return colPlayer;
+    }
+
+    public Maze getMaze() {
+        return maze;
+    }
+
+    private void setMaze(Maze mazeObj) {
+        this.maze = mazeObj;
     }
 }
