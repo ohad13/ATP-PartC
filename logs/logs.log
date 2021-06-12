@@ -1,0 +1,12 @@
+2021.06.12 16:35:10.573 INFO  Model.MyModel - Start generator server
+2021.06.12 16:35:10.575 INFO  Model.MyModel - Start searcher server
+2021.06.12 16:35:11.372 INFO  Model.MyModel - Client ask for maze 10X10
+2021.06.12 16:35:11.829 INFO  Model.MyModel - Client ask to solve maze 10X10
+2021.06.12 16:35:14.517 INFO  Model.MyModel - Client changed the properties
+2021.06.12 16:35:14.517 INFO  Model.MyModel - The new properties is:
+2021.06.12 16:35:14.517 INFO  Model.MyModel - Maze Generator: MyMazeGenerator
+2021.06.12 16:35:14.518 INFO  Model.MyModel - Maze Searcher: BreadthFirstSearch
+2021.06.12 16:35:14.518 INFO  Model.MyModel - Num of Threads: 3
+2021.06.12 16:35:15.724 INFO  Model.MyModel - Client closed all..
+2021.06.12 16:35:15.725 INFO  Model.MyModel - Stop generator server
+2021.06.12 16:35:15.725 INFO  Model.MyModel - Stop searcher server
