@@ -196,7 +196,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             writeHashToFile();
         }
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("First.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("First.fxml")));
         //Runtime.getRuntime().exec("taskkill /F /IM <processname>.exe");
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -252,9 +252,9 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void AboutF(ActionEvent actionEvent) throws IOException {
         Stage secondStage = new Stage();
         secondStage.setTitle("About");
-        Image applicationIcon = new Image(getClass().getClassLoader().getResourceAsStream("Image/maze.png"));
+        Image applicationIcon = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Image/maze.png")));
         secondStage.getIcons().add(applicationIcon);
-        Parent root1 = FXMLLoader.load(getClass().getClassLoader().getResource("About.fxml"));
+        Parent root1 = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("About.fxml")));
         scene = new Scene(root1);
         secondStage.setScene(scene);
         secondStage.show();
@@ -414,7 +414,7 @@ public class MainScreenController implements IView, Initializable, Observer {
         mediaPlayer.stop(); // stop background music
         Alert a = new Alert(Alert.AlertType.NONE);
         a.setTitle("Congratulations");
-        Image applicationIcon = new Image(getClass().getClassLoader().getResourceAsStream("Image/maze.png"));
+        Image applicationIcon = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Image/maze.png")));
         ((Stage) a.getDialogPane().getScene().getWindow()).getIcons().add(applicationIcon);
         a.setHeaderText(userLable.getText() + " you are the best!!");
         a.setAlertType(Alert.AlertType.INFORMATION);
@@ -480,6 +480,9 @@ public class MainScreenController implements IView, Initializable, Observer {
      * update the properties when the prop window closed
      */
     public void UpdateClicked() {
+        if(!PropertiesController.isB()) { // if th NThreads is 0 - don't save the changes.
+            return;
+        }
         String gen = PropertiesController.getGenerator();
         String ser = PropertiesController.getSearcher();
         int nThreads = PropertiesController.getNThreads();
@@ -538,9 +541,9 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void Help(ActionEvent actionEvent) throws IOException {
         Stage secondStage = new Stage();
         secondStage.setTitle("Help");
-        Image applicationIcon = new Image(getClass().getClassLoader().getResourceAsStream("Image/maze.png"));
+        Image applicationIcon = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Image/maze.png")));
         secondStage.getIcons().add(applicationIcon);
-        Parent root1 = FXMLLoader.load(getClass().getClassLoader().getResource("Help.fxml"));
+        Parent root1 = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Help.fxml")));
         scene = new Scene(root1);
         secondStage.setScene(scene);
         secondStage.show();
@@ -552,9 +555,9 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void Properties(ActionEvent actionEvent) throws IOException {
         Stage secondStage = new Stage();
         secondStage.setTitle("Properties");
-        Image applicationIcon = new Image(getClass().getClassLoader().getResourceAsStream("Image/maze.png"));
+        Image applicationIcon = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Image/maze.png")));
         secondStage.getIcons().add(applicationIcon);
-        Parent root1 = FXMLLoader.load(getClass().getClassLoader().getResource("Properties.fxml"));
+        Parent root1 = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("Properties.fxml")));
         scene = new Scene(root1);
 
         secondStage.setScene(scene);

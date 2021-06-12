@@ -53,10 +53,10 @@ public class MyModel extends Observable implements IModel {
      * make the servers run and ready to receive calls.
      */
     public void startServers() {
-        mazeGeneratorServer.start();
-        LOG.info("Start generator server");
-        mazeSolverServer.start();
-        LOG.info("Start searcher server");
+            mazeGeneratorServer.start();
+            LOG.info("Start generator server");
+            mazeSolverServer.start();
+            LOG.info("Start searcher server");
     }
 
     /**

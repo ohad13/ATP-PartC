@@ -17,6 +17,7 @@ public class PropertiesController implements Initializable {
     private static int NThreads;
     private static String searcher;
     private static int cnt = 0;
+    private static boolean b = true;
     @FXML
     Label generatorLbl;
     @FXML
@@ -27,6 +28,10 @@ public class PropertiesController implements Initializable {
     ChoiceBox searchingAlgorithmChoiceBox;
     @FXML
     TextField textField_Nthreads;
+
+    public static boolean isB() {
+        return b;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -61,11 +66,13 @@ public class PropertiesController implements Initializable {
             searcher = searchingAlgorithmChoiceBox.getValue().toString();
             if (NThreads == 0)
                 throw new Exception("");
+            b = true;
         } catch (Exception e) {
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.WARNING);
             a.setContentText("Wrong Parameters! \n Please insert number bigger then 0");
             a.show();
+            b = false;//to make sure we don't save the '0' value into NThreads.
         }
     }
 
