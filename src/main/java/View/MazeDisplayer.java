@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MazeDisplayer extends Canvas {
     private Maze maze;
@@ -108,8 +109,7 @@ public class MazeDisplayer extends Canvas {
         x_player = getRow_player() * cellHeight;
         y_player = getCol_player() * cellWidth;
         try {
-            playerImageR = new Image(getClass().getClassLoader().getResourceAsStream("Image/coronaPlayer1R.png"));
-            //playerImageR = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1R.png"));
+            playerImageR = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Image/coronaPlayer1R.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -135,8 +135,8 @@ public class MazeDisplayer extends Canvas {
         x_player = getRow_player() * cellHeight;
         y_player = getCol_player() * cellWidth;
         try {
-            playerImageR = new Image(new FileInputStream("./src/Resources/Image/coronaPlayer1R.png"));
-        } catch (FileNotFoundException e) {
+            playerImageR = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("Image/coronaPlayer1R.png")));
+        } catch (Exception e) {
             e.printStackTrace();
         }
         graphicsContext.drawImage(playerImageR, y_player, x_player, cellWidth, cellHeight);

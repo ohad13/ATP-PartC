@@ -14,8 +14,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 <?import View.*?>
+
 <BorderPane fx:id="MainScreenid" onMouseClicked="#mouseClick" prefHeight="553.0" prefWidth="802.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MainScreenController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
@@ -82,7 +82,7 @@
                 </Button>
             <ScrollPane fx:id="scrollPaneContainer" fitToHeight="true" fitToWidth="true" layoutX="23.0" layoutY="55.0" prefHeight="450.0" prefWidth="527.0" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="55.0">
                <content>
-                      <AnchorPane fx:id="paneB" focusTraversable="true" onMouseClicked="#mouseClick" onMouseMoved="#mouseMove" onMouseReleased="#mouseDragged" onScroll="#setOnScroll" prefHeight="448.0" prefWidth="453.0" style="-fx-background-color: #fffa3f;">
+                      <AnchorPane fx:id="paneB" focusTraversable="true" onMouseClicked="#mouseClick" onMouseMoved="#mouseMove" onMouseReleased="#mouseDragged" onScroll="#setOnScroll" prefHeight="448.0" prefWidth="453.0" style="-fx-background-color: #FFFFFF;">
                           <MazeDisplayer fx:id="mazeDisplayer" height="${paneB.height}" onKeyPressed="#movePlayer" width="${paneB.width}" />
                       </AnchorPane>
                </content>

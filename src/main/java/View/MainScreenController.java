@@ -1,5 +1,4 @@
 package View;
-
 import Server.Configurations;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
@@ -147,7 +146,7 @@ public class MainScreenController implements IView, Initializable, Observer {
     public void generateMaze(ActionEvent actionEvent) {
         isSolved = false;
         try { //check for valid input
-            mediaPlayer.play(); // play background music TODO: bring it back - maven bug!
+            mediaPlayer.play(); // play background music
             int rows = Integer.parseInt(textField_mazeRows.getText());
             int cols = Integer.parseInt(textField_mazeColumns.getText());
             if (rows < 2 || cols < 2)
@@ -157,7 +156,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             restB.setVisible(true);
             SaveL.setVisible(true);
         } catch (Exception e) {
-            errorSound();//  TODO: bring it back - maven bug!
+            errorSound();
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.WARNING);
             a.setContentText("Wrong Parameters, Please insert 2 numbers bigger then 2");
@@ -329,7 +328,7 @@ public class MainScreenController implements IView, Initializable, Observer {
      * @param actionEvent - on click on reset button.
      */
     public void reset(ActionEvent actionEvent) {
-        mediaPlayer.play(); // play background music //TODO: bring it back - maven bug!
+        mediaPlayer.play(); // play background music
         isSolved = false;
         this.myViewModel.reset();
         mazeDisplayer.setPlayerPos(rowPlayer, colPlayer);
@@ -409,7 +408,7 @@ public class MainScreenController implements IView, Initializable, Observer {
      * also check if this is the best time and if so update the label and the hash.
      */
     private void mazeIsSolved() {
-        playWinSound();//TODO: bring it back - maven bug!
+        playWinSound();
         isSolved = true;
         mediaPlayer.stop(); // stop background music
         Alert a = new Alert(Alert.AlertType.NONE);
@@ -499,8 +498,8 @@ public class MainScreenController implements IView, Initializable, Observer {
      * @param scroll - when scroll the wheel-zoom in/out.
      */
     public void setOnScroll(ScrollEvent scroll) {
-        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         if (scroll.isControlDown()) {
             double zoom_fac = 1.05;
             if (scroll.getDeltaY() < 0) {
@@ -625,9 +624,9 @@ public class MainScreenController implements IView, Initializable, Observer {
             rowPlayer = this.myViewModel.getRow();
             colPlayer = this.myViewModel.getCol();
             if (myViewModel.getIsValid() == 1)
-                playerWrongMoveSound();//TODO: bring it back - maven bug!
+                playerWrongMoveSound();
             else if (myViewModel.getIsValid() == 0)
-                playerMoveSound();//TODO: bring it back - maven bug!
+                playerMoveSound();
         }
         if ("solve".equals(arg)) {
             mazeIsSolved();
@@ -652,20 +651,20 @@ public class MainScreenController implements IView, Initializable, Observer {
         // when the Controller creates this function called.
         // set the Pane scrollable.
         scrollPaneContainer.setContent(paneB);
-        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPaneContainer.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPaneContainer.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         // bind the maze Displayer and the scrollPane.
         mazeDisplayer.widthProperty().bind(this.scrollPaneContainer.widthProperty());
         mazeDisplayer.heightProperty().bind(this.scrollPaneContainer.heightProperty());
         //play music
-        playBackgroundSound(); //TODO: bring it back - maven bug!
+        playBackgroundSound();
         try {
             readHashMap();//try and read the Hash map for all the records.
             // set default settings to the config.
             Configurations.getInstance();
             Configurations.setP("generateMaze", "MyMazeGenerator");
             Configurations.setP("problemSolver", "DepthFirstSearch");
-            Configurations.setP("threadPoolSize", "4");//new
+            Configurations.setP("threadPoolSize", "4");
         } catch (IOException e) {
             e.printStackTrace();
         }

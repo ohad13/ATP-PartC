@@ -30,7 +30,7 @@
     </left>
     <right>
         <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="470.0" prefWidth="350.0" BorderPane.alignment="CENTER">
-            <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" onAction="#enter" promptText="User Name" text="adi" />
+            <TextField fx:id="userNameTextFiled" layoutX="82.0" layoutY="213.0" onAction="#enter" promptText="User Name" text="" />
             <Button layoutX="131.0" layoutY="246.0" mnemonicParsing="false" onAction="#Startg" text="Start" />
             <Label layoutX="81.0" layoutY="62.0" text="Welcome" textFill="#110303" AnchorPane.bottomAnchor="362.0" AnchorPane.leftAnchor="81.0" AnchorPane.rightAnchor="117.0" AnchorPane.topAnchor="35.0">
                 <font>
