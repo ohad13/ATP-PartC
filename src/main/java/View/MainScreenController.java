@@ -1,10 +1,12 @@
 package View;
+
 import Server.Configurations;
 import ViewModel.MyViewModel;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,6 +33,7 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -313,9 +316,17 @@ public class MainScreenController implements IView, Initializable, Observer {
      * play background music
      */
     private void playBackgroundSound() {
-        Media backSound;
-        backSound = new Media(new File("src/main/resources/Sound/background.mp3").toURI().toString());
-        //backSound = new Media(new File("./resources/Sound/background.mp3").toURI().toString());
+
+        Media backSound = null;
+        try {
+            backSound = new Media(getClass().getResource("/Sound/background.mp3").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        //Media backSound = new Media(getClass().getResource("/Sound/background.mp3").toExternalForm());
+        //Media backSound = new Media(new File("src/main/resources/Sound/background.mp3").toURI().toString());
+        //Media backSound = new Media(new File("./resources/Sound/background.mp3").toURI().toString());
         mediaPlayer = new MediaPlayer(backSound);
         mediaPlayer.setVolume(0.25);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);//play the music forever.
@@ -479,7 +490,7 @@ public class MainScreenController implements IView, Initializable, Observer {
      * update the properties when the prop window closed
      */
     public void UpdateClicked() {
-        if(!PropertiesController.isB()) { // if th NThreads is 0 - don't save the changes.
+        if (!PropertiesController.isB()) { // if th NThreads is 0 - don't save the changes.
             return;
         }
         String gen = PropertiesController.getGenerator();
