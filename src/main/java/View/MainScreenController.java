@@ -318,16 +318,18 @@ public class MainScreenController implements IView, Initializable, Observer {
     private void playBackgroundSound() {
 
         Media backSound = null;
-        try {
+        /*try {
             backSound = new Media(getClass().getResource("/Sound/background.mp3").toURI().toString());
         } catch (URISyntaxException e) {
             e.printStackTrace();
-        }
-
+        }*/
+        URL url = MazeDisplayer.class.getResource("/Sound/background.mp3");
+        Media m = new Media(url.toString());
+        mediaPlayer = new MediaPlayer(m);
         //Media backSound = new Media(getClass().getResource("/Sound/background.mp3").toExternalForm());
         //Media backSound = new Media(new File("src/main/resources/Sound/background.mp3").toURI().toString());
         //Media backSound = new Media(new File("./resources/Sound/background.mp3").toURI().toString());
-        mediaPlayer = new MediaPlayer(backSound);
+        //mediaPlayer = new MediaPlayer(backSound);
         mediaPlayer.setVolume(0.25);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);//play the music forever.
         mediaPlayer.play();
