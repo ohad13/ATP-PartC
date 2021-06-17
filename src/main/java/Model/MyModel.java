@@ -22,7 +22,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
-
+import Server.Configurations;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -103,7 +103,7 @@ public class MyModel extends Observable implements IModel {
         try {
             bArr = Files.readAllBytes(loadFile.toPath());
         } catch (IOException e) {
-            LOG.info(e);
+            LOG.error(e);
         }
         int l = 24 + (bArr.length - 32) / 4;
         byte[] shorty = new byte[l];
@@ -235,7 +235,7 @@ public class MyModel extends Observable implements IModel {
                         /* update maze data member */
                         setMaze(newMaze);
                     } catch (Exception e) {
-                        LOG.info(e);
+                        LOG.error(e);
                         //e.printStackTrace();
                     }
                 }
@@ -243,7 +243,7 @@ public class MyModel extends Observable implements IModel {
             /* invoking the anonymous "clientStrategy" implemented above */
             client.communicateWithServer();
         } catch (UnknownHostException e) {
-            LOG.info(e);
+            LOG.error(e);
             //e.printStackTrace();
         }
     }
@@ -266,7 +266,7 @@ public class MyModel extends Observable implements IModel {
                         /*update solution so that maze Displayer can use getter to take it*/
                         solution = (Solution) fromServer.readObject();
                     } catch (Exception e) {
-                        LOG.info(e);
+                        LOG.error(e);
 //                        e.printStackTrace();
                     }
                 }
@@ -274,10 +274,10 @@ public class MyModel extends Observable implements IModel {
             int x = maze.getNumOfRow();
             int y = maze.getNumOfCol();
             /* invoking the anonymous "clientStrategy" implemented above */
-            LOG.info("Client ask to solve maze " + x + "X" + y);
+            LOG.info("Client ask to solve maze " + x + "X" + y + " using "+Configurations.getInstance().getP("problemSolver")+"algorithm");
             client.communicateWithServer();
         } catch (UnknownHostException e) {
-            LOG.info(e);
+            LOG.error(e);
             e.printStackTrace();
         }
     }
@@ -296,13 +296,14 @@ public class MyModel extends Observable implements IModel {
             colPlayer = maze.getStartPosition().getColumnIndex();
             setChanged();
             notifyObservers("generate");
-            LOG.info("Client ask for maze " + maze.getNumOfRow() + "X" + maze.getNumOfCol());
+            LOG.info("Client ask for maze " + maze.getNumOfRow() + "X" + maze.getNumOfCol() + " using "+Configurations.getInstance().getP("generateMaze"));
         } catch (Exception e) {
             //errorSound();
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.WARNING);
             a.setContentText("Wrong Parameters, Please insert 2 numbers bigger then 2");
             a.show();
+            LOG.warn("Client enter wrong parameters..");
         }
     }
 

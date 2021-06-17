@@ -676,7 +676,7 @@ public class MainScreenController implements IView, Initializable, Observer {
             // set default settings to the config.
             Configurations.getInstance();
             Configurations.setP("generateMaze", "MyMazeGenerator");
-            Configurations.setP("problemSolver", "DepthFirstSearch");
+            Configurations.setP("problemSolver", "BreadthFirstSearch");
             Configurations.setP("threadPoolSize", "4");
         } catch (IOException e) {
             e.printStackTrace();

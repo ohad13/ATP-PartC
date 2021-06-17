@@ -1,0 +1,16 @@
+2021.06.17 08:09:46.636 INFO  Model.MyModel - Start generator server
+2021.06.17 08:09:46.638 INFO  Model.MyModel - Start searcher server
+2021.06.17 08:09:47.412 INFO  Model.MyModel - Client ask for maze 10X10 using MyMazeGenerator
+2021.06.17 08:09:47.730 INFO  Model.MyModel - Client ask to solve maze 10X10 using BreadthFirstSearchalgorithm
+2021.06.17 08:09:48.785 INFO  Model.MyModel - Client closed all..
+2021.06.17 08:09:48.785 INFO  Model.MyModel - Stop generator server
+2021.06.17 08:09:48.785 INFO  Model.MyModel - Stop searcher server
+2021.06.17 08:11:02.152 INFO  Model.MyModel - Start generator server
+2021.06.17 08:11:02.154 INFO  Model.MyModel - Start searcher server
+2021.06.17 08:11:03.060 INFO  Model.MyModel - Client ask for maze 10X10 using MyMazeGenerator
+2021.06.17 08:11:03.940 INFO  Model.MyModel - Client ask to solve maze 10X10 using BreadthFirstSearchalgorithm
+2021.06.17 08:11:04.739 INFO  Model.MyModel - Client ask to restart the current maze
+2021.06.17 08:11:13.579 INFO  Model.MyModel - Client solve the maze !
+2021.06.17 08:11:15.901 INFO  Model.MyModel - Client closed all..
+2021.06.17 08:11:15.901 INFO  Model.MyModel - Stop generator server
+2021.06.17 08:11:15.901 INFO  Model.MyModel - Stop searcher server
