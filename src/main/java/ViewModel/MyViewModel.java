@@ -19,7 +19,7 @@ public class MyViewModel extends Observable implements Observer {
     private int rowPlayer;
     private int colPlayer;
     public File loadFile;
-
+    // note
     /**
      * constructor
      * @param model - model that will be our observable.
