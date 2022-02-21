@@ -60,7 +60,7 @@ Enter screen - insert name and then on the left side there is a record table whi
 
 
 
-Generate a new maze by inserting the wanted size, and click generate. After click, generate the timer to start run.
+Generate a new maze by inserting the wanted size, and click generate. After click on the generate button, the timer start running.
 
 
 
@@ -80,12 +80,16 @@ While trying to solve the maze, you have the option to ask for the solution to t
 
 
 
-When the maze is solved, a finished message appears and the rank table is updated if necessary
+When the maze is solved, a finish message appears and the rank table is updated if necessary.
 
 
 
 ![fourth](https://user-images.githubusercontent.com/63229346/154945024-2623c6de-38b4-48d5-b4b3-700252b8479e.png)
 
+
+
+
+https://user-images.githubusercontent.com/63229346/154953670-246e7c92-6b2b-414c-9f30-cae02b10c853.mp4
 
 
 
